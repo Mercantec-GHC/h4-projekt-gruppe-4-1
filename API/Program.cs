@@ -26,9 +26,9 @@ namespace API
                                         Environment.GetEnvironmentVariable("DefaultConnection");
 
 
-            builder.Services.AddDbContext<AppDBContext> ( option => 
-            option.UseSqlServer ( Connectionstring 
-            ) );
+            builder.Services.AddDbContext<AppDBContext> (options => 
+            options.UseMySQL(Connectionstring) 
+            );
             // Add services to the container.
 
             builder.Services.AddControllers();
