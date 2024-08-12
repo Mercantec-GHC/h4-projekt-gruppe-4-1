@@ -3,3 +3,4 @@
 /API/obj
 /API/bin
 .vscode
+/POC_LocalHost-Db/.env
