@@ -13,6 +13,7 @@ namespace API.Context
         }
 
         public DbSet<Users> Users {  get; set; }
+        
 
     }
 }

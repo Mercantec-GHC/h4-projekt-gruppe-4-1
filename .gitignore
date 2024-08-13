@@ -4,3 +4,4 @@
 /API/bin
 .vscode
 /POC_LocalHost-Db/.env
+/API/appsettings.json
