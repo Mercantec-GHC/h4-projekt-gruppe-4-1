@@ -44,7 +44,7 @@ namespace API.Controllers
         }
 
         [HttpGet("id")]
-        public async Task<ActionResult<Users>> GetUserById(string id)
+        public async Task<ActionResult<User>> GetUserById(string id)
         {
             var user = await _dbContext.Users.FindAsync(id);
             if (user == null)
@@ -56,7 +56,7 @@ namespace API.Controllers
 
 
         [HttpPost("SignUp")]
-        public async Task<ActionResult<Users>> PostUser(SignUpDTO userSignUp)
+        public async Task<ActionResult<User>> PostUser(SignUpDTO userSignUp)
         {
             if (await _dbContext.Users.AnyAsync(u => u.Username == userSignUp.Username))
             {
@@ -127,12 +127,12 @@ namespace API.Controllers
                    && hasSpecialChar.IsMatch(Password)
                    && hasMinimum8Chars.IsMatch(Password);
         }
-        private Users MapSignUpDTOToUser(SignUpDTO signUpDTO)
+        private User MapSignUpDTOToUser(SignUpDTO signUpDTO)
         {
             string hashedPassword = BCrypt.Net.BCrypt.HashPassword(signUpDTO.Password);
             string salt = hashedPassword.Substring(0, 29);
 
-            return new Users
+            return new User
             {
                 id = Guid.NewGuid().ToString("N"),
                 Email = signUpDTO.Email,
@@ -148,7 +148,7 @@ namespace API.Controllers
                 // Only for educational purposes, not in the final product!
             };
         }
-        private string GenerateJwtToken(Users user)
+        private string GenerateJwtToken(User user)
         {
 
            

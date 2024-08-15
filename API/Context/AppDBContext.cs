@@ -12,8 +12,10 @@ namespace API.Context
 
         }
 
-        public DbSet<Users> Users {  get; set; }
-        
+        public DbSet<User> Users {  get; set; }
+        public DbSet<Event> Events { get; set; }
+
+
 
     }
 }
