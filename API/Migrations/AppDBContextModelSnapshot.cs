@@ -19,7 +19,7 @@ namespace API.Migrations
                 .HasAnnotation("ProductVersion", "8.0.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("API.Models.OrganizedEvent", b =>
+            modelBuilder.Entity("API.Models.Event", b =>
                 {
                     b.Property<string>("id")
                         .HasColumnType("varchar(255)");
@@ -32,6 +32,15 @@ namespace API.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(21)
+                        .HasColumnType("varchar(21)");
+
+                    b.Property<string>("EventCreator_id")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -51,9 +60,6 @@ namespace API.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("Usersid")
-                        .HasColumnType("varchar(255)");
-
                     b.Property<DateTime>("created_at")
                         .HasColumnType("datetime(6)");
 
@@ -65,9 +71,11 @@ namespace API.Migrations
 
                     b.HasKey("id");
 
-                    b.HasIndex("Usersid");
+                    b.ToTable("Events");
 
-                    b.ToTable("OrganizedEvent");
+                    b.HasDiscriminator().HasValue("Event");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("API.Models.Participant", b =>
@@ -76,10 +84,7 @@ namespace API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("OrganizedEventid")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<string>("ParticipatedEventid")
+                    b.Property<string>("Eventid")
                         .HasColumnType("varchar(255)");
 
                     b.Property<string>("User_FirstName")
@@ -96,65 +101,12 @@ namespace API.Migrations
 
                     b.HasKey("id");
 
-                    b.HasIndex("OrganizedEventid");
-
-                    b.HasIndex("ParticipatedEventid");
+                    b.HasIndex("Eventid");
 
                     b.ToTable("Participant");
                 });
 
-            modelBuilder.Entity("API.Models.ParticipatedEvent", b =>
-                {
-                    b.Property<string>("id")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("ImageURL")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Place_id")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("User_id")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Usersid")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<DateTime>("created_at")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<DateTime>("last_login")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<DateTime>("updated_at")
-                        .HasColumnType("datetime(6)");
-
-                    b.HasKey("id");
-
-                    b.HasIndex("Usersid");
-
-                    b.ToTable("ParticipatedEvent");
-                });
-
-            modelBuilder.Entity("API.Models.Users", b =>
+            modelBuilder.Entity("API.Models.User", b =>
                 {
                     b.Property<string>("id")
                         .HasColumnType("varchar(255)");
@@ -164,11 +116,9 @@ namespace API.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("PasswordBackdoor")
@@ -203,40 +153,65 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Models.OrganizedEvent", b =>
                 {
-                    b.HasOne("API.Models.Users", null)
-                        .WithMany("OrganizedEvents")
-                        .HasForeignKey("Usersid");
+                    b.HasBaseType("API.Models.Event");
+
+                    b.Property<string>("EventCreatorid")
+                        .HasColumnType("varchar(255)");
+
+                    b.HasIndex("EventCreatorid");
+
+                    b.HasDiscriminator().HasValue("OrganizedEvent");
+                });
+
+            modelBuilder.Entity("API.Models.ParticipatedEvent", b =>
+                {
+                    b.HasBaseType("API.Models.Event");
+
+                    b.Property<string>("EventCreatorid")
+                        .HasColumnType("varchar(255)");
+
+                    b.HasIndex("EventCreatorid");
+
+                    b.ToTable("Events", t =>
+                        {
+                            t.Property("EventCreatorid")
+                                .HasColumnName("ParticipatedEvent_EventCreatorid");
+                        });
+
+                    b.HasDiscriminator().HasValue("ParticipatedEvent");
                 });
 
             modelBuilder.Entity("API.Models.Participant", b =>
                 {
-                    b.HasOne("API.Models.OrganizedEvent", null)
+                    b.HasOne("API.Models.Event", null)
                         .WithMany("Participants")
-                        .HasForeignKey("OrganizedEventid");
-
-                    b.HasOne("API.Models.ParticipatedEvent", null)
-                        .WithMany("Participants")
-                        .HasForeignKey("ParticipatedEventid");
-                });
-
-            modelBuilder.Entity("API.Models.ParticipatedEvent", b =>
-                {
-                    b.HasOne("API.Models.Users", null)
-                        .WithMany("ParticipatedEvents")
-                        .HasForeignKey("Usersid");
+                        .HasForeignKey("Eventid");
                 });
 
             modelBuilder.Entity("API.Models.OrganizedEvent", b =>
                 {
-                    b.Navigation("Participants");
+                    b.HasOne("API.Models.User", "EventCreator")
+                        .WithMany("OrganizedEvents")
+                        .HasForeignKey("EventCreatorid");
+
+                    b.Navigation("EventCreator");
                 });
 
             modelBuilder.Entity("API.Models.ParticipatedEvent", b =>
                 {
+                    b.HasOne("API.Models.User", "EventCreator")
+                        .WithMany("ParticipatedEvents")
+                        .HasForeignKey("EventCreatorid");
+
+                    b.Navigation("EventCreator");
+                });
+
+            modelBuilder.Entity("API.Models.Event", b =>
+                {
                     b.Navigation("Participants");
                 });
 
-            modelBuilder.Entity("API.Models.Users", b =>
+            modelBuilder.Entity("API.Models.User", b =>
                 {
                     b.Navigation("OrganizedEvents");
 
