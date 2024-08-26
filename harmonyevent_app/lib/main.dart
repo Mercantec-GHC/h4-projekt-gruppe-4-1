@@ -6,6 +6,8 @@ void main() {
   runApp(MyApp());
 }
 
+
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -16,9 +18,11 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Harmony Event',
         theme: ThemeData(
-          useMaterial3: true,
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
+          useMaterial3: false,
+          //colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 246, 243, 243)),
+          scaffoldBackgroundColor: const Color.fromARGB(255, 36, 51, 6),
         ),
+        
         home: MyHomePage(),
       ),
     );
@@ -37,10 +41,13 @@ class MyHomePage extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          Text('A random idea HMM:'),
+          Text('How to style this?'),
           Text(appState.current.asLowerCase),
+
         ],
+        
       ),
     );
   }
 }
+
