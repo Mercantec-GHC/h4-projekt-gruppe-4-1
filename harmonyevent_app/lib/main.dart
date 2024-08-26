@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
+    return ChangeNotifierProvider(    
       create: (context) => MyAppState(),
       child: MaterialApp(
         title: 'Harmony Event',
