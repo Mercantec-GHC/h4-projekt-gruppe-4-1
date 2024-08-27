@@ -58,6 +58,7 @@ namespace API.Controllers
         [HttpPost("SignUp")]
         public async Task<ActionResult<User>> PostUser(SignUpDTO userSignUp)
         {
+            // Check if Email or Username already exists
             if (await _dbContext.Users.AnyAsync(u => u.Username == userSignUp.Username))
             {
                 return Conflict(new { message = "Username is already in use." });
@@ -72,30 +73,40 @@ namespace API.Controllers
             {
                 return Conflict(new { message = "Password is not secure." });
             }
+
+            // Map SignUpDTO to User entity
             var user = MapSignUpDTOToUser(userSignUp);
 
+            // Ensure the ID is not manually set (EF Core should generate it)
+            
+
+            // Add the user to the DbContext
             _dbContext.Users.Add(user);
+
             try
             {
                 await _dbContext.SaveChangesAsync();
             }
-            catch (DbUpdateException)
+            catch (DbUpdateException ex)
             {
                 if (UserExists(user.id))
                 {
-                    return Conflict();
+                    return Conflict(new { message = "User already exists." });
                 }
                 else
                 {
-                    throw;
+                    // Log exception and return internal server error
+                    // log exception using ILogger or similar
+                    return StatusCode(500, new { message = "An error occurred while saving the user.", details = ex.Message });
                 }
             }
 
             return Ok(new { user.id, user.Username });
-
         }
-        // POST: api/Users/login
-        
+
+
+
+
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDTO login)
         {

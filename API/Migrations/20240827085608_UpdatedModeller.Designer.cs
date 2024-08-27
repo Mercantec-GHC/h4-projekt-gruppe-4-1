@@ -3,6 +3,7 @@ using System;
 using API.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    partial class AppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240827085608_UpdatedModeller")]
+    partial class UpdatedModeller
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,12 +38,14 @@ namespace API.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(21)
+                        .HasColumnType("varchar(21)");
+
                     b.Property<string>("EventCreator_id")
                         .IsRequired()
                         .HasColumnType("longtext");
-
-                    b.Property<string>("EventCreatorid")
-                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("ImageURL")
                         .IsRequired()
@@ -69,9 +74,11 @@ namespace API.Migrations
 
                     b.HasKey("id");
 
-                    b.HasIndex("EventCreatorid");
-
                     b.ToTable("Events");
+
+                    b.HasDiscriminator().HasValue("Event");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("API.Models.Participant", b =>
@@ -112,7 +119,6 @@ namespace API.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("FirstName")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("longtext");
 
                     b.Property<string>("LastName")
@@ -148,13 +154,34 @@ namespace API.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("API.Models.Event", b =>
+            modelBuilder.Entity("API.Models.OrganizedEvent", b =>
                 {
-                    b.HasOne("API.Models.User", "EventCreator")
-                        .WithMany()
-                        .HasForeignKey("EventCreatorid");
+                    b.HasBaseType("API.Models.Event");
 
-                    b.Navigation("EventCreator");
+                    b.Property<string>("EventCreatorid")
+                        .HasColumnType("varchar(255)");
+
+                    b.HasIndex("EventCreatorid");
+
+                    b.HasDiscriminator().HasValue("OrganizedEvent");
+                });
+
+            modelBuilder.Entity("API.Models.ParticipatedEvent", b =>
+                {
+                    b.HasBaseType("API.Models.Event");
+
+                    b.Property<string>("EventCreatorid")
+                        .HasColumnType("varchar(255)");
+
+                    b.HasIndex("EventCreatorid");
+
+                    b.ToTable("Events", t =>
+                        {
+                            t.Property("EventCreatorid")
+                                .HasColumnName("ParticipatedEvent_EventCreatorid");
+                        });
+
+                    b.HasDiscriminator().HasValue("ParticipatedEvent");
                 });
 
             modelBuilder.Entity("API.Models.Participant", b =>
@@ -164,9 +191,34 @@ namespace API.Migrations
                         .HasForeignKey("Eventid");
                 });
 
+            modelBuilder.Entity("API.Models.OrganizedEvent", b =>
+                {
+                    b.HasOne("API.Models.User", "EventCreator")
+                        .WithMany("OrganizedEvents")
+                        .HasForeignKey("EventCreatorid");
+
+                    b.Navigation("EventCreator");
+                });
+
+            modelBuilder.Entity("API.Models.ParticipatedEvent", b =>
+                {
+                    b.HasOne("API.Models.User", "EventCreator")
+                        .WithMany("ParticipatedEvents")
+                        .HasForeignKey("EventCreatorid");
+
+                    b.Navigation("EventCreator");
+                });
+
             modelBuilder.Entity("API.Models.Event", b =>
                 {
                     b.Navigation("Participants");
+                });
+
+            modelBuilder.Entity("API.Models.User", b =>
+                {
+                    b.Navigation("OrganizedEvents");
+
+                    b.Navigation("ParticipatedEvents");
                 });
 #pragma warning restore 612, 618
         }
