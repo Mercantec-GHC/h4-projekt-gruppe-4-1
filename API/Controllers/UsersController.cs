@@ -148,9 +148,9 @@ namespace API.Controllers
                 id = Guid.NewGuid().ToString("N"),
                 Email = signUpDTO.Email,
                 Username = signUpDTO.Username,
-                created_at = DateTime.UtcNow.AddHours(2),
-                updated_at = DateTime.UtcNow.AddHours(2),
-                last_login = DateTime.UtcNow.AddHours(2),
+                CreatedAt = DateTime.UtcNow.AddHours(2),
+                UpdatedAt = DateTime.UtcNow.AddHours(2),
+                
                 
                 PasswordHash = hashedPassword,
                 Salt= salt,

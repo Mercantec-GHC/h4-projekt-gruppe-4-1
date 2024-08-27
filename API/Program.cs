@@ -25,14 +25,11 @@ namespace API
 
             IConfiguration Configuration = builder.Configuration;
 
-            /*string Connectionstring = Configuration.GetConnectionString(name:"DefaultConnection") ??
-                                        Environment.GetEnvironmentVariable("DefaultConnection");
-            */
+            string connectionString = Configuration.GetConnectionString("DefaultConnection")
+            ?? Environment.GetEnvironmentVariable("DefaultConnection");
 
-
-            builder.Services.AddDbContext<AppDBContext> (options => 
-            options.UseMySQL(Configuration.GetConnectionString("DefaultConnection")) 
-            );
+            builder.Services.AddDbContext<AppDBContext>(options =>
+                    options.UseNpgsql(connectionString));
             // Add services to the container.
 
             builder.Services.AddControllers();
