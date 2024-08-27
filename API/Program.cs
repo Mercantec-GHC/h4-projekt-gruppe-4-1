@@ -27,6 +27,7 @@ namespace API
 
             string Connectionstring = Configuration.GetConnectionString(name:"DefaultConnection") ??
                                         Environment.GetEnvironmentVariable("DefaultConnection");
+            Connectionstring += "SslMode=Preferred";
 
 
             builder.Services.AddDbContext<AppDBContext> (options => 
