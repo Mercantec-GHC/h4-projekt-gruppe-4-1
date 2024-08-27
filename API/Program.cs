@@ -70,7 +70,7 @@ namespace API
 
             app.UseHttpsRedirection();
 
-            app.UseCors(MyAllowSpecificOrigins);
+            //app.UseCors(MyAllowSpecificOrigins);
             app.UseAuthorization();
 
             app.MapControllers();
