@@ -51,14 +51,15 @@ class MyHomePage extends StatelessWidget {
           Text('How to style this?'),
           Text(appState.current.asLowerCase),
           Image(image: AssetImage('assets/images/HE_Logo.png')),
+          Text('Harmony Event'),
           ElevatedButton(
             onPressed: () {
               print('button pressed!');
               
             },
             child: Text('Next >'),
-          
           ),
+
         ],
         
         
