@@ -65,12 +65,13 @@ namespace API
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
+            app.UseDeveloperExceptionPage();
             app.UseSwagger();
             app.UseSwaggerUI();
 
             app.UseHttpsRedirection();
 
-            //app.UseCors(MyAllowSpecificOrigins);
+            app.UseCors(MyAllowSpecificOrigins);
             app.UseAuthorization();
 
             app.MapControllers();
