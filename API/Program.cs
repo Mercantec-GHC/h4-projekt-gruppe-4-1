@@ -25,13 +25,13 @@ namespace API
 
             IConfiguration Configuration = builder.Configuration;
 
-            string Connectionstring = Configuration.GetConnectionString(name:"DefaultConnection") ??
+            /*string Connectionstring = Configuration.GetConnectionString(name:"DefaultConnection") ??
                                         Environment.GetEnvironmentVariable("DefaultConnection");
-            Connectionstring += "SslMode=Preferred";
+            */
 
 
             builder.Services.AddDbContext<AppDBContext> (options => 
-            options.UseMySQL(Connectionstring) 
+            options.UseMySQL(Configuration.GetConnectionString("DefaultConnection")) 
             );
             // Add services to the container.
 
