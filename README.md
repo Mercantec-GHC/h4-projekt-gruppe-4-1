@@ -13,6 +13,7 @@ Her skal alt dokumentation være, der er noget documentation vi beder jer om at 
 
 1. Casebeskrivelse fra jeres kunde - gerne som PDF
 2. Kravspecifikation som I som gruppe har udarbejde ud fra kundens casebeskrivelse
+3. Herunder kan du finde rollefordeling for gruppe 4 https://docs.google.com/document/d/1Z8YHXhSDqolyOdG-cMSyVALI3nS5sJ8syp_qBTE3tFc/edit?usp=sharing
 
 #### API
 
