@@ -30,14 +30,14 @@ class MyApp extends StatelessWidget {
 
 class MyAppState extends ChangeNotifier {
   //var current = WordPair.random()
-    void getNext() {
+  void getNext() {
     //current = WordPair.random();
     notifyListeners();
   } 
 }
 
 class MyHomePage extends StatelessWidget {
-  get child => null;
+  //get child => null;
 
   @override
   Widget build(BuildContext context) {
