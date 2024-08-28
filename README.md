@@ -24,9 +24,5 @@ I skal bygge en backend, altså en API, som jeres mobilapplikation skal kontakte
 Her er jeres Flutter applikation, vi anbefaler og underviser i Flutter og Dart, hvis I har erfaring med et andet framework såsom Kotlin, Swift, MAUI eller React Native kan der gives tilladelse til at bruge det i stedet!
 
 # Hosting - Cloud
-
-Vi anbefaler [Render.com](https://render.com/) til at hoste jeres API samt Flutter for web. Med Flutter kan vi selvfølgelig også hente det ned på en Android eller IOS enhed! Man kan se Swagger UI'et på Render her - [API på Render](https://h4api.onrender.com/swagger/index.html)
-
-Alternativt til Render kan vi også bruge [Netlify](https://netlify.app/) til at hoste Flutter applikation uden downtime - Man kan se applikationen her - [Netlify Flutter](https://h4flutter.netlify.app/)
-
-Til database bruger vi enten [Neon](Neon.tech) eller [Supabase](https://supabase.com) som begge tilbyder en gratis version af Postgres!
+https://h4-projekt-gruppe-4-1.onrender.com/swagger/index.html
+Her kan du teste vores API
