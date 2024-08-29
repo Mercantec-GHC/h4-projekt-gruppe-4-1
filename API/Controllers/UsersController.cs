@@ -58,6 +58,14 @@ namespace API.Controllers
         [HttpPost("SignUp")]
         public async Task<ActionResult<User>> PostUser(SignUpDTO userSignUp)
         {
+            if (await _dbContext.Users.AnyAsync(u => u.FirstName == userSignUp.FirstName))
+            {
+                return Conflict(new { message = "Username is already in use." });
+            }
+            if (await _dbContext.Users.AnyAsync(u => u.LastName == userSignUp.LastName))
+            {
+                return Conflict(new { message = "Username is already in use." });
+            }
             // Check if Email or Username already exists
             if (await _dbContext.Users.AnyAsync(u => u.Username == userSignUp.Username))
             {
