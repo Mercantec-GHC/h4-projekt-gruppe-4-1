@@ -7,16 +7,16 @@ namespace API.Models
     public class Event : Common
     {
         
-        public DateTime Date { get; set; }
+       /* public DateTime Date { get; set; }
         public string User_id { get; set; }
         public string Place_id { get; set; }
-        public string ImageURL { get; set; }
+        public string ImageURL { get; set; }*/
         public string Type { get; set; }
         public string Category { get; set; }
         public string Description { get; set; }
-        public string EventCreator_id { get; set; }
+       /* public string EventCreator_id { get; set; }
         public User EventCreator { get; set; }
-        public List<Participant> Participants { get; set; }
+        public List<Participant> Participants { get; set; }*/
 
 
 
@@ -52,18 +52,18 @@ public static class EventEndpoints
             var affected = await db.Events
                 .Where(model => model.id == id)
                 .ExecuteUpdateAsync(setters => setters
-                  .SetProperty(m => m.Date, @event.Date)
+                  /*.SetProperty(m => m.Date, @event.Date)
                   .SetProperty(m => m.User_id, @event.User_id)
                   .SetProperty(m => m.Place_id, @event.Place_id)
-                  .SetProperty(m => m.ImageURL, @event.ImageURL)
+                  .SetProperty(m => m.ImageURL, @event.ImageURL)*/
                   .SetProperty(m => m.Type, @event.Type)
                   .SetProperty(m => m.Category, @event.Category)
-                  .SetProperty(m => m.Description, @event.Description)
-                  .SetProperty(m => m.EventCreator_id, @event.EventCreator_id)
+                  .SetProperty(m => m.Description, @event.Description));
+                 /* .SetProperty(m => m.EventCreator_id, @event.EventCreator_id)
                   .SetProperty(m => m.id, @event.id)
                   .SetProperty(m => m.CreatedAt, @event.CreatedAt)
                   .SetProperty(m => m.UpdatedAt, @event.UpdatedAt)
-                  );
+                  );*/
             return affected == 1 ? TypedResults.Ok() : TypedResults.NotFound();
         })
         .WithName("UpdateEvent")
