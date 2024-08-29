@@ -7,13 +7,8 @@ namespace API.Models
     public class Common
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string? id { get; set; }
-        public DateTime created_at { get; set; }
-        public DateTime updated_at { get; set;}
-        public DateTime last_login { get; set; }
-     
-        
-
+        public string id { get; set; } // Kan erstattes med "int Id"
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
     }
-}
+};

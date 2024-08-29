@@ -3,6 +3,7 @@ using API.Context;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using API.Controllers;
 
 namespace API
 {
@@ -25,14 +26,11 @@ namespace API
 
             IConfiguration Configuration = builder.Configuration;
 
-            /*string Connectionstring = Configuration.GetConnectionString(name:"DefaultConnection") ??
-                                        Environment.GetEnvironmentVariable("DefaultConnection");
-            */
+            string connectionString = Configuration.GetConnectionString("DefaultConnection")
+            ?? Environment.GetEnvironmentVariable("DefaultConnection");
 
-
-            builder.Services.AddDbContext<AppDBContext> (options => 
-            options.UseMySQL(Configuration.GetConnectionString("DefaultConnection")) 
-            );
+            builder.Services.AddDbContext<AppDBContext>(options =>
+                    options.UseNpgsql(connectionString));
             // Add services to the container.
 
             builder.Services.AddControllers();
@@ -40,6 +38,7 @@ namespace API
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            
             // Configure JWT Authentication
             builder.Services.AddAuthentication(x =>
             {
@@ -63,12 +62,19 @@ namespace API
                 };
             });
 
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             app.UseDeveloperExceptionPage();
             app.UseSwagger();
             app.UseSwaggerUI();
+
+                        if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+};
 
 
             app.UseHttpsRedirection();
@@ -78,6 +84,8 @@ namespace API
             app.UseAuthorization();
 
             app.MapControllers();
+
+           
 
             app.Run();
         }
