@@ -19,7 +19,7 @@ Her skal alt dokumentation være, der er noget documentation vi beder jer om at 
 ### Logbøger
 1. Søren https://docs.google.com/document/d/1whzlPf4bnx1a4milswGlx3-l5CLf8YKfGDfrp1FUEm8/edit
 2. Silas
-3. Kasper 
+3. Kasper https://docs.google.com/document/d/1odwKFbxqS3ZhgaFDiCSVNaz9dHLHPs-XcfVO6pVelS4/edit?usp=sharing
 
 #### API
 
