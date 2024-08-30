@@ -69,10 +69,17 @@ namespace API.Controllers
 
             var events = new Event
             {
-
-                Category = eventCreate.Category,
+                id = Guid.NewGuid().ToString("N"),
+                Date = eventCreate.Date,
+                User_id = eventCreate.User_id,
+                Place_id= eventCreate.Place_id,
+                ImageURL = eventCreate.ImageURL,
                 Type = eventCreate.Type,
-                Description = eventCreate.Description
+                Description = eventCreate.Description,
+                
+                Category = eventCreate.Category,
+                
+               
 
             };
 
@@ -81,19 +88,20 @@ namespace API.Controllers
 
             try
             {
-                // Save changes asynchronously
+              
                 await _dbContext.SaveChangesAsync();
             }
             catch (DbUpdateException ex)
             {
-                // Log exception and return internal server error
-                // You can log the exception using ILogger or similar logging tools
+                
                 return StatusCode(500, new { message = "An error occurred while saving the event.", details = ex.Message });
             }
 
-            // Return the created event with a 201 Created status
+            
             return CreatedAtAction(nameof(GetEventById), new { id = events.id }, events);
         }
+
+     
     }
 }
 

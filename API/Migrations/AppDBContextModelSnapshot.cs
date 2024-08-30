@@ -28,26 +28,73 @@ namespace API.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Category")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Description")
-                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("EventCreator_id")
+                        .HasColumnType("text");
+
+                    b.Property<string>("EventCreatorid")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ImageURL")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Place_id")
                         .HasColumnType("text");
 
                     b.Property<string>("Type")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("User_id")
+                        .HasColumnType("text");
+
                     b.HasKey("id");
 
+                    b.HasIndex("EventCreatorid");
+
                     b.ToTable("Events");
+                });
+
+            modelBuilder.Entity("API.Models.Participant", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("id"));
+
+                    b.Property<string>("Eventid")
+                        .HasColumnType("text");
+
+                    b.Property<string>("User_FirstName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("User_LastName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("User_id")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("Eventid");
+
+                    b.ToTable("Participant");
                 });
 
             modelBuilder.Entity("API.Models.User", b =>
@@ -91,6 +138,27 @@ namespace API.Migrations
                     b.HasKey("id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("API.Models.Event", b =>
+                {
+                    b.HasOne("API.Models.User", "EventCreator")
+                        .WithMany()
+                        .HasForeignKey("EventCreatorid");
+
+                    b.Navigation("EventCreator");
+                });
+
+            modelBuilder.Entity("API.Models.Participant", b =>
+                {
+                    b.HasOne("API.Models.Event", null)
+                        .WithMany("Participants")
+                        .HasForeignKey("Eventid");
+                });
+
+            modelBuilder.Entity("API.Models.Event", b =>
+                {
+                    b.Navigation("Participants");
                 });
 #pragma warning restore 612, 618
         }
