@@ -34,7 +34,7 @@ namespace API.Controllers
             var events = await _dbContext.Events
                 .Select(events => new EventDTO
                 {
-                    Id = events.id,
+                    id = events.id,
                     Date = events.Date,
                     Place_id = events.Place_id,
                     Description = events.Description,
