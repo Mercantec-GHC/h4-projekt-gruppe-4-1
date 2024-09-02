@@ -1,12 +1,5 @@
-
+/API/appsettings.json
 /API/.vs
 /API/obj
 /API/bin
 .vscode
-/API(MySQL)/.vs
-/API(MySQL)/obj
-/API(MySQL)/bin
-/API(MySQL)/appsettings.json
-.vscode
-
-/API/appsettings.json
