@@ -2,8 +2,8 @@ import 'dart:core';
 
 class EventDTO {
  
-  final String user_id;
-  final DateTime dateTime;
+  
+  final DateTime date;
   final String place_id;
   final String ImageURL;
   final String type;
@@ -15,8 +15,8 @@ class EventDTO {
 
 
   EventDTO({
-    required this.user_id,
-    required this.dateTime,
+    
+    required this.date,
     required this.place_id,
     required this.ImageURL,
     required this.type,
@@ -29,8 +29,8 @@ class EventDTO {
   // Convert an Event object into a JSON map.
   Map<String, dynamic> toJson() {
     return {
-      'User_id' : user_id,
-      'dateTime' : dateTime,
+      
+      'date' : date,
       'place_id': place_id,
       'ImageURL': ImageURL,
       'type': type,
@@ -44,8 +44,8 @@ class EventDTO {
 
   factory EventDTO.fromJson(Map<String, dynamic> json) {
     return EventDTO(
-      user_id: json['User_id'] as String,
-      dateTime: DateTime(2024),
+      
+      date: DateTime(2024),
       place_id: json['place_id'] as String,
       ImageURL: json['ImageURL'] as String,
       type: json['type'] as String,

@@ -1,7 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_first_app/Http/User/loginuser.dart';
+import 'package:flutter_first_app/Pages/Event/EventPage.dart';
 import 'package:flutter_first_app/Pages/User/CreateUserPage.dart';
 import 'package:flutter_first_app/models/user.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'LoginPage',
+      home: LoginPage(),
+    );
+  }
+}
 
 class LoginPage extends StatefulWidget {
   @override
@@ -19,6 +34,7 @@ class _LoginPageState extends State<LoginPage> {
     if (_formKey.currentState!.validate()) {
       setState(() {
         _isLoading = true;
+        
       });
 
       final loginDTO = LoginDTO(
@@ -31,7 +47,7 @@ class _LoginPageState extends State<LoginPage> {
         // Navigate to HomePage or another page on successful login
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => LoginPage()), // Replace with the correct page
+          MaterialPageRoute(builder: (context) => CreateEvent()), // Replace with the correct page
         );
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
