@@ -3,6 +3,7 @@ using System;
 using API.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace API.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    partial class AppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240829125818_initevent")]
+    partial class initevent
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -28,6 +31,7 @@ namespace API.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Category")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
@@ -37,27 +41,33 @@ namespace API.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("EventCreator_id")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("EventCreatorid")
                         .HasColumnType("text");
 
                     b.Property<string>("ImageURL")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Place_id")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Type")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("User_id")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("id");

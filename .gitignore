@@ -1,8 +1,6 @@
-
+/API/appsettings.json
 /API/.vs
 /API/obj
 /API/bin
 /API/appsettings.json
 .vscode
-/POC_LocalHost-Db/.env
-

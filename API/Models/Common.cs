@@ -1,11 +1,14 @@
-﻿namespace API.Models
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace API.Models
 {
     public class Common
     {
-        public string id { get; set; }
-        public DateTime created_at { get; set; }
-        public DateTime updated_at { get; set;}
-
-
+        [Key]
+        public string id { get; set; } // Kan erstattes med "int Id"
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
     }
-}
+};
