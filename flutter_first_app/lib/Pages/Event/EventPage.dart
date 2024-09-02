@@ -3,6 +3,7 @@ import 'package:flutter_first_app/models/event.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_first_app/config/api_config.dart';
+import 'package:intl/intl.dart';
 
 
 
@@ -38,9 +39,13 @@ class CreateEventState extends State<CreateEvent> {
       lastDate: DateTime(2050),
     );
 
+    print(selected);
+
+
+
     if (selected != null) {
       setState(() {
-        dateController.text = selected.toLocal().toString().split(' ')[0]; 
+        dateController.text = selected.toUtc().toString().split(' ')[0]; 
       });
     }
   }
