@@ -71,7 +71,7 @@ namespace API.Controllers
             {
                 id = Guid.NewGuid().ToString("N"),
                 Date = eventCreate.Date,
-                User_id = eventCreate.User_id,
+                
                 Place_id= eventCreate.Place_id,
                 ImageURL = eventCreate.ImageURL,
                 Type = eventCreate.Type,
