@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gradient_button/flutter_gradient_button.dart';
 
+import 'package:harmonyevent_app/Pages/User/LoginPage.dart';   
+
 void main() {
   runApp(
     MyApp(
@@ -43,7 +45,7 @@ class HomeScreen extends StatelessWidget {
   //get child => null;
   @override
   Widget build(BuildContext context) {
-    var appState = context.watch<MyAppState>();
+    //var appState = context.watch<MyAppState>();
     //var pair = appState.current;
 
     return Scaffold(
@@ -73,14 +75,18 @@ class HomeScreen extends StatelessWidget {
                 GradientButton(
                   colors: [const Color.fromARGB(255, 183, 211, 54), const Color.fromARGB(255, 109, 190, 66)],
                   height: 40,
-                  width: 300,
+                  width: 350,
                   radius: 20,
                   gradientDirection: GradientDirection.leftToRight,
                   textStyle: TextStyle(color: const Color.fromARGB(255, 234, 208, 225)),
                   text: "Create User",
                   onPressed: () {
-                    //print("Button clicked");
-                    //appState.nextPageLogin();
+                    Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => LoginScreen(data: 'Data sent from HomeScreen!'),
+                      ),   
+                    );
                   },
                 ),
               ],
@@ -115,7 +121,7 @@ class ButtonStyling extends StatelessWidget {
     return GradientButton(
       colors: [const Color.fromARGB(255, 183, 211, 54), const Color.fromARGB(255, 109, 190, 66)],
       height: 40,
-      width: 300,
+      width: 350,
       radius: 20,
       gradientDirection: GradientDirection.leftToRight,
       textStyle: TextStyle(color: const Color.fromARGB(255, 234, 208, 225)),
@@ -124,8 +130,8 @@ class ButtonStyling extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => LoginScreen(data: 'Data sent from HomeScreen!'),
-          ),   
+            builder: (context) => LoginPage(),
+          ),  
         );
       },
     );
@@ -158,6 +164,49 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        //leading: Icon(Icons.menu),
+  //title: Text('Page title'),
+  actions: <Widget>[
+            IconButton(
+      icon: Icon(
+        Icons.add_circle_outline, 
+        color: const Color.fromARGB(255, 183, 211, 54)),
+       tooltip: "Create Event",
+                onPressed: () {
+          print("Hmm");
+        }
+    ),
+    IconButton(
+      //padding: EdgeInsets.symmetric(horizontal: 18),
+      icon: const Icon(
+        Icons.favorite, 
+        color: const Color.fromARGB(255, 183, 211, 54)),
+        tooltip: "Favorite Events",
+        onPressed: () {
+          print("Hmm");
+        }
+    ),
+    IconButton(
+      icon: const Icon(
+        Icons.search, 
+        color: const Color.fromARGB(255, 183, 211, 54)),
+        tooltip: "Search Events",
+                onPressed: () {
+          print("Hmm");
+        }
+    ),
+    IconButton(
+      icon: Icon(
+        Icons.account_circle, 
+        color: const Color.fromARGB(255, 183, 211, 54)),
+       tooltip: "Your account",
+                onPressed: () {
+          print("Hmm");
+        }
+    ),
+
+  ],
+  //backgroundColor: Colors.purple,
         title: Row(
           children: [
             Container(
