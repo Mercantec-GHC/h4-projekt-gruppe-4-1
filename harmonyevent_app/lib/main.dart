@@ -84,7 +84,7 @@ class HomeScreen extends StatelessWidget {
                     Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => CreateScreen(data: 'Data sent from HomeScreen!'),
+                      builder: (context) => EventScreen(data: 'Data sent from HomeScreen!'),
                       ),   
                     );
                   },
@@ -154,11 +154,11 @@ class LogoText extends StatelessWidget {
 }
 
 
-//Login screen//
-class CreateScreen extends StatelessWidget {
+//Event screen//
+class EventScreen extends StatelessWidget {
   final String data;
 
-  CreateScreen({required this.data});
+  EventScreen({required this.data});
 
   @override
   Widget build(BuildContext context) {
@@ -227,7 +227,7 @@ class CreateScreen extends StatelessWidget {
               //child: const Align(
               //alignment: FractionalOffset(0.6, 0.5),
               child: 
-                Text("Harmony Event"),
+                Text("Harmony Event (EventScreen)"),
                 ), 
             //),
           ],

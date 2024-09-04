@@ -50,7 +50,7 @@ class _LoginPageState extends State<LoginPage> {
         // Navigate to HomePage or another page on successful login
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => HomeScreen()), // Replace with the correct page
+          MaterialPageRoute(builder: (context) => EventScreen(data: 'Data sent from LoginScreen!')), // Replace with the correct page
         );
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
