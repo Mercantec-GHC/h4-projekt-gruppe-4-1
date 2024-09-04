@@ -5,6 +5,7 @@ import 'package:harmonyevent_app/config/api_config.dart';
 import 'package:harmonyevent_app/models/user.dart'; 
 import 'package:status_alert/status_alert.dart';
 import 'package:harmonyevent_app/main.dart';
+import 'package:flutter_gradient_button/flutter_gradient_button.dart';
 
 class CreateUserPage extends StatefulWidget {
   @override
@@ -148,20 +149,47 @@ class _CreateUserPageState extends State<CreateUserPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Create User"),
+         title: Row(
+          children: [
+            Container(
+              child: Image(image: AssetImage('assets/images/HE_Logo.png'),
+                width: 50,
+                fit: BoxFit.cover     
+                ),  
+              ),        
+
+            Container(          
+              child: 
+                Text("Harmony Event"),
+                ), 
+          ],
+        ),
       ),
-      body: Center(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
+      body: Stack(
+        children: [
+          Center(
+            child: Padding(
+              padding: EdgeInsets.all(16.0),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: 500),
+                child: SingleChildScrollView(
+                    child: Padding(
+                      padding: EdgeInsets.all(66.0),
+                      child: Form(
+                        key: _formKey,
+                        child: Column(    
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+
                   TextFormField(
                     controller: _firstNameController,
-                    decoration: const InputDecoration(labelText: "First Name"),
+                    decoration: InputDecoration(
+                      labelText: "First Name",
+                      labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        ),
+                    ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return "Please enter your first name";
@@ -171,7 +199,13 @@ class _CreateUserPageState extends State<CreateUserPage> {
                   ),
                   TextFormField(
                     controller: _lastNameController,
-                    decoration: const InputDecoration(labelText: "Last Name"),
+                    decoration: InputDecoration(
+                      labelText: "Last Name",
+                      labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        ),
+                    ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return "Please enter your last name";
@@ -180,8 +214,64 @@ class _CreateUserPageState extends State<CreateUserPage> {
                     },
                   ),
                   TextFormField(
+                    controller: _addressController,
+                    decoration: InputDecoration(
+                      labelText: "Address",
+                      labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
+                        border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        ),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Please enter your address";
+                      }
+                      return null;
+                    },
+                  ),
+                  TextFormField(
+                    controller: _postalController,
+                    decoration: InputDecoration(
+                      labelText: "Postal",
+                      labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
+                        border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        ),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Please enter your postal code";
+                      }
+                      return null;
+                    },
+                  ),
+                  TextFormField(
+                    controller: _cityController,
+                    decoration: InputDecoration(
+                      labelText: "City",
+                      labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Please enter your city";
+                      }
+                      return null;
+                    },
+                  ),
+
+                  StandardPadding(),
+                  TextFormField(
                     controller: _emailController,
-                    decoration: const InputDecoration(labelText: "Email"),
+                    decoration: InputDecoration(
+                      labelText: "Email",
+                      labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        ),
+                      ),
                     keyboardType: TextInputType.emailAddress,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -194,7 +284,13 @@ class _CreateUserPageState extends State<CreateUserPage> {
                   ),
                   TextFormField(
                     controller: _confirmEmailController,
-                    decoration: const InputDecoration(labelText: "Confirm Email"),
+                    decoration: InputDecoration(
+                      labelText: "Confirm Email",
+                      labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        ),
+                      ),
                     keyboardType: TextInputType.emailAddress,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -205,9 +301,16 @@ class _CreateUserPageState extends State<CreateUserPage> {
                       return null;
                     },
                   ),
-                                 TextFormField(
+
+                  StandardPadding(),
+                    TextFormField(
                     controller: _userNameController,
-                    decoration: const InputDecoration(labelText: "Username"),
+                    decoration: InputDecoration(
+                      labelText: "Choose username",
+                      labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        ),),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return "Please enter new username";
@@ -217,7 +320,13 @@ class _CreateUserPageState extends State<CreateUserPage> {
                   ),
                   TextFormField(
                     controller: _passwordController,
-                    decoration: const InputDecoration(labelText: "Password"),
+                    decoration: InputDecoration(
+                      labelText: "Choose Password",
+                      labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        ),
+                      ),
                     obscureText: true,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -230,7 +339,13 @@ class _CreateUserPageState extends State<CreateUserPage> {
                   ),
                   TextFormField(
                     controller: _confirmPasswordController,
-                    decoration: const InputDecoration(labelText: "Confirm Password"),
+                    decoration: InputDecoration(
+                      labelText: "Confirm Password",
+                      labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        ),
+                      ),
                     obscureText: true,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -241,47 +356,168 @@ class _CreateUserPageState extends State<CreateUserPage> {
                       return null;
                     },
                   ),
-                  TextFormField(
-                    controller: _addressController,
-                    decoration: const InputDecoration(labelText: "Address"),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Please enter your address";
-                      }
-                      return null;
-                    },
-                  ),
-                  TextFormField(
-                    controller: _postalController,
-                    decoration: const InputDecoration(labelText: "Postal"),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Please enter your postal code";
-                      }
-                      return null;
-                    },
-                  ),
-                  TextFormField(
-                    controller: _cityController,
-                    decoration: const InputDecoration(labelText: "City"),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Please enter your city";
-                      }
-                      return null;
-                    },
-                  ),
+                            //SizedBox(height: 20),
                   const SizedBox(height: 16),
-                  ElevatedButton(
+                  GradientButton(
+                    colors: [const Color.fromARGB(255, 183, 211, 54), const Color.fromARGB(255, 109, 190, 66)],
+                    height: 40,
+                    width: 300,
+                    radius: 20,
+                    gradientDirection: GradientDirection.leftToRight,
+                    textStyle: TextStyle(color: const Color.fromARGB(255, 234, 208, 225)),
+                    text: "Create user",
                     onPressed: _createUser, 
-                    child: const Text("Create User"),
-                  ),
-                ],
+                                ),        
+                          ],
+                        ),
+                      ),
+                    ),
+                  //),
+                ),
               ),
             ),
           ),
-        ),
+        ],
       ),
     );
+    //   body: Center(
+    //     child: SingleChildScrollView(
+    //       child: Padding(
+    //         padding: const EdgeInsets.all(16.0),
+    //         child: Form(
+    //           key: _formKey,
+    //           child: Column(
+    //             mainAxisAlignment: MainAxisAlignment.center,
+    //             children: [
+    //               TextFormField(
+    //                 controller: _firstNameController,
+    //                 decoration: const InputDecoration(labelText: "First Name"),
+    //                 validator: (value) {
+    //                   if (value == null || value.isEmpty) {
+    //                     return "Please enter your first name";
+    //                   }
+    //                   return null;
+    //                 },
+    //               ),
+    //               TextFormField(
+    //                 controller: _lastNameController,
+    //                 decoration: const InputDecoration(labelText: "Last Name"),
+    //                 validator: (value) {
+    //                   if (value == null || value.isEmpty) {
+    //                     return "Please enter your last name";
+    //                   }
+    //                   return null;
+    //                 },
+    //               ),
+
+
+
+    //               TextFormField(
+    //                 controller: _addressController,
+    //                 decoration: const InputDecoration(labelText: "Address"),
+    //                 validator: (value) {
+    //                   if (value == null || value.isEmpty) {
+    //                     return "Please enter your address";
+    //                   }
+    //                   return null;
+    //                 },
+    //               ),
+    //               TextFormField(
+    //                 controller: _postalController,
+    //                 decoration: const InputDecoration(labelText: "Postal"),
+    //                 validator: (value) {
+    //                   if (value == null || value.isEmpty) {
+    //                     return "Please enter your postal code";
+    //                   }
+    //                   return null;
+    //                 },
+    //               ),
+    //               TextFormField(
+    //                 controller: _cityController,
+    //                 decoration: const InputDecoration(labelText: "City"),
+    //                 validator: (value) {
+    //                   if (value == null || value.isEmpty) {
+    //                     return "Please enter your city";
+    //                   }
+    //                   return null;
+    //                 },
+    //               ),
+    //               StandardPadding(),
+    //               TextFormField(
+    //                 controller: _emailController,
+    //                 decoration: const InputDecoration(labelText: "Email"),
+    //                 keyboardType: TextInputType.emailAddress,
+    //                 validator: (value) {
+    //                   if (value == null || value.isEmpty) {
+    //                     return "Please enter your email";
+    //                   } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+    //                     return "Please enter a valid email";
+    //                   }
+    //                   return null;
+    //                 },
+    //               ),
+    //               TextFormField(
+    //                 controller: _confirmEmailController,
+    //                 decoration: const InputDecoration(labelText: "Confirm Email"),
+    //                 keyboardType: TextInputType.emailAddress,
+    //                 validator: (value) {
+    //                   if (value == null || value.isEmpty) {
+    //                     return "Please confirm your email";
+    //                   } else if (value != _emailController.text) {
+    //                     return "Emails does not match";
+    //                   }
+    //                   return null;
+    //                 },
+    //               ),
+    //                   StandardPadding(),
+    //                 TextFormField(
+    //                 controller: _userNameController,
+    //                 decoration: const InputDecoration(labelText: "Choose username"),
+    //                 validator: (value) {
+    //                   if (value == null || value.isEmpty) {
+    //                     return "Please enter new username";
+    //                   }
+    //                   return null;
+    //                 },
+    //               ),
+    //               TextFormField(
+    //                 controller: _passwordController,
+    //                 decoration: const InputDecoration(labelText: "Choose Password"),
+    //                 obscureText: true,
+    //                 validator: (value) {
+    //                   if (value == null || value.isEmpty) {
+    //                     return "Please enter your password";
+    //                   } else if (value.length < 6) {
+    //                     return "Password must be at least 6 characters long";
+    //                   }
+    //                   return null;
+    //                 },
+    //               ),
+    //               TextFormField(
+    //                 controller: _confirmPasswordController,
+    //                 decoration: const InputDecoration(labelText: "Confirm Password"),
+    //                 obscureText: true,
+    //                 validator: (value) {
+    //                   if (value == null || value.isEmpty) {
+    //                     return "Please confirm your password";
+    //                   } else if (value != _passwordController.text) {
+    //                     return "Passwords do not match";
+    //                   }
+    //                   return null;
+    //                 },
+    //               ),
+
+    //               const SizedBox(height: 16),
+    //               ElevatedButton(
+    //                 onPressed: _createUser, 
+    //                 child: const Text("Create User"),
+    //               ),
+    //             ],
+    //           ),
+    //         ),
+    //       ),
+    //     ),
+    //   ),
+    // );
   }
 }

@@ -197,9 +197,11 @@ class EventScreen extends StatelessWidget {
         }
     ),
     IconButton(
-      icon: Icon(
+      
+      icon: const Icon(
         Icons.account_circle, 
         color: const Color.fromARGB(255, 183, 211, 54)),
+  
        tooltip: "Your account",
                 onPressed: () {
           print("Hmm");
@@ -240,8 +242,12 @@ class EventScreen extends StatelessWidget {
          children: [
             StandardPadding(),
             Text(data),
+
          ],
+
        ),
+     
+
       ),
     );
   }
