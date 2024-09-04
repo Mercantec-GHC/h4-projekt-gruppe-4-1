@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_first_app/config/api_config.dart';
 import 'package:flutter_first_app/models/event.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:flutter_first_app/config/api_config.dart';
 import 'dart:core';
+
 
 
 
@@ -22,7 +23,8 @@ class _SeeAllEventsState extends State<SeeAllEvents> {
 
   
   static Future<List<EventDTO>> getEvents() async {
-    var url = Uri.parse("https://jsonplaceholder.typicode.com/albums/1/photos");
+    final String baseUrl = ApiConfig.apiUrl;
+    final url = Uri.parse('$baseUrl/api/Event');
     final response = await http.get(url, headers: {"Content-Type": "application/json"});
     final List body = json.decode(response.body);
     
@@ -35,6 +37,8 @@ class _SeeAllEventsState extends State<SeeAllEvents> {
       'category': 'Unknown',  
       'description': e['title']
     })).toList();
+
+    
   }
   
   
@@ -54,7 +58,7 @@ class _SeeAllEventsState extends State<SeeAllEvents> {
               final events = snapshot.data!;
               return buildEvents(events);
             } else {
-              // if no data, show simple Text
+              
               return const Text("No data available");
             }
           },
