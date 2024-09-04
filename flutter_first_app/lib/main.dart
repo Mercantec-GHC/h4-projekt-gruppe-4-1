@@ -6,6 +6,7 @@ import 'package:flutter_first_app/Pages/User/LoginPage.dart';
 import 'package:flutter_first_app/Pages/User/CreateUserPage.dart'; 
 import 'package:flutter_first_app/Pages/User/DeleteUserPage.dart'; 
 import 'package:flutter_first_app/Pages/User/UpdateUserPage.dart'; 
+import 'package:flutter_first_app/Pages/Event/SeeAllEvents.dart';
 
 void main() {
   runApp(MyApp());
@@ -73,6 +74,8 @@ class _MyHomePageState extends State<MyHomePage> {
         page = UpdateUserPage(); 
       case 4: 
         page = CreateEvent();  
+      case 5:
+        page = SeeAllEvents();  
       default:
         throw UnimplementedError('no widget for $selectedIndex');
     }
@@ -102,8 +105,12 @@ class _MyHomePageState extends State<MyHomePage> {
                     label: Text("Update Users"),  
                   ),
                   NavigationRailDestination(
+                    icon:  Icon(Icons.dangerous),
+                    label: Text("Plan"),  
+                  ),
+                  NavigationRailDestination(
                     icon:  Icon(Icons.event),
-                    label: Text("Event"),  
+                    label: Text("Alle Events"),  
                   ),
                 ],
                 selectedIndex: selectedIndex,

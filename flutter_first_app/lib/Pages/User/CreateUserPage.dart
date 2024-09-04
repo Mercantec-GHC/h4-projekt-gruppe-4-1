@@ -23,7 +23,6 @@ class _CreateUserPageState extends State<CreateUserPage> {
 
   @override
   void dispose() {
-    // Dispose of controllers when the widget is disposed
     _firstNameController.dispose();
     _lastNameController.dispose();
     _emailController.dispose();
