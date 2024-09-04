@@ -84,7 +84,7 @@ class HomeScreen extends StatelessWidget {
                     Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => LoginScreen(data: 'Data sent from HomeScreen!'),
+                      builder: (context) => CreateScreen(data: 'Data sent from HomeScreen!'),
                       ),   
                     );
                   },
@@ -155,10 +155,10 @@ class LogoText extends StatelessWidget {
 
 
 //Login screen//
-class LoginScreen extends StatelessWidget {
+class CreateScreen extends StatelessWidget {
   final String data;
 
-  LoginScreen({required this.data});
+  CreateScreen({required this.data});
 
   @override
   Widget build(BuildContext context) {

@@ -4,6 +4,7 @@ import 'package:flutter_gradient_button/flutter_gradient_button.dart';
 
 import 'package:harmonyevent_app/Http/User/loginuser.dart';
 import 'package:harmonyevent_app/models/user.dart';
+import 'package:harmonyevent_app/main.dart';
 
 
 void main() {
@@ -47,10 +48,10 @@ class _LoginPageState extends State<LoginPage> {
       try {
         await _authService.login(loginDTO);
         // Navigate to HomePage or another page on successful login
-        // Navigator.pushReplacement(
-        //   context,
-        //   MaterialPageRoute(builder: (context) => CreateEvent()), // Replace with the correct page
-        // );
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => HomeScreen()), // Replace with the correct page
+        );
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(e.toString())), // Shows specific error message
