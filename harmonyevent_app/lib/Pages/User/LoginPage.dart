@@ -1,6 +1,7 @@
 //import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gradient_button/flutter_gradient_button.dart';
+import 'package:status_alert/status_alert.dart';
 
 import 'package:harmonyevent_app/Http/User/loginuser.dart';
 import 'package:harmonyevent_app/models/user.dart';
@@ -10,6 +11,40 @@ import 'package:harmonyevent_app/main.dart';
 void main() {
   runApp(MyApp());
 }
+
+  void showSuccessAlert(BuildContext context) {     
+    StatusAlert.show( 
+      context, 
+      duration: Duration(seconds: 4), 
+      title: 'Success',
+      
+
+      // subtitle: 'Login completed successfully!', 
+
+      configuration: IconConfiguration(
+        icon: Icons.check,
+        color: const Color.fromARGB(255, 162, 235, 14),
+                size: 150.0,
+        ), 
+      backgroundColor: const Color.fromARGB(255, 36, 51, 6),
+      // borderRadius: BorderRadius.circular(10),
+    ); 
+  } 
+  void showErrorAlert(BuildContext context) { 
+    StatusAlert.show( 
+      context, 
+      duration: Duration(seconds: 2), 
+      title: 'Invalid Username or Password!', 
+
+      // subtitle: 'Invalid Username or Password! Please try again.', 
+      configuration: IconConfiguration(
+        icon: Icons.error,
+        color: const Color.fromARGB(255, 162, 235, 14),
+        size: 150.0,
+        ), 
+      backgroundColor: const Color.fromARGB(255, 36, 51, 6),
+    ); 
+  } 
 
 class MyApp extends StatelessWidget {
   @override
@@ -48,11 +83,13 @@ class _LoginPageState extends State<LoginPage> {
       try {
         await _authService.login(loginDTO);
         // Navigate to HomePage or another page on successful login
+        showSuccessAlert(context);
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => EventScreen(data: 'Data sent from LoginScreen!')), // Replace with the correct page
         );
       } catch (e) {
+        showErrorAlert(context);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(e.toString())), // Shows specific error message
         );
@@ -184,7 +221,8 @@ class _LoginPageState extends State<LoginPage> {
                                   gradientDirection: GradientDirection.leftToRight,
                                   textStyle: TextStyle(color: const Color.fromARGB(255, 234, 208, 225)),
                                   text: "Login",
-                                  onPressed: _login
+                                  onPressed: _login,
+                                  // onPressed: () => showSuccessAlert(context), 
                                   // Navigator.push(
                                   // context,
                                   // MaterialPageRoute(
