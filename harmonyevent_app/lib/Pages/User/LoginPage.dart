@@ -19,12 +19,12 @@ void main() {
       title: 'Success',
       
 
-      // subtitle: 'Login completed successfully!', 
+      subtitle: 'Login completed successfully!', 
 
       configuration: IconConfiguration(
         icon: Icons.check,
         color: const Color.fromARGB(255, 162, 235, 14),
-                size: 150.0,
+                size: 180.0,
         ), 
       backgroundColor: const Color.fromARGB(255, 36, 51, 6),
       // borderRadius: BorderRadius.circular(10),
@@ -34,13 +34,13 @@ void main() {
     StatusAlert.show( 
       context, 
       duration: Duration(seconds: 2), 
-      title: 'Invalid Username or Password!', 
+      title: 'Invalid username or password!', 
 
-      // subtitle: 'Invalid Username or Password! Please try again.', 
+      subtitle: 'Please try again.', 
       configuration: IconConfiguration(
-        icon: Icons.error,
+        icon: Icons.block_rounded,
         color: const Color.fromARGB(255, 162, 235, 14),
-        size: 150.0,
+        size: 180.0,
         ), 
       backgroundColor: const Color.fromARGB(255, 36, 51, 6),
     ); 

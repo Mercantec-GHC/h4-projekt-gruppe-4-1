@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_gradient_button/flutter_gradient_button.dart';
 
 import 'package:harmonyevent_app/Pages/User/LoginPage.dart';   
+import 'package:harmonyevent_app/Pages/User/CreateUserPage.dart';   
 
 void main() {
   runApp(
@@ -84,7 +85,7 @@ class HomeScreen extends StatelessWidget {
                     Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => EventScreen(data: 'Data sent from HomeScreen!'),
+                      builder: (context) => CreateUserPage(),
                       ),   
                     );
                   },
