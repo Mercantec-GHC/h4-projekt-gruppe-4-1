@@ -1,11 +1,12 @@
 //import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gradient_button/flutter_gradient_button.dart';
+import 'package:harmonyevent_app/Pages/Event/SeeAllEvents.dart';
 import 'package:status_alert/status_alert.dart';
 
 import 'package:harmonyevent_app/Http/User/loginuser.dart';
 import 'package:harmonyevent_app/models/user.dart';
-import 'package:harmonyevent_app/main.dart';
+//import 'package:harmonyevent_app/main.dart';
 
 
 void main() {
@@ -15,7 +16,7 @@ void main() {
   void showSuccessAlert(BuildContext context) {     
     StatusAlert.show( 
       context, 
-      duration: Duration(seconds: 4), 
+      duration: Duration(seconds: 2), 
       title: 'Success',
       
 
@@ -26,7 +27,7 @@ void main() {
         color: const Color.fromARGB(255, 162, 235, 14),
                 size: 180.0,
         ), 
-      backgroundColor: const Color.fromARGB(255, 36, 51, 6),
+      backgroundColor: Colors.transparent,
       // borderRadius: BorderRadius.circular(10),
     ); 
   } 
@@ -86,7 +87,7 @@ class _LoginPageState extends State<LoginPage> {
         showSuccessAlert(context);
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => EventScreen(data: 'Data sent from LoginScreen!')), // Replace with the correct page
+          MaterialPageRoute(builder: (context) => SeeAllEvents()), // Replace with the correct page
         );
       } catch (e) {
         showErrorAlert(context);
