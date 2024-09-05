@@ -66,7 +66,8 @@ class HomeScreen extends StatelessWidget {
               child: LogoText(),
             ),
 
-            ButtonStyling(),
+            ButtonStyling(
+            ),
 
             StandardPadding(),
 

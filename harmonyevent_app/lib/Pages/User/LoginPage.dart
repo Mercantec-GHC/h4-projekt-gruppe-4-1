@@ -169,8 +169,7 @@ class _LoginPageState extends State<LoginPage> {
                            
                               controller: _emailController,
                               decoration: InputDecoration(
-                        
-                                labelText: 'Email',
+                              labelText: 'Email',
                                        labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
           
                                 border: OutlineInputBorder(
