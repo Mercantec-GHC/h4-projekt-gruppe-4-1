@@ -35,9 +35,10 @@ flutter:
   fonts:
     - family: Purisa
       fonts:
-        - asset: assets/fonts/Purisa-Bold.ttf
-        - asset: assets/fonts/Purisa-BoldOblique.ttf
-        - asset: assets/fonts/Purisa-BoldMedium.ttf
+        # - asset: lib/fonts/PurisaBold.ttf
+        # - asset: lib/fonts/PurisaBoldOblique.ttf
+        # - asset: assets/purisamedium.ttf
+        - asset: assets/purisbold.ttf
 
 
 

@@ -1,6 +1,7 @@
 //import 'dart:math';
 //import 'package:date_utils/date_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:harmonyevent_app/Pages/Event/EventPage.dart';
 import 'package:harmonyevent_app/config/api_config.dart';
 import 'package:harmonyevent_app/models/event.dart';
 import 'package:http/http.dart' as http;
@@ -76,7 +77,10 @@ class _SeeAllEventsState extends State<SeeAllEvents> {
             ),
             tooltip: "Create Event",
             onPressed: () {
-              print("Hmm");
+              Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => CreateEvent()), // Replace with the correct page
+        );
             }
           ),
           IconButton(
@@ -124,7 +128,7 @@ class _SeeAllEventsState extends State<SeeAllEvents> {
                   "Harmony Event",
                   style: TextStyle(
                     color: const Color.fromARGB(255, 234, 208, 225),
-                    fontFamily: 'Purisa',
+                    fontWeight: FontWeight.bold,
                     ),
                   ),  
             ), 
