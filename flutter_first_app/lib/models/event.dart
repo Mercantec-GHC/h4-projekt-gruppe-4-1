@@ -32,12 +32,12 @@ class EventDTO {
   // Convert a JSON map into an EventDTO object.
   factory EventDTO.fromJson(Map<String, dynamic> json) {
     return EventDTO(
-      date: DateTime.parse(json['date'] as String),
-      place_id: json['place_id'] as String,
-      ImageURL: json['ImageURL'] as String,
-      type: json['type'] as String,
-      category: json['category'] as String,
-      description: json['description'] as String,
+      date: DateTime.parse(json['date'] ??'' ),
+      place_id: json['place_id'] ?? '',
+      ImageURL: json['ImageURL'] ?? '',
+      type: json['type'] ?? '',
+      category: json['category'] ??'',
+      description: json['description'] ??'' ,
     );
   }
 }
