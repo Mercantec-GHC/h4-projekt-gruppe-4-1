@@ -117,6 +117,8 @@ class ButtonStyling extends StatelessWidget {
     super.key,
   });
 
+  final txt = "Login";
+
   @override
   Widget build(BuildContext context) {
     return GradientButton(
@@ -126,7 +128,7 @@ class ButtonStyling extends StatelessWidget {
       radius: 20,
       gradientDirection: GradientDirection.leftToRight,
       textStyle: TextStyle(color: const Color.fromARGB(255, 234, 208, 225)),
-      text: "Login",
+      text: txt,
         onPressed: () {
         Navigator.push(
           context,
