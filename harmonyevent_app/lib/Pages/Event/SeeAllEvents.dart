@@ -120,7 +120,13 @@ class _SeeAllEventsState extends State<SeeAllEvents> {
             ),        
             Container(          
               child: 
-                Text("Harmony Event"),
+                Text(
+                  "Harmony Event",
+                  style: TextStyle(
+                    color: const Color.fromARGB(255, 234, 208, 225),
+                    fontFamily: 'Purisa',
+                    ),
+                  ),  
             ), 
           ],
         ),

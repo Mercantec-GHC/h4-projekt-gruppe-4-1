@@ -25,6 +25,7 @@ class MyApp extends StatelessWidget {
           useMaterial3: false,
           colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 183, 211, 83)),
           scaffoldBackgroundColor: const Color.fromARGB(255, 36, 51, 6),
+          fontFamily: 'Purisa',
         ),
         home: HomeScreen(),
       ),

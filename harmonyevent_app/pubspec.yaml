@@ -25,13 +25,21 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-    date_utils: ^0.2.0
+
   flutter_lints: ^4.0.0
 
 flutter:
   uses-material-design: true
   assets:
     - assets/images/HE_Logo.png
+  fonts:
+    - family: Purisa
+      fonts:
+        - asset: assets/fonts/Purisa-Bold.ttf
+        - asset: assets/fonts/Purisa-BoldOblique.ttf
+        - asset: assets/fonts/Purisa-BoldMedium.ttf
+
+
 
 dependency_overrides:
   # temporary fix for https://github.com/mogol/flutter_secure_storage/issues/709
@@ -42,3 +50,4 @@ dependency_overrides:
   # flutter_secure_storage_windows: 3.0.0
   # flutter_secure_storage_web:  1.2.0
 
+  
