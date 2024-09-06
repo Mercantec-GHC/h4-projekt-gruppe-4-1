@@ -17,7 +17,7 @@ Her skal alt dokumentation være, der er noget documentation vi beder jer om at 
 4. Retrospektivt møder https://docs.google.com/document/d/1whzlPf4bnx1a4milswGlx3-l5CLf8YKfGDfrp1FUEm8/edit
 
 ### Logbøger
-1. Søren https://docs.google.com/document/d/1whzlPf4bnx1a4milswGlx3-l5CLf8YKfGDfrp1FUEm8/edit
+1. Søren https://docs.google.com/document/d/11LO67FQVLq_fJb3XjbLIr3zJLGk4NqqCGSRQb8oAFsM/edit#heading=h.yyix323e8v4
 2. Silas er på vej https://edumercantec-my.sharepoint.com/:w:/g/personal/erxx4679_edu_mercantec_dk/EfsCLbg_8TBFgOEoUNXE5WUBIH-A09RsYuyy3eMCiPmxSQ?e=khW1Zx
 3. Kasper https://docs.google.com/document/d/1odwKFbxqS3ZhgaFDiCSVNaz9dHLHPs-XcfVO6pVelS4/edit?usp=sharing
 
