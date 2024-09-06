@@ -182,6 +182,7 @@ class _CreateUserPageState extends State<CreateUserPage> {
                           children: [
 
                   TextFormField(
+                     style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
                     controller: _firstNameController,
                     decoration: InputDecoration(
                       labelText: "First Name",
@@ -198,6 +199,7 @@ class _CreateUserPageState extends State<CreateUserPage> {
                     },
                   ),
                   TextFormField(
+                     style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
                     controller: _lastNameController,
                     decoration: InputDecoration(
                       labelText: "Last Name",
@@ -214,6 +216,7 @@ class _CreateUserPageState extends State<CreateUserPage> {
                     },
                   ),
                   TextFormField(
+                     style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
                     controller: _addressController,
                     decoration: InputDecoration(
                       labelText: "Address",
@@ -230,6 +233,7 @@ class _CreateUserPageState extends State<CreateUserPage> {
                     },
                   ),
                   TextFormField(
+                     style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
                     controller: _postalController,
                     decoration: InputDecoration(
                       labelText: "Postal",
@@ -246,6 +250,7 @@ class _CreateUserPageState extends State<CreateUserPage> {
                     },
                   ),
                   TextFormField(
+                     style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
                     controller: _cityController,
                     decoration: InputDecoration(
                       labelText: "City",
@@ -264,6 +269,7 @@ class _CreateUserPageState extends State<CreateUserPage> {
 
                   StandardPadding(),
                   TextFormField(
+                     style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
                     controller: _emailController,
                     decoration: InputDecoration(
                       labelText: "Email",
@@ -283,6 +289,7 @@ class _CreateUserPageState extends State<CreateUserPage> {
                     },
                   ),
                   TextFormField(
+                     style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
                     controller: _confirmEmailController,
                     decoration: InputDecoration(
                       labelText: "Confirm Email",
@@ -304,6 +311,7 @@ class _CreateUserPageState extends State<CreateUserPage> {
 
                   StandardPadding(),
                     TextFormField(
+                       style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
                     controller: _userNameController,
                     decoration: InputDecoration(
                       labelText: "Choose username",
@@ -319,6 +327,7 @@ class _CreateUserPageState extends State<CreateUserPage> {
                     },
                   ),
                   TextFormField(
+                     style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
                     controller: _passwordController,
                     decoration: InputDecoration(
                       labelText: "Choose Password",
@@ -338,6 +347,7 @@ class _CreateUserPageState extends State<CreateUserPage> {
                     },
                   ),
                   TextFormField(
+                     style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
                     controller: _confirmPasswordController,
                     decoration: InputDecoration(
                       labelText: "Confirm Password",
@@ -364,7 +374,8 @@ class _CreateUserPageState extends State<CreateUserPage> {
                     width: 300,
                     radius: 20,
                     gradientDirection: GradientDirection.leftToRight,
-                    textStyle: TextStyle(color: const Color.fromARGB(255, 234, 208, 225)),
+                    textStyle: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
+                    
                     text: "Create user",
                     onPressed: _createUser, 
                                 ),        

@@ -26,6 +26,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 183, 211, 83)),
           scaffoldBackgroundColor: const Color.fromARGB(255, 36, 51, 6),
           fontFamily: 'Purisa', 
+          
         ),
         home: HomeScreen(),
       ),
@@ -81,7 +82,7 @@ class HomeScreen extends StatelessWidget {
                   width: 350,
                   radius: 20,
                   gradientDirection: GradientDirection.leftToRight,
-                  textStyle: TextStyle(color: const Color.fromARGB(255, 234, 208, 225)),
+                  textStyle: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
                   text: "Create User",
                   onPressed: () {
                     Navigator.push(
@@ -129,7 +130,7 @@ class ButtonStyling extends StatelessWidget {
       width: 350,
       radius: 20,
       gradientDirection: GradientDirection.leftToRight,
-      textStyle: TextStyle(color: const Color.fromARGB(255, 234, 208, 225)),
+      textStyle:  TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
       text: txt,
         onPressed: () {
         Navigator.push(

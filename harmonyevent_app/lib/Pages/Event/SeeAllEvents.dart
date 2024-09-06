@@ -164,6 +164,7 @@ class _SeeAllEventsState extends State<SeeAllEvents> {
   // Build the event list UI
   Widget buildEvents(List<EventDTO> events) {
     return ListView.builder(
+      
       itemCount: events.length,
       itemBuilder: (context, index) {
         final event = events[index];

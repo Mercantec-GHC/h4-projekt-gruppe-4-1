@@ -148,6 +148,16 @@ Future<void> _submitData() async {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
+        leading: IconButton(
+        icon: Icon(Icons.arrow_circle_left_outlined),
+        onPressed: () {
+      // Navigate back to the previous screen by popping the current route
+              Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => SeeAllEvents()), // Replace with the correct page
+        );
+    },
+  ),
          title: Row(
           children: [
             Container(
@@ -159,7 +169,13 @@ Future<void> _submitData() async {
 
             Container(          
               child: 
-                Text("Harmony Event"),
+              Text(
+                  "Harmony Event",
+                  style: TextStyle(
+                    color: const Color.fromARGB(255, 234, 208, 225),
+                    fontWeight: FontWeight.bold,
+                    ),
+                  ),  
                 ), 
           ],
         ),
@@ -171,10 +187,15 @@ Future<void> _submitData() async {
         child: Column(
           children: [
             TextFormField(
+               style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
               controller: dateController,
               readOnly: true, 
               decoration: InputDecoration(
                 labelText: 'Date',
+                labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
                 suffixIcon: IconButton(
                   icon: Icon(Icons.calendar_today),
                   onPressed: () => _selectDate(context),
@@ -188,8 +209,16 @@ Future<void> _submitData() async {
               },
             ),
             TextFormField(
+               style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
               controller: place_idController,
-              decoration: InputDecoration(labelText: 'Where'),
+              decoration: InputDecoration(
+                labelText: 'Event location',
+                labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
+                                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+              ),
+
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Please choose place';
@@ -197,19 +226,17 @@ Future<void> _submitData() async {
                 return null;
               },
             ),
+
             TextFormField(
-              controller: user_idController,
-              decoration: InputDecoration(labelText: 'Who created'),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please choose him';
-                }
-                return null;
-              },
-            ),
-            TextFormField(
+               style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
               controller: typeController,
-              decoration: InputDecoration(labelText: 'Type'),
+              decoration: InputDecoration(
+                labelText: 'Event type',
+                labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
+                                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'What type';
@@ -218,8 +245,15 @@ Future<void> _submitData() async {
               },
             ),
             TextFormField(
+               style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
               controller: categoryController,
-              decoration: InputDecoration(labelText: 'Category'),
+              decoration: InputDecoration(
+                labelText: 'Event category',
+                labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
+                                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'What category';
@@ -228,11 +262,43 @@ Future<void> _submitData() async {
               },
             ),
             TextFormField(
+               style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
+                            maxLines: 6,
+                minLines: 6,
               controller: descriptionController,
-              decoration: InputDecoration(labelText: 'Description'),
+              decoration: InputDecoration(
+                alignLabelWithHint: true,
+                labelText: 'Event description',
+                
+                labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
+                                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Describe event';
+                }
+                return null;
+              },
+            ),
+                 SizedBox(height: 20),
+                        TextFormField(
+                        
+               style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
+   
+              controller: user_idController,
+              decoration: InputDecoration(
+                
+                labelText: 'Created by',
+                labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
+                                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please choose him';
                 }
                 return null;
               },
@@ -248,7 +314,7 @@ Future<void> _submitData() async {
                   width: 350,
                   radius: 20,
                   gradientDirection: GradientDirection.leftToRight,
-                  textStyle: TextStyle(color: const Color.fromARGB(255, 234, 208, 225)),
+                  textStyle:  TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
                   text: "Create event",
                   onPressed: _submitData, 
                 ),
