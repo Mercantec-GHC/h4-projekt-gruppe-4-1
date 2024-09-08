@@ -8,6 +8,7 @@ import 'package:status_alert/status_alert.dart';
 import 'package:flutter_gradient_button/flutter_gradient_button.dart';
 
 
+
 class CreateEvent extends StatefulWidget {
   @override
   CreateEventState createState() {
@@ -149,7 +150,7 @@ Future<void> _submitData() async {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         leading: IconButton(
-        icon: Icon(Icons.arrow_circle_left_outlined),
+        icon: Icon(Icons.arrow_back_ios),
         onPressed: () {
       // Navigate back to the previous screen by popping the current route
               Navigator.pushReplacement(
@@ -208,11 +209,12 @@ Future<void> _submitData() async {
                 return null;
               },
             ),
+            const SizedBox(height: 15),
             TextFormField(
                style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
               controller: place_idController,
               decoration: InputDecoration(
-                labelText: 'Event location',
+                labelText: 'Location',
                 labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
                                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
@@ -226,12 +228,12 @@ Future<void> _submitData() async {
                 return null;
               },
             ),
-
+            const SizedBox(height: 15),
             TextFormField(
                style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
               controller: typeController,
               decoration: InputDecoration(
-                labelText: 'Event type',
+                labelText: 'Type',
                 labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
                                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
@@ -244,11 +246,12 @@ Future<void> _submitData() async {
                 return null;
               },
             ),
+            const SizedBox(height: 15),
             TextFormField(
                style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
               controller: categoryController,
               decoration: InputDecoration(
-                labelText: 'Event category',
+                labelText: 'Category',
                 labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
                                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
@@ -261,6 +264,7 @@ Future<void> _submitData() async {
                 return null;
               },
             ),
+             const SizedBox(height: 15),
             TextFormField(
                style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
                             maxLines: 6,
@@ -268,7 +272,7 @@ Future<void> _submitData() async {
               controller: descriptionController,
               decoration: InputDecoration(
                 alignLabelWithHint: true,
-                labelText: 'Event description',
+                labelText: 'Description',
                 
                 labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
                                 border: OutlineInputBorder(
@@ -282,7 +286,7 @@ Future<void> _submitData() async {
                 return null;
               },
             ),
-                 SizedBox(height: 20),
+                 SizedBox(height: 15),
                         TextFormField(
                         
                style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
@@ -290,7 +294,7 @@ Future<void> _submitData() async {
               controller: user_idController,
               decoration: InputDecoration(
                 
-                labelText: 'Created by',
+                labelText: 'Organized by',
                 labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
                                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
@@ -303,6 +307,14 @@ Future<void> _submitData() async {
                 return null;
               },
             ),
+                                Text(
+                      "Organized by:" + " " + AutofillHints.username,
+                      style: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: const Color.fromARGB(255, 234, 208, 225),
+                      ),
+                    ),
             SizedBox(height: 20),
             // ElevatedButton(
             //   onPressed: _submitData,

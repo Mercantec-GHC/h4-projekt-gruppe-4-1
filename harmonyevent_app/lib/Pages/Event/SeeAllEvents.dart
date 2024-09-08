@@ -7,6 +7,7 @@ import 'package:harmonyevent_app/models/event.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:core';
+import 'package:flutter_gradient_button/flutter_gradient_button.dart';
 
 class SeeAllEvents extends StatefulWidget {
   const SeeAllEvents({super.key});
@@ -46,11 +47,13 @@ class _SeeAllEventsState extends State<SeeAllEvents> {
 
       // Print each event DTO before returning
       final events = body.map((e) => EventDTO.fromJson(e)).toList();
+
+      events.sort((a, b) => a.date.compareTo(b.date));
+     
       print('Events: $events');
        for (var events in events) {
         print(events);
       }
-
       return events;
     } else {
       // Handle non-200 responses
@@ -66,6 +69,9 @@ class _SeeAllEventsState extends State<SeeAllEvents> {
 
   @override
   Widget build(BuildContext context) {
+    
+
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -80,7 +86,17 @@ class _SeeAllEventsState extends State<SeeAllEvents> {
               Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => CreateEvent()), // Replace with the correct page
-        );
+              );
+            }
+          ),
+          IconButton(
+            icon: const Icon(
+              Icons.auto_awesome, 
+              color: const Color.fromARGB(255, 183, 211, 54)
+              ),
+            tooltip: "My Events",
+            onPressed: () {
+              print("Hmm");
             }
           ),
           IconButton(
@@ -135,7 +151,7 @@ class _SeeAllEventsState extends State<SeeAllEvents> {
           ],
         ),
       ),
-      body: Center(
+      body: Container(
         child: FutureBuilder<List<EventDTO>>(
           future: eventsFuture,
           builder: (context, snapshot) {
@@ -163,24 +179,31 @@ class _SeeAllEventsState extends State<SeeAllEvents> {
 
   // Build the event list UI
   Widget buildEvents(List<EventDTO> events) {
+    
+    var screenSize = MediaQuery.of(context).size;
     return ListView.builder(
-      
+      scrollDirection: Axis.horizontal,
       itemCount: events.length,
-      itemBuilder: (context, index) {
-        final event = events[index];
+      physics: PageScrollPhysics(),
+      itemBuilder: (context, date) {
+        final event = events[date];
+        events.sort((a, b) => a.date.compareTo(b.date));
+
         return Container(
-          //color: const Color.fromARGB(255, 36, 51, 6),
-          margin: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 5),
-          //height: 200,
-          width: double.maxFinite,
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: const Color.fromARGB(255, 29, 41, 4), 
-              width: 4,
-            ),
-            borderRadius: BorderRadius.circular(8.0),
-          ),
+          //width: MediaQuery.of(context).size.width,
+          width: screenSize.width,
+          height: screenSize.height,
+          //width: 500,
+
+          margin: const EdgeInsets.symmetric(vertical: 30, horizontal: 0),
+          padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+          // decoration: BoxDecoration(
+          //   border: Border.all(
+          //     color: const Color.fromARGB(255, 29, 41, 4), 
+          //     width: 4,
+          //   ),
+          //   borderRadius: BorderRadius.circular(8.0),
+          // ),
           child: Row(
             children: [
               // Expanded(
@@ -196,6 +219,7 @@ class _SeeAllEventsState extends State<SeeAllEvents> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    
                     Text(
                       event.description,
                       style: const TextStyle(
@@ -204,10 +228,19 @@ class _SeeAllEventsState extends State<SeeAllEvents> {
                         color: const Color.fromARGB(255, 162, 235, 14),
                       ),
                     ),
+                                        const SizedBox(height: 5),
+                    Text(
+                      "Type:" + " " + event.type,
+                      style: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: const Color.fromARGB(255, 234, 208, 225),
+                      ),
+                    ),
                     const SizedBox(height: 10),
                     Text(
                       //"Date:" + " " + DateUtils.dateOnly(event.date).toString(),
-                      "Date:" + " " + DateUtils.dateOnly(event.date).toString(),
+                      "Occurs:" + " " + event.date.day.toString() + "/" + event.date.month.toString() + " " + event.date.year.toString() + " " + "at 11 am",
                       style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
@@ -223,15 +256,7 @@ class _SeeAllEventsState extends State<SeeAllEvents> {
                         color: const Color.fromARGB(255, 234, 208, 225),
                       ),
                     ),
-                    const SizedBox(height: 5),
-                    Text(
-                      "Type:" + " " + event.type,
-                      style: const TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                        color: const Color.fromARGB(255, 234, 208, 225),
-                      ),
-                    ),
+
                     const SizedBox(height: 25),
                     Text(
                       "Decription:" + " " + event.description,
@@ -241,18 +266,65 @@ class _SeeAllEventsState extends State<SeeAllEvents> {
                         color: const Color.fromARGB(255, 234, 208, 225),
                       ),
                     ),
-                    const SizedBox(height: 5),
+                      const SizedBox(height: 25),
+                    Text(
+                      "Organized by:",
+                      style: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: const Color.fromARGB(255, 234, 208, 225),
+                      ),
+                    ),
+                    const SizedBox(height: 45),
 
                     //Text('Place_id: ${event.place_id}'),
                     //Text('date: ${event.date}'),
                     //Text('type: ${event.type}'),
                     //Text('category: ${event.category}'),
-                    //Text('description: ${event.description}'), 
-                  ],
-                ),
+                    //Text('description: ${event.description}'),
+                    Column(
+                      children: [
+                                                Align(
+                          alignment: Alignment.bottomRight,
+                          child: IconButton(
+                            //alignment: Alignment.bottomRight,
+                            icon: const Icon(
+                              Icons.favorite_border, 
+                              color: const Color.fromARGB(255, 183, 211, 54),
+                              
+                              size: 30,
+                            ),  
+                            tooltip: "Add to favorite events",
+                            onPressed: () {
+                              setState((){
+             
+ 
+                              });                    
+                            }
+                          ),
+                        ), 
+                        const SizedBox(height: 25),
+                        GradientButton(
+                          colors: [const Color.fromARGB(255, 183, 211, 54), const Color.fromARGB(255, 109, 190, 66)],
+                          height: 40,
+                          width: 350,
+                          radius: 20,
+                          gradientDirection: GradientDirection.leftToRight,
+                          textStyle: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
+                          text: "Attend Event",
+                          onPressed: () {
+                            print("Hmm");
+                          },
+                        ),
+                        //const SizedBox(width: 100),
+     
+                      ],
+                    ),
+                  ],   
+                ),     
               ),
             ],
-          ),
+          ),        
         );
       },
     );
