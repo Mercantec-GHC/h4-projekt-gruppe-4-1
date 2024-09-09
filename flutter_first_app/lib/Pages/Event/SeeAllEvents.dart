@@ -3,7 +3,6 @@ import 'package:flutter_first_app/config/api_config.dart';
 import 'package:flutter_first_app/models/event.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'dart:core';
 
 class SeeAllEvents extends StatefulWidget {
   const SeeAllEvents({super.key});
@@ -26,40 +25,21 @@ class _SeeAllEventsState extends State<SeeAllEvents> {
     final String baseUrl = ApiConfig.apiUrl;
     final url = Uri.parse('$baseUrl/api/Event');
 
-     try {
-    final response = await http.get(url, headers: {"Content-Type": "application/json"});
+    try {
+      final response = await http.get(url, headers: {"Content-Type": "application/json"});
 
-    // Print the status code
-    print('Response Status Code: ${response.statusCode}');
-
-    if (response.statusCode == 200) {
-      // Print the raw response body
-      print('Response Body: ${response.body}');
-
-      final List body = json.decode(response.body);
-
-      // Print the parsed body
-      print('Parsed Body: $body');
-
-      // Print each event DTO before returning
-      final events = body.map((e) => EventDTO.fromJson(e)).toList();
-      print('Events: $events');
-       for (var events in events) {
-        print(events);
+      if (response.statusCode == 200) {
+        final List body = json.decode(response.body);
+        final events = body.map((e) => EventDTO.fromJson(e)).toList();
+        return events;
+      } else {
+        throw Exception('Failed to load events: ${response.statusCode}');
       }
-
-      return events;
-    } else {
-      // Handle non-200 responses
-      print('Failed to load events: ${response.statusCode}');
-      throw Exception('Failed to load events: ${response.statusCode}');
+    } catch (e) {
+      print('Error fetching events: $e');
+      return [];
     }
-  } catch (e) {
-    // Handle any errors that occur during the request
-    print('Error fetching events: $e');
-    return []; // Return an empty list or handle the error as needed
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -71,20 +51,14 @@ class _SeeAllEventsState extends State<SeeAllEvents> {
         child: FutureBuilder<List<EventDTO>>(
           future: eventsFuture,
           builder: (context, snapshot) {
-            print('snapshot: $snapshot');
             if (snapshot.connectionState == ConnectionState.waiting) {
-              // Loading indicator while fetching data
               return const CircularProgressIndicator();
             } else if (snapshot.hasError) {
-              // Display error message if the Future failed
               return const Text("Failed to load events.");
             } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-              // If data is available, build the event list
               final events = snapshot.data!;
-              print('Test: $events');
               return buildEvents(events);
             } else {
-              // Display message if no data is available
               return const Text("No events available.");
             }
           },
@@ -93,7 +67,7 @@ class _SeeAllEventsState extends State<SeeAllEvents> {
     );
   }
 
-  // Build the event list UI
+  // Build the event list UI with image display
   Widget buildEvents(List<EventDTO> events) {
     return ListView.builder(
       itemCount: events.length,
@@ -110,8 +84,11 @@ class _SeeAllEventsState extends State<SeeAllEvents> {
               Expanded(
                 flex: 1,
                 child: Image.network(
-                  event.ImageURL,
+                  event.ImageURL, // Display event image from the URL
                   fit: BoxFit.cover, // Ensure the image fits properly
+                  errorBuilder: (context, error, stackTrace) {
+                    return const Icon(Icons.broken_image, size: 100); // Handle broken images
+                  },
                 ),
               ),
               const SizedBox(width: 20),
@@ -129,12 +106,10 @@ class _SeeAllEventsState extends State<SeeAllEvents> {
                     ),
                     const SizedBox(height: 5),
                     Text('Place_id: ${event.place_id}'),
-                    Text('date: ${event.date}'),
-                    Text('type: ${event.type}'),
-                    Text('category: ${event.category}'),
-                    Text('description: ${event.description}'),
-                    
-                   
+                    Text('Date: ${event.date}'),
+                    Text('Type: ${event.type}'),
+                    Text('Category: ${event.category}'),
+                    Text('Description: ${event.description}'),
                   ],
                 ),
               ),
