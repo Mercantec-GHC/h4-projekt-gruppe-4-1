@@ -1,6 +1,9 @@
-import 'package:flutter/material.dart';
+import 'dart:io';
 import 'dart:convert'; 
-import 'package:http/http.dart' as http; 
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 import 'package:flutter_first_app/config/api_config.dart'; 
 import 'package:flutter_first_app/models/user.dart'; 
 
@@ -20,19 +23,18 @@ class _CreateUserPageState extends State<CreateUserPage> {
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _postalController = TextEditingController();
   final TextEditingController _cityController = TextEditingController();
+  File? _image;
 
-  @override
-  void dispose() {
-    _firstNameController.dispose();
-    _lastNameController.dispose();
-    _emailController.dispose();
-    _confirmEmailController.dispose();
-    _passwordController.dispose();
-    _confirmPasswordController.dispose();
-    _addressController.dispose();
-    _postalController.dispose();
-    _cityController.dispose();
-    super.dispose();
+  final ImagePicker _picker = ImagePicker();
+
+  Future<void> _pickImage() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+      }
+    });
   }
 
   Future<LoginDTO> createUser(
@@ -43,28 +45,44 @@ class _CreateUserPageState extends State<CreateUserPage> {
       String password,
       String address,
       String postal,
-      String city) async {
+      String city,
+      File? image) async {
     final String baseUrl = ApiConfig.apiUrl;
-    final response = await http.post(
-      Uri.parse('$baseUrl/api/user/signup'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        'firstname': firstname,
-        'lastname': lastname,
-        'email': email,
-        'username': username,
-        'password': password,
-        'address': address,
-        'postal': postal,
-        'city': city
-      }),
-    );
+    final uri = Uri.parse('$baseUrl/api/user/signup');
+    final request = http.MultipartRequest('POST', uri);
+
+    // Add form fields
+    request.fields['firstname'] = firstname;
+    request.fields['lastname'] = lastname;
+    request.fields['email'] = email;
+    request.fields['username'] = username;
+    request.fields['password'] = password;
+    request.fields['address'] = address;
+    request.fields['postal'] = postal;
+    request.fields['city'] = city;
+
+    // Add image file if selected
+    if (image != null) {
+      request.files.add(await http.MultipartFile.fromPath(
+        'ProfilePicture', 
+        image.path,
+        contentType: MediaType('image', 'png'),
+      ));
+    }
+
+    request.headers.addAll({
+      'accept': '*/*',
+      'Content-Type': 'multipart/form-data',
+    });
+
+    final response = await request.send();
+
     if (response.statusCode == 201) {
-      return LoginDTO.fromJson(jsonDecode(response.body) as Map<String, dynamic>);
+      final responseBody = await response.stream.bytesToString();
+      return LoginDTO.fromJson(jsonDecode(responseBody) as Map<String, dynamic>);
     } else {
-      throw Exception('Failed to create user: ${response.statusCode} - ${response.body}');
+      final responseBody = await response.stream.bytesToString();
+      throw Exception('Failed to create user: ${response.statusCode} - $responseBody');
     }
   }
 
@@ -81,7 +99,7 @@ class _CreateUserPageState extends State<CreateUserPage> {
 
       try {
         final LoginDTO newUser = await createUser(
-            firstName, lastName, email, username, password, address, postal, city);
+            firstName, lastName, email, username, password, address, postal, city, _image);
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -214,6 +232,15 @@ class _CreateUserPageState extends State<CreateUserPage> {
                       }
                       return null;
                     },
+                  ),
+                  const SizedBox(height: 16),
+                  _image == null
+                      ? Text('No image selected.')
+                      : Image.file(_image!),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: _pickImage,
+                    child: const Text("Select Profile Picture"),
                   ),
                   const SizedBox(height: 16),
                   ElevatedButton(
