@@ -149,6 +149,17 @@ class _CreateUserPageState extends State<CreateUserPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
+        leading: IconButton(
+        icon: Icon(Icons.arrow_back_ios),
+        onPressed: () {
+      // Navigate back to the previous screen by popping the current route
+              Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => HomeScreen()), // Replace with the correct page
+        );
+    },
+  ),
          title: Row(
           children: [
             Container(
@@ -176,7 +187,7 @@ class _CreateUserPageState extends State<CreateUserPage> {
                     child: Padding(
                       padding: EdgeInsets.all(66.0),
                       child: Form(
-                        key: _formKey,
+                        //key: _formKey,
                         child: Column(    
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
@@ -310,75 +321,39 @@ class _CreateUserPageState extends State<CreateUserPage> {
                   ),
 
                   StandardPadding(),
-                    TextFormField(
-                       style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
-                    controller: _userNameController,
-                    decoration: InputDecoration(
-                      labelText: "Choose username",
-                      labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                        ),),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Please enter new username";
-                      }
-                      return null;
-                    },
-                  ),
-                  TextFormField(
-                     style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
-                    controller: _passwordController,
-                    decoration: InputDecoration(
-                      labelText: "Choose Password",
-                      labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                        ),
-                      ),
-                    obscureText: true,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Please enter your password";
-                      } else if (value.length < 6) {
-                        return "Password must be at least 6 characters long";
-                      }
-                      return null;
-                    },
-                  ),
-                  TextFormField(
-                     style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
-                    controller: _confirmPasswordController,
-                    decoration: InputDecoration(
-                      labelText: "Confirm Password",
-                      labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                        ),
-                      ),
-                    obscureText: true,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Please confirm your password";
-                      } else if (value != _passwordController.text) {
-                        return "Passwords do not match";
-                      }
-                      return null;
-                    },
-                  ),
+
                             //SizedBox(height: 20),
                   const SizedBox(height: 16),
-                  GradientButton(
-                    colors: [const Color.fromARGB(255, 183, 211, 54), const Color.fromARGB(255, 109, 190, 66)],
+                        Builder(
+      builder: (context) {
+        return GradientButton(
+                   colors: [const Color.fromARGB(255, 183, 211, 54), const Color.fromARGB(255, 109, 190, 66)],
                     height: 40,
                     width: 300,
                     radius: 20,
                     gradientDirection: GradientDirection.leftToRight,
                     textStyle: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
                     
-                    text: "Create user",
-                    onPressed: _createUser, 
-                                ),        
+                    text: "Continue",
+          onPressed: () {
+            Scaffold.of(context).openDrawer();
+          },
+        );
+      },),
+
+                  // GradientButton(
+                  //   colors: [const Color.fromARGB(255, 183, 211, 54), const Color.fromARGB(255, 109, 190, 66)],
+                  //   height: 40,
+                  //   width: 300,
+                  //   radius: 20,
+                  //   gradientDirection: GradientDirection.leftToRight,
+                  //   textStyle: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
+                    
+                  //   text: "Continue",
+                  //   onPressed: (){
+
+                  //   },
+                  //               ),        
                           ],
                         ),
                       ),
@@ -390,147 +365,143 @@ class _CreateUserPageState extends State<CreateUserPage> {
           ),
         ],
       ),
+      drawer: Container(
+        width: MediaQuery.of(context).size.width,
+        child: Drawer(
+          
+          backgroundColor: const Color.fromARGB(255, 36, 51, 6),
+              child: Stack(
+          children: [
 
+        IconButton(
+        icon: Icon(Icons.arrow_back_ios),
+        onPressed: () {
+      // Navigate back to the previous screen by popping the current route
+              Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => CreateUserPage()), // Replace with the correct page
+        );
+    },
+  ),
+         Padding(
+           padding: const EdgeInsets.all(38.0),
+           child: Row(
+            children: [
+              Container(
+                child: Image(image: AssetImage('assets/images/HE_Logo.png'),
+                  width: 50,
+                  fit: BoxFit.cover     
+                  ),  
+                ),        
+           
+              Container(          
+                child: 
+                  Text("Harmony Event"),
+                  ), 
+            ],
+                   ),
+         ),
+            Center(
+              child: Padding(
+                padding: EdgeInsets.all(16.0),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(maxWidth: 500),
+                  child: SingleChildScrollView(
+                      child: Padding(
+                        padding: EdgeInsets.all(66.0),
+                        child: Form(
+                          key: _formKey,
+                          child: Column(    
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+        
+                    
+        
+                    StandardPadding(),
+                      TextFormField(
+                         style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
+                      controller: _userNameController,
+                      decoration: InputDecoration(
+                        labelText: "Choose username",
+                        labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                          ),),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Please enter new username";
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                       style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
+                      controller: _passwordController,
+                      decoration: InputDecoration(
+                        labelText: "Choose Password",
+                        labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                          ),
+                        ),
+                      obscureText: true,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Please enter your password";
+                        } else if (value.length < 6) {
+                          return "Password must be at least 6 characters long";
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                       style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
+                      controller: _confirmPasswordController,
+                      decoration: InputDecoration(
+                        labelText: "Confirm Password",
+                        labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                          ),
+                        ),
+                      obscureText: true,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Please confirm your password";
+                        } else if (value != _passwordController.text) {
+                          return "Passwords do not match";
+                        }
+                        return null;
+                      },
+                    ),
+                              //SizedBox(height: 20),
+                    const SizedBox(height: 16),
+        
+        
+                    GradientButton(
+                      colors: [const Color.fromARGB(255, 183, 211, 54), const Color.fromARGB(255, 109, 190, 66)],
+                      height: 40,
+                      width: 300,
+                      radius: 20,
+                      gradientDirection: GradientDirection.leftToRight,
+                      textStyle: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
+                      
+                      text: "Create user",
+                      onPressed: _createUser, 
+                                  ),        
+                            ],
+                          ),
+                        ),
+                      ),
+                    //),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        ),
+      ),
     );
-    
-    //   body: Center(
-    //     child: SingleChildScrollView(
-    //       child: Padding(
-    //         padding: const EdgeInsets.all(16.0),
-    //         child: Form(
-    //           key: _formKey,
-    //           child: Column(
-    //             mainAxisAlignment: MainAxisAlignment.center,
-    //             children: [
-    //               TextFormField(
-    //                 controller: _firstNameController,
-    //                 decoration: const InputDecoration(labelText: "First Name"),
-    //                 validator: (value) {
-    //                   if (value == null || value.isEmpty) {
-    //                     return "Please enter your first name";
-    //                   }
-    //                   return null;
-    //                 },
-    //               ),
-    //               TextFormField(
-    //                 controller: _lastNameController,
-    //                 decoration: const InputDecoration(labelText: "Last Name"),
-    //                 validator: (value) {
-    //                   if (value == null || value.isEmpty) {
-    //                     return "Please enter your last name";
-    //                   }
-    //                   return null;
-    //                 },
-    //               ),
-
-
-
-    //               TextFormField(
-    //                 controller: _addressController,
-    //                 decoration: const InputDecoration(labelText: "Address"),
-    //                 validator: (value) {
-    //                   if (value == null || value.isEmpty) {
-    //                     return "Please enter your address";
-    //                   }
-    //                   return null;
-    //                 },
-    //               ),
-    //               TextFormField(
-    //                 controller: _postalController,
-    //                 decoration: const InputDecoration(labelText: "Postal"),
-    //                 validator: (value) {
-    //                   if (value == null || value.isEmpty) {
-    //                     return "Please enter your postal code";
-    //                   }
-    //                   return null;
-    //                 },
-    //               ),
-    //               TextFormField(
-    //                 controller: _cityController,
-    //                 decoration: const InputDecoration(labelText: "City"),
-    //                 validator: (value) {
-    //                   if (value == null || value.isEmpty) {
-    //                     return "Please enter your city";
-    //                   }
-    //                   return null;
-    //                 },
-    //               ),
-    //               StandardPadding(),
-    //               TextFormField(
-    //                 controller: _emailController,
-    //                 decoration: const InputDecoration(labelText: "Email"),
-    //                 keyboardType: TextInputType.emailAddress,
-    //                 validator: (value) {
-    //                   if (value == null || value.isEmpty) {
-    //                     return "Please enter your email";
-    //                   } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
-    //                     return "Please enter a valid email";
-    //                   }
-    //                   return null;
-    //                 },
-    //               ),
-    //               TextFormField(
-    //                 controller: _confirmEmailController,
-    //                 decoration: const InputDecoration(labelText: "Confirm Email"),
-    //                 keyboardType: TextInputType.emailAddress,
-    //                 validator: (value) {
-    //                   if (value == null || value.isEmpty) {
-    //                     return "Please confirm your email";
-    //                   } else if (value != _emailController.text) {
-    //                     return "Emails does not match";
-    //                   }
-    //                   return null;
-    //                 },
-    //               ),
-    //                   StandardPadding(),
-    //                 TextFormField(
-    //                 controller: _userNameController,
-    //                 decoration: const InputDecoration(labelText: "Choose username"),
-    //                 validator: (value) {
-    //                   if (value == null || value.isEmpty) {
-    //                     return "Please enter new username";
-    //                   }
-    //                   return null;
-    //                 },
-    //               ),
-    //               TextFormField(
-    //                 controller: _passwordController,
-    //                 decoration: const InputDecoration(labelText: "Choose Password"),
-    //                 obscureText: true,
-    //                 validator: (value) {
-    //                   if (value == null || value.isEmpty) {
-    //                     return "Please enter your password";
-    //                   } else if (value.length < 6) {
-    //                     return "Password must be at least 6 characters long";
-    //                   }
-    //                   return null;
-    //                 },
-    //               ),
-    //               TextFormField(
-    //                 controller: _confirmPasswordController,
-    //                 decoration: const InputDecoration(labelText: "Confirm Password"),
-    //                 obscureText: true,
-    //                 validator: (value) {
-    //                   if (value == null || value.isEmpty) {
-    //                     return "Please confirm your password";
-    //                   } else if (value != _passwordController.text) {
-    //                     return "Passwords do not match";
-    //                   }
-    //                   return null;
-    //                 },
-    //               ),
-
-    //               const SizedBox(height: 16),
-    //               ElevatedButton(
-    //                 onPressed: _createUser, 
-    //                 child: const Text("Create User"),
-    //               ),
-    //             ],
-    //           ),
-    //         ),
-    //       ),
-    //     ),
-    //   ),
-    // );
   }
 }
