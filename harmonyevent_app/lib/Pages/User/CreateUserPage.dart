@@ -189,7 +189,7 @@ class _CreateUserPageState extends State<CreateUserPage> {
                 constraints: BoxConstraints(maxWidth: 500),
                 child: SingleChildScrollView(
                   child: Padding(
-                    padding: EdgeInsets.all(66.0),
+                    padding: EdgeInsets.only(left: 66.0, right: 66.0),
                     child: Form(
                       key: _formKey,
                       child: Column(    
@@ -212,7 +212,7 @@ class _CreateUserPageState extends State<CreateUserPage> {
                             return null;
                             },
                           ),
-                          //StandardPadding(),
+                          //const SizedBox(height: 15),
                           TextFormField(
                             style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
                             controller: _lastNameController,
@@ -230,6 +230,7 @@ class _CreateUserPageState extends State<CreateUserPage> {
                               return null;
                             },
                           ),
+                          const SizedBox(height: 15),
                           TextFormField(
                             style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
                             controller: _addressController,
@@ -247,6 +248,7 @@ class _CreateUserPageState extends State<CreateUserPage> {
                             return null;
                             },
                           ),
+                          //const SizedBox(height: 15),
                           TextFormField(
                             style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
                             controller: _postalController,
@@ -264,6 +266,7 @@ class _CreateUserPageState extends State<CreateUserPage> {
                             return null;
                             },
                           ),
+                          //const SizedBox(height: 15),
                           TextFormField(
                              style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
                             controller: _cityController,
@@ -281,7 +284,7 @@ class _CreateUserPageState extends State<CreateUserPage> {
                               return null;
                             },
                           ),
-                          StandardPadding(),
+                          const SizedBox(height: 15),
                           TextFormField(
                             style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
                             controller: _emailController,
@@ -302,6 +305,7 @@ class _CreateUserPageState extends State<CreateUserPage> {
                               return null;
                             },
                           ),
+                          //const SizedBox(height: 15),
                           TextFormField(
                             style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
                             controller: _confirmEmailController,
@@ -323,7 +327,7 @@ class _CreateUserPageState extends State<CreateUserPage> {
                             },
                           ),
                           //StandardPadding(),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: 20),
                           Builder(
                             builder: (context) {
                               return GradientButton(
@@ -425,7 +429,7 @@ class _CreateUserPageState extends State<CreateUserPage> {
                             child: Column(    
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [    
-                            StandardPadding(),
+                            //StandardPadding(),
                             TextFormField(
                               style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
                               controller: _userNameController,
@@ -443,6 +447,7 @@ class _CreateUserPageState extends State<CreateUserPage> {
                               return null;
                               },
                             ),
+                            const SizedBox(height: 15),
                             TextFormField(
                               style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
                               controller: _passwordController,
@@ -463,6 +468,7 @@ class _CreateUserPageState extends State<CreateUserPage> {
                                 return null;
                               },
                             ),
+                            const SizedBox(height: 15),
                             TextFormField(
                               style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
                               controller: _confirmPasswordController,
@@ -483,7 +489,7 @@ class _CreateUserPageState extends State<CreateUserPage> {
                                 return null;
                               },
                             ),
-                            const SizedBox(height: 16),
+                            const SizedBox(height: 20),
                             GradientButton(
                               colors: [const Color.fromARGB(255, 183, 211, 54), const Color.fromARGB(255, 109, 190, 66)],
                               height: 40,
