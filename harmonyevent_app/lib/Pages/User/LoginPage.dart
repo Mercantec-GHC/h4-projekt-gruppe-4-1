@@ -18,10 +18,7 @@ void main() {
       context, 
       duration: Duration(seconds: 2), 
       title: 'Success',
-      
-
       subtitle: 'Login completed successfully!', 
-
       configuration: IconConfiguration(
         icon: Icons.check,
         color: const Color.fromARGB(255, 162, 235, 14),
@@ -36,7 +33,6 @@ void main() {
       context, 
       duration: Duration(seconds: 2), 
       title: 'Invalid username or password!', 
-
       subtitle: 'Please try again.', 
       configuration: IconConfiguration(
         icon: Icons.block_rounded,
@@ -114,7 +110,6 @@ class _LoginPageState extends State<LoginPage> {
                 fit: BoxFit.cover     
                 ),  
               ),        
-
             Container(          
               child: 
                 Text("Harmony Event"),

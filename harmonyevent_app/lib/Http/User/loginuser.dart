@@ -10,9 +10,6 @@ class AuthService {
   final String baseUrl = ApiConfig.apiUrl;
   final storage = FlutterSecureStorage();
 
-  // final key = await secureStore.read(key: "some_key"); 
-  // final key = (await secureStore.readAll())["some_key"];
-
   Future<void> login(LoginDTO LoginDTO) async {
     final url = Uri.parse('$baseUrl/api/User/login');
     final response = await http.post(
@@ -35,37 +32,4 @@ class AuthService {
     throw Exception('Login failed: ${response.statusCode} - ${response.body}');
   }
 }
-
-
-//   Future<LoginDTO> createUser(
-//       String firstname,
-//       String lastname,
-//       String email,
-//       String username,
-//       String password,
-//       String address,
-//       String postal,
-//       String city) async {
-//     final url = Uri.parse('$baseUrl/api/user/signup');
-//     final response = await http.post(
-//       url,
-//       headers: {'Content-Type': 'application/json'},
-//       body: jsonEncode({
-//         'firstname': firstname,
-//         'lastname': lastname,
-//         'email': email,
-//         'username': username,
-//         'password': password,
-//         'address': address,
-//         'postal': postal,
-//         'city': city,
-//       }),
-//     );
-
-//     if (response.statusCode == 201) {
-//       return LoginDTO.fromJson(jsonDecode(response.body));
-//     } else {
-//       throw Exception('Failed to create user: ${response.statusCode} - ${response.body}');
-//     }
-//   }
 }
