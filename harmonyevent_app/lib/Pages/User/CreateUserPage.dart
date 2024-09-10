@@ -150,6 +150,8 @@ class _CreateUserPageState extends State<CreateUserPage> {
         automaticallyImplyLeading: false,
         leading: IconButton(
         icon: Icon(Icons.arrow_back_ios),
+        color: const Color.fromARGB(255, 234, 208, 225),
+        
         onPressed: () {
           Navigator.pushReplacement(
             context,
@@ -166,16 +168,23 @@ class _CreateUserPageState extends State<CreateUserPage> {
               ),  
             ),        
             Container(          
-              child: Text("Harmony Event"),
-            ), 
+              child: 
+              Text(
+                  "Harmony Event",
+                  style: TextStyle(
+                    color: const Color.fromARGB(255, 234, 208, 225),
+                    fontWeight: FontWeight.bold,
+                    ),
+                  ),  
+                ),  
           ],
         ),
       ),
       body: Stack(
         children: [
           Center(
-            child: Padding(
-              padding: EdgeInsets.all(16.0),
+            child: SafeArea(
+              //padding: EdgeInsets.all(16.0),
               child: ConstrainedBox(
                 constraints: BoxConstraints(maxWidth: 500),
                 child: SingleChildScrollView(
@@ -203,6 +212,7 @@ class _CreateUserPageState extends State<CreateUserPage> {
                             return null;
                             },
                           ),
+                          //StandardPadding(),
                           TextFormField(
                             style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
                             controller: _lastNameController,
@@ -350,28 +360,56 @@ class _CreateUserPageState extends State<CreateUserPage> {
             children: [
               SafeArea(
                 //padding: const EdgeInsets.all(18.0),
-                child: Row(
-                  children: [
-                    Builder(
-                      builder: (context) {
-                        return IconButton(
-                          icon: Icon(Icons.arrow_back_ios),
-                          onPressed: () {
-                            Scaffold.of(context).closeDrawer();
-                          },
-                        );
-                      }
+                child: Container(
+                  // color: const Color.fromARGB(255, 89, 99, 44),
+                  decoration: BoxDecoration(
+                    color: const Color.fromARGB(255, 89, 99, 44),
+                     boxShadow: [
+                      BoxShadow(
+                        color: const Color.fromARGB(85, 6, 6, 6),
+                        spreadRadius: 1,
+                        blurRadius: 3,
+                        offset: const Offset(0, 2.5),
+                        ).scale(1)
+                     ],
                     ),
-                    Container(
-                      child: Image(image: AssetImage('assets/images/HE_Logo.png'),
-                      width: 50,
-                      fit: BoxFit.cover     
+                  child: Row(
+                  
+                    children: [
+                      Builder(
+                        builder: (context) {
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: IconButton(
+                              icon: Icon(Icons.arrow_back_ios),
+                              color: const Color.fromARGB(255, 234, 208, 225),
+                              onPressed: () {
+                                Scaffold.of(context).closeDrawer();
+                              },
+                            ),
+                          );
+                        }
+                      ),
+                      Container(
+                         margin: EdgeInsets.only(left: 15),
+                        child: Image(image: AssetImage('assets/images/HE_Logo.png'),
+                        width: 50,
+                        fit: BoxFit.cover     
+                        ),  
+                      ),
+                      Container(          
+                        child: 
+                        Text(
+                          "Harmony Event",
+                          style: TextStyle(
+                            color: const Color.fromARGB(255, 234, 208, 225),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                          ),
+                        ),  
                       ),  
-                    ),
-                    Container(          
-                      child: Text("Harmony Event"),
-                    ), 
-                  ],
+                    ],
+                  ),
                 ),
               ),
               Center(
