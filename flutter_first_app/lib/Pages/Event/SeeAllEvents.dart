@@ -3,6 +3,8 @@ import 'package:flutter_first_app/config/api_config.dart';
 import 'package:flutter_first_app/models/event.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_first_app/Pages/User/LoginPage.dart';
 
 class SeeAllEvents extends StatefulWidget {
   const SeeAllEvents({super.key});
@@ -13,6 +15,7 @@ class SeeAllEvents extends StatefulWidget {
 
 class _SeeAllEventsState extends State<SeeAllEvents> {
   late Future<List<EventDTO>> eventsFuture;
+  final FlutterSecureStorage _secureStorage = FlutterSecureStorage(); // Secure storage instance
 
   @override
   void initState() {
@@ -41,11 +44,29 @@ class _SeeAllEventsState extends State<SeeAllEvents> {
     }
   }
 
+  // Logout function
+  Future<void> logout() async {
+    await _secureStorage.delete(key: 'token'); // Remove the stored token
+
+    // Navigate to the login page after logging out
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => LoginPage()), // Fixed missing closing
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("See All Events"),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: logout, // Call the logout function
+            tooltip: 'Logout',
+          ),
+        ],
       ),
       body: Center(
         child: FutureBuilder<List<EventDTO>>(
@@ -120,3 +141,4 @@ class _SeeAllEventsState extends State<SeeAllEvents> {
     );
   }
 }
+

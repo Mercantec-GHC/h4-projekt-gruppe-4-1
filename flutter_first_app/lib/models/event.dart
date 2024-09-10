@@ -4,7 +4,7 @@ class EventDTO {
   final DateTime date;
   final String place_id;
   final String ImageURL;
-  final String type;
+  final bool type;
   final String category;
   final String description;
 

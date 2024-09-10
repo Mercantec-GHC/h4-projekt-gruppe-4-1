@@ -1,22 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_first_app/Http/User/loginuser.dart';
-import 'package:flutter_first_app/Pages/Event/EventPage.dart';
+import 'package:flutter_first_app/Pages/Event/SeeAllEvents.dart';
 import 'package:flutter_first_app/Pages/User/CreateUserPage.dart';
 import 'package:flutter_first_app/models/user.dart';
-
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'LoginPage',
-      home: LoginPage(),
-    );
-  }
-}
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_first_app/Http/User/loginuser.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -27,14 +14,15 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  final AuthService _authService = AuthService();
+  final FlutterSecureStorage _secureStorage = FlutterSecureStorage(); // Secure storage for token
+  final AuthService _authService = AuthService(); // Initialize AuthService
   bool _isLoading = false;
 
+  // Handle login logic
   void _login() async {
     if (_formKey.currentState!.validate()) {
       setState(() {
-        _isLoading = true;
-        
+        _isLoading = true; // Show loading indicator
       });
 
       final loginDTO = LoginDTO(
@@ -43,19 +31,24 @@ class _LoginPageState extends State<LoginPage> {
       );
 
       try {
-        await _authService.login(loginDTO);
-        // Navigate to HomePage or another page on successful login
+        // Perform login and get the token
+        final String token = await _authService.login(loginDTO); // Correctly call the method
+
+        // Store the token securely in FlutterSecureStorage
+        await _secureStorage.write(key: 'token', value: token);
+
+        // Navigate to SeeAllEvents page after successful login
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => CreateEvent()), // Replace with the correct page
+          MaterialPageRoute(builder: (context) => SeeAllEvents()),
         );
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(e.toString())), // Shows specific error message
+          SnackBar(content: Text(e.toString())),
         );
       } finally {
         setState(() {
-          _isLoading = false;
+          _isLoading = false; // Hide loading indicator
         });
       }
     }
@@ -182,3 +175,4 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
+

@@ -37,7 +37,7 @@ class _CreateUserPageState extends State<CreateUserPage> {
     });
   }
 
-  Future<LoginDTO> createUser(
+  Future<CreateUserDTO> createUser(
       String firstname,
       String lastname,
       String email,
@@ -51,7 +51,7 @@ class _CreateUserPageState extends State<CreateUserPage> {
     final uri = Uri.parse('$baseUrl/api/user/signup');
     final request = http.MultipartRequest('POST', uri);
 
-    // Add form fields
+   
     request.fields['firstname'] = firstname;
     request.fields['lastname'] = lastname;
     request.fields['email'] = email;
@@ -61,7 +61,7 @@ class _CreateUserPageState extends State<CreateUserPage> {
     request.fields['postal'] = postal;
     request.fields['city'] = city;
 
-    // Add image file if selected
+    
     if (image != null) {
       request.files.add(await http.MultipartFile.fromPath(
         'ProfilePicture', 
@@ -79,7 +79,7 @@ class _CreateUserPageState extends State<CreateUserPage> {
 
     if (response.statusCode == 201) {
       final responseBody = await response.stream.bytesToString();
-      return LoginDTO.fromJson(jsonDecode(responseBody) as Map<String, dynamic>);
+      return CreateUserDTO.fromJson(jsonDecode(responseBody) as Map<String, dynamic>);
     } else {
       final responseBody = await response.stream.bytesToString();
       throw Exception('Failed to create user: ${response.statusCode} - $responseBody');
@@ -98,7 +98,7 @@ class _CreateUserPageState extends State<CreateUserPage> {
       final String city = _cityController.text;
 
       try {
-        final LoginDTO newUser = await createUser(
+        final CreateUserDTO newUser = await createUser(
             firstName, lastName, email, username, password, address, postal, city, _image);
 
         ScaffoldMessenger.of(context).showSnackBar(

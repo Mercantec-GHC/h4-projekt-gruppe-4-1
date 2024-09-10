@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_first_app/models/event.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:flutter_first_app/services/event_service.dart';
+import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-import 'package:flutter_first_app/config/api_config.dart';
-import 'package:image_picker/image_picker.dart'; // Import image picker
 
 class CreateEvent extends StatefulWidget {
   @override
@@ -15,16 +13,16 @@ class CreateEvent extends StatefulWidget {
 
 class CreateEventState extends State<CreateEvent> {
   final _formKey = GlobalKey<FormState>();
-  final String baseUrl = ApiConfig.apiUrl;
+
   final TextEditingController dateController = TextEditingController();
-  final TextEditingController user_idController = TextEditingController();
   final TextEditingController place_idController = TextEditingController();
   final TextEditingController typeController = TextEditingController();
   final TextEditingController categoryController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
 
-  File? _image; // To store selected image
+  File? _image; // To store the selected image
   final picker = ImagePicker(); // Image picker instance
+  final EventService _eventService = EventService(); // Instance of EventService
 
   @override
   void dispose() {
@@ -65,7 +63,8 @@ class CreateEventState extends State<CreateEvent> {
       final String description = descriptionController.text;
 
       try {
-        final EventDTO newEventDTO = await createEvent(
+        // Call EventService to create the event
+        final EventDTO newEventDTO = await _eventService.createEvent(
           place_id,
           date,
           type,
@@ -76,7 +75,7 @@ class CreateEventState extends State<CreateEvent> {
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text("Description ${newEventDTO.description} created successfully."),
+            content: Text("Event ${newEventDTO.description} created successfully."),
           ),
         );
       } catch (e) {
@@ -86,41 +85,6 @@ class CreateEventState extends State<CreateEvent> {
           ),
         );
       }
-    }
-  }
-
-  // Function to create event with image upload
-  Future<EventDTO> createEvent(String place_id, String date, String type, String category, String description, File? image) async {
-    final String baseUrl = ApiConfig.apiUrl;
-    var request = http.MultipartRequest('POST', Uri.parse('$baseUrl/api/event/create'));
-
-    request.fields['place_id'] = place_id;
-    request.fields['date'] = date;
-    request.fields['type'] = type;
-    request.fields['category'] = category;
-    request.fields['description'] = description;
-
-    // Attach the image file if it exists
-    if (image != null) {
-      var imageStream = http.ByteStream(image.openRead());
-      var imageLength = await image.length();
-      request.files.add(
-        http.MultipartFile(
-          'image',
-          imageStream,
-          imageLength,
-          filename: image.path.split('/').last,
-        ),
-      );
-    }
-
-    var response = await request.send();
-
-    if (response.statusCode == 201) {
-      final responseBody = await response.stream.bytesToString();
-      return EventDTO.fromJson(jsonDecode(responseBody));
-    } else {
-      throw Exception('Failed to create event: ${response.statusCode}');
     }
   }
 
@@ -155,20 +119,10 @@ class CreateEventState extends State<CreateEvent> {
               ),
               TextFormField(
                 controller: place_idController,
-                decoration: InputDecoration(labelText: 'Where'),
+                decoration: InputDecoration(labelText: 'Place'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please choose place';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: user_idController,
-                decoration: InputDecoration(labelText: 'Who created'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please choose him';
+                    return 'Please choose a place';
                   }
                   return null;
                 },
@@ -178,7 +132,7 @@ class CreateEventState extends State<CreateEvent> {
                 decoration: InputDecoration(labelText: 'Type'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'What type';
+                    return 'What type of event is it?';
                   }
                   return null;
                 },
@@ -188,7 +142,7 @@ class CreateEventState extends State<CreateEvent> {
                 decoration: InputDecoration(labelText: 'Category'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'What category';
+                    return 'Please specify a category';
                   }
                   return null;
                 },
@@ -198,13 +152,12 @@ class CreateEventState extends State<CreateEvent> {
                 decoration: InputDecoration(labelText: 'Description'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Describe event';
+                    return 'Please describe the event';
                   }
                   return null;
                 },
               ),
               SizedBox(height: 10),
-              // Image upload button
               ElevatedButton.icon(
                 onPressed: _pickImage,
                 icon: Icon(Icons.image),

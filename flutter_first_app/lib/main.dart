@@ -1,37 +1,55 @@
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_first_app/Pages/Event/EventPage.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_first_app/Pages/User/LoginPage.dart';       
-import 'package:flutter_first_app/Pages/User/CreateUserPage.dart'; 
-import 'package:flutter_first_app/Pages/User/DeleteUserPage.dart'; 
-import 'package:flutter_first_app/Pages/User/UpdateUserPage.dart'; 
+import 'package:flutter_first_app/Pages/Event/EventPage.dart';
+import 'package:flutter_first_app/Pages/User/CreateUserPage.dart';
+import 'package:flutter_first_app/Pages/User/DeleteUserPage.dart';
+import 'package:flutter_first_app/Pages/User/UpdateUserPage.dart';
 import 'package:flutter_first_app/Pages/Event/SeeAllEvents.dart';
+import 'package:flutter_first_app/Pages/User/LoginPage.dart';
+import 'package:flutter_first_app/Http/User/loginuser.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(ChangeNotifierProvider(
+    create: (context) => MyAppState(),
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => MyAppState(),
-      child: MaterialApp(
-        title: 'Namer App',
-        theme: ThemeData(
-          useMaterial3: true,
-          colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 92, 208, 77)),
-        ),
-        home: MyHomePage(),
-      ),
+    return FutureBuilder<bool>(
+      future: AuthService().isLoggedIn(), // Check if the user is logged in on startup
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return MaterialApp(
+            home: Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(), 
+              ),
+            ),
+          );
+        } else {
+          bool isLoggedIn = snapshot.data ?? false; 
+          return MaterialApp(
+            title: 'Flutter Demo',
+            theme: ThemeData(
+              useMaterial3: true,
+              colorScheme: ColorScheme.fromSeed(
+                seedColor: const Color.fromARGB(255, 92, 208, 77),
+              ),
+            ),
+            home: isLoggedIn ?  LoginPage() : SeeAllEvents(), 
+          );
+        }
+      },
     );
   }
 }
 
 class MyAppState extends ChangeNotifier {
+  
   var current = WordPair.random();
 
   void getNext() {
@@ -39,7 +57,7 @@ class MyAppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  // ↓ Add the code below.
+  
   var users = <WordPair>[];
 
   void toggleFavorite() {
@@ -63,6 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     Widget page;
+
     switch (selectedIndex) {
       case 0:
         page = LoginPage();
@@ -71,13 +90,13 @@ class _MyHomePageState extends State<MyHomePage> {
       case 2:
         page = DeleteUserPage();
       case 3:
-        page = UpdateUserPage(); 
-      case 4: 
-        page = CreateEvent();  
+        page = UpdateUserPage();
+      case 4:
+        page = CreateEvent();
       case 5:
-        page = SeeAllEvents();  
+        page = SeeAllEvents();
       default:
-        throw UnimplementedError('no widget for $selectedIndex');
+        throw UnimplementedError('No widget for $selectedIndex');
     }
 
     return LayoutBuilder(builder: (context, constraints) {
@@ -86,7 +105,7 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             SafeArea(
               child: NavigationRail(
-                extended: constraints.maxWidth >= 600,  // ← Here.
+                extended: constraints.maxWidth >= 600, 
                 destinations: [
                   NavigationRailDestination(
                     icon: Icon(Icons.login),
@@ -97,20 +116,20 @@ class _MyHomePageState extends State<MyHomePage> {
                     label: Text('Create Users'),
                   ),
                   NavigationRailDestination(
-                    icon:  Icon(Icons.delete),
-                    label: Text("Delete Users"),  
+                    icon: Icon(Icons.delete),
+                    label: Text("Delete Users"),
                   ),
                   NavigationRailDestination(
-                    icon:  Icon(Icons.update),
-                    label: Text("Update Users"),  
+                    icon: Icon(Icons.update),
+                    label: Text("Update Users"),
                   ),
                   NavigationRailDestination(
-                    icon:  Icon(Icons.dangerous),
-                    label: Text("Plan"),  
+                    icon: Icon(Icons.event),
+                    label: Text("Plan"),
                   ),
                   NavigationRailDestination(
-                    icon:  Icon(Icons.event),
-                    label: Text("Alle Events"),  
+                    icon: Icon(Icons.event_available),
+                    label: Text("See All Events"),
                   ),
                 ],
                 selectedIndex: selectedIndex,
