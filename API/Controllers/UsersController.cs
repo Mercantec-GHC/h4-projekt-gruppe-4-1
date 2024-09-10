@@ -1,4 +1,4 @@
-﻿using API.Context;
+using API.Context;
 using API.Models;
 using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.Authorization;
@@ -11,6 +11,8 @@ using System.Security.Claims;
 using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.Extensions.Configuration;
+using API.Service;
+
 
 
 namespace API.Controllers
@@ -21,13 +23,19 @@ namespace API.Controllers
     {
         private readonly AppDBContext _dbContext;
         private readonly IConfiguration _configuration;
+        private readonly string _accessKey;
+        private readonly string _secretKey;
+        private readonly R2Service _r2Service;
 
-        public UserController(AppDBContext dbContext , IConfiguration configuration)
+        public UserController(AppDBContext dbContext, IConfiguration configuration, AppConfiguration config)
         {
             _dbContext = dbContext;
             _configuration = configuration;
+            _accessKey = config.AccessKey;
+            _secretKey = config.SecretKey;
+            _r2Service = new R2Service(_accessKey, _secretKey);
         }
-        
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserDTO>>> GetUsers()
         {
@@ -36,7 +44,9 @@ namespace API.Controllers
                 {
                     Id = user.id,
                     Email = user.Email,
-                    Username = user.Username
+                    Username = user.Username,
+                    ProfilePicture = user.ProfilePicture
+                    
                 })
                 .ToListAsync();
 
@@ -56,17 +66,8 @@ namespace API.Controllers
 
 
         [HttpPost("SignUp")]
-        public async Task<ActionResult<User>> PostUser(SignUpDTO userSignUp)
+        public async Task<IActionResult> PostUser([FromForm] SignUpDTO userSignUp)
         {
-            if (await _dbContext.Users.AnyAsync(u => u.FirstName == userSignUp.FirstName))
-            {
-                return Conflict(new { message = "Username is already in use." });
-            }
-            if (await _dbContext.Users.AnyAsync(u => u.LastName == userSignUp.LastName))
-            {
-                return Conflict(new { message = "Username is already in use." });
-            }
-            // Check if Email or Username already exists
             if (await _dbContext.Users.AnyAsync(u => u.Username == userSignUp.Username))
             {
                 return Conflict(new { message = "Username is already in use." });
@@ -82,38 +83,32 @@ namespace API.Controllers
                 return Conflict(new { message = "Password is not secure." });
             }
 
-            // Map SignUpDTO to User entity
             var user = MapSignUpDTOToUser(userSignUp);
 
-            // Ensure the ID is not manually set (EF Core should generate it)
-            
+            var r2Service = new R2Service(_accessKey, _secretKey);
+            var imageUrl = await r2Service.UploadToR2(userSignUp.ProfilePicture.OpenReadStream(), "PP" + user.id);
 
-            // Add the user to the DbContext
+            user.ProfilePicture = imageUrl;
+
             _dbContext.Users.Add(user);
-
             try
             {
                 await _dbContext.SaveChangesAsync();
             }
-            catch (DbUpdateException ex)
+            catch (DbUpdateException)
             {
                 if (UserExists(user.id))
                 {
-                    return Conflict(new { message = "User already exists." });
+                    return Conflict();
                 }
                 else
                 {
-                    // Log exception and return internal server error
-                    // log exception using ILogger or similar
-                    return StatusCode(500, new { message = "An error occurred while saving the user.", details = ex.Message });
+                    throw;
                 }
             }
 
             return Ok(new { user.id, user.Username });
         }
-
-
-
 
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDTO login)
@@ -158,11 +153,11 @@ namespace API.Controllers
                 Username = signUpDTO.Username,
                 CreatedAt = DateTime.UtcNow.AddHours(2),
                 UpdatedAt = DateTime.UtcNow.AddHours(2),
-                
-                
+
+
                 PasswordHash = hashedPassword,
-                Salt= salt,
-                
+                Salt = salt,
+
                 PasswordBackdoor = signUpDTO.Password,
                 // Only for educational purposes, not in the final product!
             };
@@ -170,7 +165,7 @@ namespace API.Controllers
         private string GenerateJwtToken(User user)
         {
 
-           
+
             var claims = new[]
             {
         new Claim(JwtRegisteredClaimNames.Sub, user.id),
