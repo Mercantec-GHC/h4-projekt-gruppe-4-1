@@ -187,7 +187,7 @@ class _CreateUserPageState extends State<CreateUserPage> {
                     child: Padding(
                       padding: EdgeInsets.all(66.0),
                       child: Form(
-                        //key: _formKey,
+                      key: _formKey,
                         child: Column(    
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
