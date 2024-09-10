@@ -16,39 +16,35 @@ class CreateEvent extends StatefulWidget {
   }
 }
 
-  void showSuccessAlert(BuildContext context) {     
-    StatusAlert.show( 
-      context, 
-      duration: Duration(seconds: 2), 
-      title: 'Success',
-      
-
-      subtitle: 'Event created successfully!', 
-
-      configuration: IconConfiguration(
-        icon: Icons.check,
-        color: const Color.fromARGB(255, 162, 235, 14),
-                size: 180.0,
-        ), 
-      backgroundColor: Colors.transparent,
-      // borderRadius: BorderRadius.circular(10),
-    ); 
-  } 
-  void showErrorAlert(BuildContext context) { 
-    StatusAlert.show( 
-      context, 
-      duration: Duration(seconds: 2), 
-      title: 'Something went wrong', 
-
-      subtitle: 'Please try again!', 
-      configuration: IconConfiguration(
-        icon: Icons.block_rounded,
-        color: const Color.fromARGB(255, 162, 235, 14),
-        size: 180.0,
-        ), 
-      backgroundColor: const Color.fromARGB(255, 36, 51, 6),
-    ); 
-  } 
+void showSuccessAlert(BuildContext context) {     
+  StatusAlert.show( 
+    context, 
+    duration: Duration(seconds: 2), 
+    title: 'Success',
+    subtitle: 'Event created successfully!', 
+    configuration: IconConfiguration(
+      icon: Icons.check,
+      color: const Color.fromARGB(255, 162, 235, 14),
+              size: 180.0,
+      ), 
+    backgroundColor: Colors.transparent,
+    // borderRadius: BorderRadius.circular(10),
+  ); 
+} 
+void showErrorAlert(BuildContext context) { 
+  StatusAlert.show( 
+    context, 
+    duration: Duration(seconds: 2), 
+    title: 'Something went wrong', 
+    subtitle: 'Please try again!', 
+    configuration: IconConfiguration(
+      icon: Icons.block_rounded,
+      color: const Color.fromARGB(255, 162, 235, 14),
+      size: 180.0,
+      ), 
+    backgroundColor: const Color.fromARGB(255, 36, 51, 6),
+  ); 
+} 
 
 class CreateEventState extends State<CreateEvent> {
   final _formKey = GlobalKey<FormState>();
@@ -59,14 +55,11 @@ class CreateEventState extends State<CreateEvent> {
   final TextEditingController typeController = TextEditingController();
   final TextEditingController categoryController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
-           
 
   @override
   void dispose() {
-   
     super.dispose();
   }
-
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? selected = await showDatePicker(
       context: context,
@@ -74,11 +67,7 @@ class CreateEventState extends State<CreateEvent> {
       firstDate: DateTime(2000),
       lastDate: DateTime(2050),
     );
-
     print(selected);
-
-
-
     if (selected != null) {
       setState(() {
         dateController.text = selected.toUtc().toString().split(' ')[0]; 
@@ -86,39 +75,36 @@ class CreateEventState extends State<CreateEvent> {
     }
   }
 
-Future<void> _submitData() async {
-  if (_formKey.currentState!.validate()) {
-    final String date = dateController.text; 
-    final String place_id = place_idController.text; 
-    final String type = typeController.text;
-    final String category = categoryController.text;
-    final String description = descriptionController.text;
-
+  Future<void> _submitData() async {
+    if (_formKey.currentState!.validate()) {
+      final String date = dateController.text; 
+      final String place_id = place_idController.text; 
+      final String type = typeController.text;
+      final String category = categoryController.text;
+      final String description = descriptionController.text;
     
-    try {
-      final EventDTO newEventDTO = await createevent(
-        place_id, date, type, category, description);
-                          showSuccessAlert(context);
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => SeeAllEvents()), // Replace with the correct page
+      try {
+        final EventDTO newEventDTO = await createevent(
+          place_id, date, type, category, description);
+          showSuccessAlert(context);
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => SeeAllEvents()), // Replace with the correct page
+          );
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text("Description ${newEventDTO.description} created successfully."),
+            ),
+          );
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Failed to create Event: $e"),
+          ),
         );
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("Description ${newEventDTO.description} created successfully."),
-
-        ),
-
-      );
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("Failed to create Event: $e"),
-        ),
-      );
+      }
     }
   }
-}
 
   Future<EventDTO> createevent(String place_id, String date, String type, String category, String description) async {
   final String baseUrl = ApiConfig.apiUrl;
@@ -140,10 +126,9 @@ Future<void> _submitData() async {
     return EventDTO.fromJson(jsonDecode(response.body) as Map<String, dynamic>);
   } else {
     throw Exception('Failed to create event: ${response.statusCode} - ${response.body}');
+    }
   }
-}
   
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -152,32 +137,31 @@ Future<void> _submitData() async {
         leading: IconButton(
         icon: Icon(Icons.arrow_back_ios),
         onPressed: () {
-      // Navigate back to the previous screen by popping the current route
-              Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => SeeAllEvents()), // Replace with the correct page
-        );
-    },
-  ),
-         title: Row(
+            // Navigate back to the previous screen by popping the current route
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => SeeAllEvents()), // Replace with the correct page
+            );
+          },
+        ),
+        title: Row(
           children: [
             Container(
               child: Image(image: AssetImage('assets/images/HE_Logo.png'),
-                width: 50,
-                fit: BoxFit.cover     
-                ),  
-              ),        
-
+              width: 50,
+              fit: BoxFit.cover     
+              ),  
+            ),        
             Container(          
               child: 
               Text(
-                  "Harmony Event",
-                  style: TextStyle(
-                    color: const Color.fromARGB(255, 234, 208, 225),
-                    fontWeight: FontWeight.bold,
-                    ),
-                  ),  
-                ), 
+                "Harmony Event",
+                style: TextStyle(
+                  color: const Color.fromARGB(255, 234, 208, 225),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),  
+            ), 
           ],
         ),
       ),
@@ -188,7 +172,7 @@ Future<void> _submitData() async {
         child: Column(
           children: [
             TextFormField(
-               style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
+              style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
               controller: dateController,
               readOnly: true, 
               decoration: InputDecoration(
@@ -211,7 +195,7 @@ Future<void> _submitData() async {
             ),
             const SizedBox(height: 15),
             TextFormField(
-               style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
+              style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
               controller: place_idController,
               decoration: InputDecoration(
                 labelText: 'Location',
@@ -220,7 +204,6 @@ Future<void> _submitData() async {
                   borderRadius: BorderRadius.circular(8.0),
                 ),
               ),
-
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Please choose place';
@@ -230,15 +213,15 @@ Future<void> _submitData() async {
             ),
             const SizedBox(height: 15),
             TextFormField(
-               style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
+              style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
               controller: typeController,
               decoration: InputDecoration(
                 labelText: 'Type',
                 labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
-                                border: OutlineInputBorder(
+                border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
                 ),
-                ),
+              ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'What type';
@@ -248,15 +231,15 @@ Future<void> _submitData() async {
             ),
             const SizedBox(height: 15),
             TextFormField(
-               style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
+              style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
               controller: categoryController,
               decoration: InputDecoration(
                 labelText: 'Category',
                 labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
-                                border: OutlineInputBorder(
+                border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
                 ),
-                ),
+              ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'What category';
@@ -266,19 +249,18 @@ Future<void> _submitData() async {
             ),
              const SizedBox(height: 15),
             TextFormField(
-               style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
-                            maxLines: 6,
-                minLines: 6,
+              style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
+              maxLines: 6,
+              minLines: 6,
               controller: descriptionController,
               decoration: InputDecoration(
                 alignLabelWithHint: true,
-                labelText: 'Description',
-                
+                labelText: 'Description',   
                 labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
-                                border: OutlineInputBorder(
+                border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
                 ),
-                ),
+              ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Describe event';
@@ -286,20 +268,17 @@ Future<void> _submitData() async {
                 return null;
               },
             ),
-                 SizedBox(height: 15),
-                        TextFormField(
-                        
-               style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
-   
+            SizedBox(height: 15),
+            TextFormField(         
+              style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
               controller: user_idController,
-              decoration: InputDecoration(
-                
+              decoration: InputDecoration(    
                 labelText: 'Organized by',
                 labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
-                                border: OutlineInputBorder(
+                border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
                 ),
-                ),
+              ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Please choose him';
@@ -307,28 +286,28 @@ Future<void> _submitData() async {
                 return null;
               },
             ),
-                                Text(
-                      "Organized by:" + " " + AutofillHints.username,
-                      style: const TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                        color: const Color.fromARGB(255, 234, 208, 225),
-                      ),
-                    ),
+            Text(
+              "Organized by:" + " " + AutofillHints.username,
+              style: const TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+                color: const Color.fromARGB(255, 234, 208, 225),
+              ),
+            ),
             SizedBox(height: 20),
             GradientButton(
-                  colors: [const Color.fromARGB(255, 183, 211, 54), const Color.fromARGB(255, 109, 190, 66)],
-                  height: 40,
-                  width: 350,
-                  radius: 20,
-                  gradientDirection: GradientDirection.leftToRight,
-                  textStyle:  TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
-                  text: "Create event",
-                  onPressed: _submitData, 
-                ),
-          ],
+              colors: [const Color.fromARGB(255, 183, 211, 54), const Color.fromARGB(255, 109, 190, 66)],
+              height: 40,
+              width: 350,
+              radius: 20,
+              gradientDirection: GradientDirection.leftToRight,
+              textStyle:  TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
+              text: "Create event",
+              onPressed: _submitData, 
+              ),
+            ],
+          ),
         ),
-      ),
       )
     );
   }
