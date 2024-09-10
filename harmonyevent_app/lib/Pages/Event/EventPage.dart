@@ -316,10 +316,6 @@ Future<void> _submitData() async {
                       ),
                     ),
             SizedBox(height: 20),
-            // ElevatedButton(
-            //   onPressed: _submitData,
-            //   child: Text('Submit'),
-            // ),
             GradientButton(
                   colors: [const Color.fromARGB(255, 183, 211, 54), const Color.fromARGB(255, 109, 190, 66)],
                   height: 40,

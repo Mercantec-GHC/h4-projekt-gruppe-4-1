@@ -124,59 +124,27 @@ class _LoginPageState extends State<LoginPage> {
       ),
       body: Stack(
         children: [
-          // Container(
-          //   decoration: BoxDecoration(
-          //     image: DecorationImage(
-          //       image: AssetImage("assets/background.jpg"),
-          //       fit: BoxFit.cover,
-          //     ),
-          //   ),
-          // ),
           Center(
             child: Padding(
               padding: EdgeInsets.all(16.0),
               child: ConstrainedBox(
                 constraints: BoxConstraints(maxWidth: 500),
-                child: SingleChildScrollView(
-                  
-                  //child: Card(
-                          
-                    //color: const Color.fromARGB(255, 36, 51, 6),
-  
-                    // shape: RoundedRectangleBorder(
-                    //   //borderRadius: BorderRadius.circular(35.0),
-                    // ),
-                    //elevation: 10,
-                                  
+                child: SingleChildScrollView(                                
                     child: Padding(
                       padding: EdgeInsets.all(66.0),
-                      child: Form(
-                        
+                      child: Form(         
                         key: _formKey,
-                        child: Column(
-                          
+                        child: Column(                         
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            // Text(
-                            //   'Velkommen',
-                            //   style: TextStyle(
-                            //     fontSize: 24,
-                            //     fontWeight: FontWeight.bold,
-                            //   ),
-                            //   textAlign: TextAlign.center,
-                            // ),
-                            //SizedBox(height: 20),
                             TextFormField(
                               style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
                               controller: _emailController,
                               decoration: InputDecoration(
                               labelText: 'Email',
-                              labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
-                   
+                              labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),               
                                 border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8.0),
-                                  
-              
+                                  borderRadius: BorderRadius.circular(8.0),                                              
                                 ),
                               ),
                               validator: (value) {
@@ -197,11 +165,9 @@ class _LoginPageState extends State<LoginPage> {
                                 //filled: true,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8.0),
-
                                 ),
                               ),
-                              obscureText: true,
-                              
+                              obscureText: true,                              
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Please enter your password';
@@ -221,51 +187,12 @@ class _LoginPageState extends State<LoginPage> {
                                   gradientDirection: GradientDirection.leftToRight,
                                   textStyle: TextStyle(color: const Color.fromARGB(255, 234, 208, 225)),
                                   text: "Login",
-                                  onPressed: _login,
-                                  // onPressed: () => showSuccessAlert(context), 
-                                  // Navigator.push(
-                                  // context,
-                                  // MaterialPageRoute(
-                                  //   builder: (context) => CreateUserPage(),
-                                  //   ),   
-                                  //);
-                                  
+                                  onPressed: _login,                                 
                                 ),
-                                   
-                                // ElevatedButton(
-                                //     onPressed: _login,
-                                //     style: ElevatedButton.styleFrom(
-                                //       shape: RoundedRectangleBorder(
-                                //         borderRadius: BorderRadius.circular(8.0),
-                                //       ),
-                                //       padding: EdgeInsets.symmetric(vertical: 16.0),
-                                //     ),
-                                //     child: Text(
-                                //       'Login',
-                                //       style: TextStyle(fontSize: 16),
-                                //     ),
-                                //   ),
-                            //SizedBox(height: 20),
-                            // TextButton(
-                            //   onPressed: () {
-                            //     Navigator.push(
-                            //       context,
-                            //       MaterialPageRoute(builder: (context) => CreateUserPage()),
-                            //     );
-                            //   },
-                            //   child: Text(
-                            //     'Mangler du en konto? Opret en her',
-                            //     style: TextStyle(
-                            //       fontSize: 16,
-                            //       color: Theme.of(context).primaryColor,
-                            //     ),
-                            //   ),
-                            // ),
                           ],
                         ),
                       ),
                     ),
-                  //),
                 ),
               ),
             ),

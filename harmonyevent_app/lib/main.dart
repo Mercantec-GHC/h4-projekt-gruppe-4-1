@@ -9,8 +9,7 @@ import 'package:harmonyevent_app/Pages/User/CreateUserPage.dart';
 void main() {
   runApp(
     MyApp(
-
-    ));
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -35,23 +34,14 @@ class MyApp extends StatelessWidget {
 }
 
 class MyAppState extends ChangeNotifier {
-  //var current = WordPair.random()
-  // void getNext() {
-  //   //current = WordPair.random();
-  //   notifyListeners();
-  // } 
-  //void nextPageLogin() {
 
-  //} 
 }
 class HomeScreen extends StatelessWidget {
   //get child => null;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      
-      body:  Center(
-        
+    return Scaffold(     
+      body:  Center(       
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -154,103 +144,6 @@ class LogoText extends StatelessWidget {
 }
 
 
-//Event screen//
-class EventScreen extends StatelessWidget {
-  final String data;
-
-  EventScreen({required this.data});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        //leading: Icon(Icons.menu),
-  //title: Text('Page title'),
-  actions: <Widget>[
-            IconButton(
-      icon: Icon(
-        Icons.add_circle_outline, 
-        color: const Color.fromARGB(255, 183, 211, 54)),
-       tooltip: "Create Event",
-                onPressed: () {
-          print("Hmm");
-        }
-    ),
-    IconButton(
-      //padding: EdgeInsets.symmetric(horizontal: 18),
-      icon: const Icon(
-        Icons.favorite, 
-        color: const Color.fromARGB(255, 183, 211, 54)),
-        tooltip: "Favorite Events",
-        onPressed: () {
-          print("Hmm");
-        }
-    ),
-    IconButton(
-      icon: const Icon(
-        Icons.search, 
-        color: const Color.fromARGB(255, 183, 211, 54)),
-        tooltip: "Search Events",
-                onPressed: () {
-          print("Hmm");
-        }
-    ),
-    IconButton(
-      
-      icon: const Icon(
-        Icons.account_circle, 
-        color: const Color.fromARGB(255, 183, 211, 54)),
-  
-       tooltip: "Your account",
-                onPressed: () {
-          print("Hmm");
-        }
-    ),
-
-  ],
-  //backgroundColor: Colors.purple,
-        title: Row(
-          children: [
-            Container(
-              // height: 120.0,
-              // width: 120.0,
-              //child: const Align(
-              //alignment: FractionalOffset(1, 0),
-              child: Image(image: AssetImage('assets/images/HE_Logo.png'),
-                //height: 400,
-                width: 50,
-                fit: BoxFit.cover     
-                ),  
-              ),        
-            //),
-            Container(          
-              // height: 120.0,
-              // width: 120.0,
-              //child: const Align(
-              //alignment: FractionalOffset(0.6, 0.5),
-              child: 
-                Text("Harmony Event (EventScreen)"),
-                ), 
-            //),
-          ],
-        ),
-      ),
-      
-      body: Center(
-       child: Column(
-         children: [
-            StandardPadding(),
-            Text(data),
-
-         ],
-
-       ),
-     
-
-      ),
-    );
-  }
-}
 
 
 
