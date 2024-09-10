@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:harmonyevent_app/Pages/User/LoginPage.dart';
 import 'dart:convert'; 
 import 'package:http/http.dart' as http; 
 import 'package:harmonyevent_app/config/api_config.dart'; 
@@ -106,7 +107,8 @@ class _CreateUserPageState extends State<CreateUserPage> {
   }
 
   void _createUser() async {
-    if (_formKey.currentState!.validate() || _formKeyNext.currentState!.validate()) {
+    // if (_formKey.currentState!.validate() || _formKeyNext.currentState!.validate()) {
+    if (_formKeyNext.currentState!.validate()) {
       final String firstName = _firstNameController.text;
       final String lastName = _lastNameController.text;
       final String email = _emailController.text;
@@ -128,7 +130,7 @@ class _CreateUserPageState extends State<CreateUserPage> {
         showSuccessAlert(context);
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => EventScreen(data: 'Data sent from LoginScreen!')), // Replace with the correct page
+          MaterialPageRoute(builder: (context) => LoginPage()), // Replace with the correct page
         );
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -322,8 +324,10 @@ class _CreateUserPageState extends State<CreateUserPage> {
                                 gradientDirection: GradientDirection.leftToRight,
                                 textStyle: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
                                 text: "Continue",
-                                onPressed: () {
-                                  Scaffold.of(context).openDrawer();
+                                onPressed:  () {
+                                  if (_formKey.currentState!.validate()) {
+                                    Scaffold.of(context).openDrawer();
+                                  }
                                 },
                               );
                             },
@@ -344,8 +348,8 @@ class _CreateUserPageState extends State<CreateUserPage> {
           backgroundColor: const Color.fromARGB(255, 36, 51, 6),
           child: Stack(
             children: [
-              Padding(
-                padding: const EdgeInsets.all(38.0),
+              SafeArea(
+                //padding: const EdgeInsets.all(18.0),
                 child: Row(
                   children: [
                     Builder(
