@@ -127,8 +127,8 @@ class _CreateUserPageState extends State<CreateUserPage> {
       showSuccessAlert(context);
       // return print("What1?");
       //final responseBody = await response.stream.bytesToString();
-      return 
-      //throw Exception('Failed to create user: ${response.statusCode}');
+      
+      throw Exception('Failed to create user: ${response.statusCode}');
     }
   }
 
