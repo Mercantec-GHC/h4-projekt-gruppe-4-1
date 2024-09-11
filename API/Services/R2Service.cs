@@ -30,8 +30,8 @@ namespace API.Service
             var request = new PutObjectRequest
             {
                 InputStream = fileStream,
-                BucketName = "h4billeder",
-                Key = fileName,
+                BucketName = "eventharmoni",
+                Key = $"{fileName}.png",
                 DisablePayloadSigning = true
             };
 
@@ -45,8 +45,8 @@ namespace API.Service
                 );
             }
 
-            var imageUrl = $"https://eventharmoni.mercantec.tech/{fileName}.png";
+            var imageUrl = $"https://eventharmoni.mercantec.tech/eventharmoni/{fileName}.png";
             return imageUrl;
-        }
+        } 
     }
 }
