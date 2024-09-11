@@ -5,6 +5,13 @@ import 'package:flutter_gradient_button/flutter_gradient_button.dart';
 
 import 'package:harmonyevent_app/Pages/User/LoginPage.dart';   
 import 'package:harmonyevent_app/Pages/User/CreateUserPage.dart';   
+import 'package:harmonyevent_app/Pages/Event/EventPage.dart';
+import 'package:harmonyevent_app/Pages/User/CreateUserPage.dart';
+// import 'package:harmonyevent_app/Pages/User/DeleteUserPage.dart';
+// import 'package:harmonyevent_app/Pages/User/UpdateUserPage.dart';
+import 'package:harmonyevent_app/Pages/Event/SeeAllEvents.dart';
+import 'package:harmonyevent_app/Pages/User/LoginPage.dart';
+import 'package:harmonyevent_app/Http/User/loginuser.dart';
 
 void main() {
   runApp(
@@ -13,25 +20,56 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(    
-      create: (context) => MyAppState(),
-      child: MaterialApp(
-        title: 'Harmony Event',
-        theme: ThemeData(
+    return FutureBuilder<bool>(
+      future: AuthService().isLoggedIn(), // Check if the user is logged in on startup
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return MaterialApp(
+            home: Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(), 
+              ),
+            ),
+          );
+        } else {
+          bool isLoggedIn = snapshot.data ?? false; 
+          return MaterialApp(
+            title: 'Harmony Event',
+            theme: ThemeData(
           useMaterial3: false,
           colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 183, 211, 83)),
           scaffoldBackgroundColor: const Color.fromARGB(255, 36, 51, 6),
           fontFamily: 'Purisa', 
-          
-        ),
-        home: HomeScreen(),
-      ),
+            ),
+            home: isLoggedIn ?  LoginPage() : SeeAllEvents(), 
+          );
+        }
+      },
     );
   }
 }
+// class MyApp extends StatelessWidget {
+//   const MyApp({super.key});
+//   @override
+//   Widget build(BuildContext context) {
+//     return ChangeNotifierProvider(    
+//       create: (context) => MyAppState(),
+//       child: MaterialApp(
+//         title: 'Harmony Event',
+//         theme: ThemeData(
+          // useMaterial3: false,
+          // colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 183, 211, 83)),
+          // scaffoldBackgroundColor: const Color.fromARGB(255, 36, 51, 6),
+          // fontFamily: 'Purisa', 
+          
+//         ),
+//         home: HomeScreen(),
+//       ),
+//     );
+//   }
+// }
 
 class MyAppState extends ChangeNotifier {
 

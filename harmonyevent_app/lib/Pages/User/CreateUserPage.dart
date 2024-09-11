@@ -117,20 +117,9 @@ class _CreateUserPageState extends State<CreateUserPage> {
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       final responseBody = await response.stream.bytesToString();
-      // showSuccessAlert(context);
-
-                        setState(() {
-        _isLoading = false; 
-              });
-      showSuccessAlert(context);
-
       return CreateUserDTO.fromJson(jsonDecode(responseBody) as Map<String, dynamic>);
-       
     } else {
-      // return print("What1?");
-      //final responseBody = await response.stream.bytesToString();
-      throw Exception('Failed to create user: ${response.statusCode}');
-      
+      throw Exception('Failed to create user: ${response.statusCode}'); 
     }
   }
 
