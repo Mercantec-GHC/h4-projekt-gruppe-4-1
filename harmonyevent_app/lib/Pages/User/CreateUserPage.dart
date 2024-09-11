@@ -60,6 +60,7 @@ class _CreateUserPageState extends State<CreateUserPage> {
   final TextEditingController _postalController = TextEditingController();
   final TextEditingController _cityController = TextEditingController();
   File? _image;
+  bool _isLoading = false;
 
   final ImagePicker _picker = ImagePicker();
 
@@ -82,12 +83,12 @@ class _CreateUserPageState extends State<CreateUserPage> {
       String address,
       String postal,
       String city,
-      File? image) async {
+      File? image
+    ) async {
     final String baseUrl = ApiConfig.apiUrl;
     final uri = Uri.parse('$baseUrl/api/user/signup');
     final request = http.MultipartRequest('POST', uri);
 
-   
     request.fields['firstname'] = firstname;
     request.fields['lastname'] = lastname;
     request.fields['email'] = email;
@@ -97,7 +98,6 @@ class _CreateUserPageState extends State<CreateUserPage> {
     request.fields['postal'] = postal;
     request.fields['city'] = city;
 
-    
     if (image != null) {
       request.files.add(await http.MultipartFile.fromPath(
         'ProfilePicture', 
@@ -115,15 +115,28 @@ class _CreateUserPageState extends State<CreateUserPage> {
 
     if (response.statusCode == 201) {
       final responseBody = await response.stream.bytesToString();
+      // showSuccessAlert(context);
+      //   Navigator.pushReplacement(
+      //     context,
+      //     MaterialPageRoute(builder: (context) => LoginPage()), // Replace with the correct page
+      //   );  
+      showSuccessAlert(context);
       return CreateUserDTO.fromJson(jsonDecode(responseBody) as Map<String, dynamic>);
+       
     } else {
-      final responseBody = await response.stream.bytesToString();
-      throw Exception('Failed to create user: ${response.statusCode} - $responseBody');
+      showSuccessAlert(context);
+      // return print("What1?");
+      //final responseBody = await response.stream.bytesToString();
+      return 
+      //throw Exception('Failed to create user: ${response.statusCode}');
     }
   }
 
   void _createUser() async {
-    if (_formKeyNext.currentState!.validate()) {
+    if (_formKey.currentState!.validate() || _formKeyNext.currentState!.validate()) {
+            setState(() {
+        _isLoading = true; 
+      });
       final String firstName = _firstNameController.text;
       final String lastName = _lastNameController.text;
       final String email = _emailController.text;
@@ -132,29 +145,32 @@ class _CreateUserPageState extends State<CreateUserPage> {
       final String address = _addressController.text;
       final String postal = _postalController.text;
       final String city = _cityController.text;
+      // final File _image;
+
+      final CreateUserDTO newUser = await createUser(
+        firstName, lastName, email, username, password, address, postal, city, _image);
 
       try {
-        final CreateUserDTO newUser = await createUser(
-            firstName, lastName, email, username, password, address, postal, city, _image);
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text("User ${newUser.username} created successfully."),
-          ),
-        );
         showSuccessAlert(context);
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => LoginPage()), // Replace with the correct page
-        );
-      } catch (e) {
+        );  
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text("Failed to create user: $e"),
-          ),
+            content: Text("User ${newUser.username} created successfully."),
+          ),   
         );
-      }
-      showErrorAlert(context);
+
+      } catch (e) {
+          showErrorAlert(context);
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text("Failed to create user: $e"),
+            ),
+        );
+        
+      } 
     }
   }
 

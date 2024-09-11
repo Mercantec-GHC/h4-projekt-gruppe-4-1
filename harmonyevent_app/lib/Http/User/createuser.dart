@@ -38,35 +38,37 @@ import 'dart:convert';
 
 
 
-Future<LoginDTO> createUser(
-      String firstname,
-      String lastname,
-      String email,
-      String username,
-      String password,
-      String address,
-      String postal,
-      String city) async {
-    var baseUrl;
-    final url = Uri.parse('$baseUrl/api/user/signup');
-    final response = await http.post(
-      url,
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({
-        'firstname': firstname,
-        'lastname': lastname,
-        'email': email,
-        'username': username,
-        'password': password,
-        'address': address,
-        'postal': postal,
-        'city': city,
-      }),
-    );
+// Future<LoginDTO> createUser(
+//       String firstname,
+//       String lastname,
+//       String email,
+//       String username,
+//       String password,
+//       String address,
+//       String postal,
+//       String city,
+      
+//       ) async {
+//     var baseUrl;
+//     final url = Uri.parse('$baseUrl/api/user/signup');
+//     final response = await http.post(
+//       url,
+//       headers: {'Content-Type': 'application/json'},
+//       body: jsonEncode({
+//         'firstname': firstname,
+//         'lastname': lastname,
+//         'email': email,
+//         'username': username,
+//         'password': password,
+//         'address': address,
+//         'postal': postal,
+//         'city': city,
+//       }),
+//     );
 
-    if (response.statusCode == 201) {
-      return LoginDTO.fromJson(jsonDecode(response.body));
-    } else {
-      throw Exception('Failed to create user: ${response.statusCode} - ${response.body}');
-    }
-  }
+//     if (response.statusCode == 201) {
+//       return LoginDTO.fromJson(jsonDecode(response.body));
+//     } else {
+//       throw Exception('Failed to create user: ${response.statusCode} - ${response.body}');
+//     }
+//   }

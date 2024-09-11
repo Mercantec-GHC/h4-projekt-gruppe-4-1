@@ -19,6 +19,7 @@ dependencies:
   flutter_secure_storage_macos: ^3.1.2
   status_alert: ^1.0.1
   image_picker: ^1.1.2
+  image_picker_macos: ^0.2.1+1
 
 dev_dependencies:
   flutter_test:
