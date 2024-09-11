@@ -1,11 +1,14 @@
-import 'package:flutter/material.dart';
-import 'package:harmonyevent_app/Pages/User/LoginPage.dart';
+import 'dart:io';
 import 'dart:convert'; 
-import 'package:http/http.dart' as http; 
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 import 'package:harmonyevent_app/config/api_config.dart'; 
 import 'package:harmonyevent_app/models/user.dart'; 
 import 'package:status_alert/status_alert.dart';
 import 'package:harmonyevent_app/main.dart';
+import 'package:harmonyevent_app/Pages/User/LoginPage.dart';
 import 'package:flutter_gradient_button/flutter_gradient_button.dart';
 
 class CreateUserPage extends StatefulWidget {
@@ -56,58 +59,70 @@ class _CreateUserPageState extends State<CreateUserPage> {
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _postalController = TextEditingController();
   final TextEditingController _cityController = TextEditingController();
+  File? _image;
 
-  @override
-  void dispose() {
-    _firstNameController.dispose();
-    _lastNameController.dispose();
-    _emailController.dispose();
-    _confirmEmailController.dispose();
-    _userNameController.dispose();
-    _passwordController.dispose();
-    _confirmPasswordController.dispose();
-    _addressController.dispose();
-    _postalController.dispose();
-    _cityController.dispose();
-    super.dispose();
+  final ImagePicker _picker = ImagePicker();
+
+  Future<void> _pickImage() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+      }
+    });
   }
 
-  Future<LoginDTO> createUser(
-    String firstname,
-    String lastname,
-    String email,
-    String username,
-    String password,
-    String address,
-    String postal,
-    String city) async {
-      final String baseUrl = ApiConfig.apiUrl;
-      final response = await http.post(
-        Uri.parse('$baseUrl/api/user/signup'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-      body: jsonEncode(<String, String>{
-        'firstname': firstname,
-        'lastname': lastname,
-        'email': email,
-        'username': username,
-        'password': password,
-        'address': address,
-        'postal': postal,
-        'city': city
-      }),
-    );
+  Future<CreateUserDTO> createUser(
+      String firstname,
+      String lastname,
+      String email,
+      String username,
+      String password,
+      String address,
+      String postal,
+      String city,
+      File? image) async {
+    final String baseUrl = ApiConfig.apiUrl;
+    final uri = Uri.parse('$baseUrl/api/user/signup');
+    final request = http.MultipartRequest('POST', uri);
+
+   
+    request.fields['firstname'] = firstname;
+    request.fields['lastname'] = lastname;
+    request.fields['email'] = email;
+    request.fields['username'] = username;
+    request.fields['password'] = password;
+    request.fields['address'] = address;
+    request.fields['postal'] = postal;
+    request.fields['city'] = city;
+
+    
+    if (image != null) {
+      request.files.add(await http.MultipartFile.fromPath(
+        'ProfilePicture', 
+        image.path,
+        contentType: MediaType('image', 'png'),
+      ));
+    }
+
+    request.headers.addAll({
+      'accept': '*/*',
+      'Content-Type': 'multipart/form-data',
+    });
+
+    final response = await request.send();
+
     if (response.statusCode == 201) {
-      return LoginDTO.fromJson(jsonDecode(response.body) as Map<String, dynamic>);
-      
+      final responseBody = await response.stream.bytesToString();
+      return CreateUserDTO.fromJson(jsonDecode(responseBody) as Map<String, dynamic>);
     } else {
-      throw Exception('Failed to create user: ${response.statusCode} - ${response.body}');
+      final responseBody = await response.stream.bytesToString();
+      throw Exception('Failed to create user: ${response.statusCode} - $responseBody');
     }
   }
 
   void _createUser() async {
-    // if (_formKey.currentState!.validate() || _formKeyNext.currentState!.validate()) {
     if (_formKeyNext.currentState!.validate()) {
       final String firstName = _firstNameController.text;
       final String lastName = _lastNameController.text;
@@ -119,8 +134,8 @@ class _CreateUserPageState extends State<CreateUserPage> {
       final String city = _cityController.text;
 
       try {
-        final LoginDTO newUser = await createUser(
-            firstName, lastName, email, username, password, address, postal, city);
+        final CreateUserDTO newUser = await createUser(
+            firstName, lastName, email, username, password, address, postal, city, _image);
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -135,13 +150,99 @@ class _CreateUserPageState extends State<CreateUserPage> {
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text("Failed to create user: ${e}"),
+            content: Text("Failed to create user: $e"),
           ),
         );
-        showErrorAlert(context);
       }
+      showErrorAlert(context);
     }
   }
+
+  // @override
+  // void dispose() {
+  //   _firstNameController.dispose();
+  //   _lastNameController.dispose();
+  //   _emailController.dispose();
+  //   _confirmEmailController.dispose();
+  //   _userNameController.dispose();
+  //   _passwordController.dispose();
+  //   _confirmPasswordController.dispose();
+  //   _addressController.dispose();
+  //   _postalController.dispose();
+  //   _cityController.dispose();
+  //   super.dispose();
+  // }
+
+  // Future<LoginDTO> createUser(
+  //   String firstname,
+  //   String lastname,
+  //   String email,
+  //   String username,
+  //   String password,
+  //   String address,
+  //   String postal,
+  //   String city) async {
+  //     final String baseUrl = ApiConfig.apiUrl;
+  //     final response = await http.post(
+  //       Uri.parse('$baseUrl/api/user/signup'),
+  //       headers: <String, String>{
+  //         'Content-Type': 'application/json; charset=UTF-8',
+  //       },
+  //     body: jsonEncode(<String, String>{
+  //       'firstname': firstname,
+  //       'lastname': lastname,
+  //       'email': email,
+  //       'username': username,
+  //       'password': password,
+  //       'address': address,
+  //       'postal': postal,
+  //       'city': city
+  //     }),
+  //   );
+  //   if (response.statusCode == 201) {
+  //     return LoginDTO.fromJson(jsonDecode(response.body) as Map<String, dynamic>);
+      
+  //   } else {
+  //     throw Exception('Failed to create user: ${response.statusCode} - ${response.body}');
+  //   }
+  // }
+
+  // void _createUser() async {
+  //   // if (_formKey.currentState!.validate() || _formKeyNext.currentState!.validate()) {
+  //   if (_formKeyNext.currentState!.validate()) {
+  //     final String firstName = _firstNameController.text;
+  //     final String lastName = _lastNameController.text;
+  //     final String email = _emailController.text;
+  //     final String username = _userNameController.text;
+  //     final String password = _passwordController.text;
+  //     final String address = _addressController.text;
+  //     final String postal = _postalController.text;
+  //     final String city = _cityController.text;
+
+  //     try {
+  //       final LoginDTO newUser = await createUser(
+  //           firstName, lastName, email, username, password, address, postal, city);
+
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         SnackBar(
+  //           content: Text("User ${newUser.username} created successfully."),
+  //         ),
+  //       );
+  //       showSuccessAlert(context);
+  //       Navigator.pushReplacement(
+  //         context,
+  //         MaterialPageRoute(builder: (context) => LoginPage()), // Replace with the correct page
+  //       );
+  //     } catch (e) {
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         SnackBar(
+  //           content: Text("Failed to create user: ${e}"),
+  //         ),
+  //       );
+  //       showErrorAlert(context);
+  //     }
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -428,8 +529,16 @@ class _CreateUserPageState extends State<CreateUserPage> {
                             key: _formKeyNext,
                             child: Column(    
                               crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [    
-                            //StandardPadding(),
+                              children: [   
+                                _image == null
+                                ? Text('No image selected.')
+                                : Image.file(_image!),
+                                const SizedBox(height: 16),
+                                ElevatedButton(
+                                onPressed: _pickImage,
+                                child: const Text("Select Profile Picture"),
+                                ), 
+                            StandardPadding(),
                             TextFormField(
                               style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
                               controller: _userNameController,
