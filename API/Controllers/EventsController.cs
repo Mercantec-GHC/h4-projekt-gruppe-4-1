@@ -33,7 +33,7 @@ namespace API.Controllers
             _secretKey = config.SecretKey;
             _r2Service = new R2Service(_accessKey, _secretKey);
         }
-
+        // get all
         [HttpGet]
         public async Task<ActionResult<IEnumerable<EventDTO>>> GetEvents()
         {
@@ -55,7 +55,7 @@ namespace API.Controllers
 
 
 
-
+        // get from id
         [HttpGet("{id}")]
         public async Task<ActionResult<Event>> GetEventById(string id)
         {
@@ -69,9 +69,54 @@ namespace API.Controllers
 
             return Ok(events);
         }
+        // update by id
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateEvent(string id, [FromBody] EventDTO updatedEvent)
+        {
+            
+            var existingEvent = await _dbContext.Events.FindAsync(id);
+            if (existingEvent == null)
+            {
+                return NotFound();
+            }
+
+            
+            existingEvent.Date = updatedEvent.Date;
+            existingEvent.Place_id = updatedEvent.Place_id;
+            existingEvent.EventPictureURL = updatedEvent.ImageURL;
+            existingEvent.Description = updatedEvent.Description;
+            existingEvent.Category = updatedEvent.Category;
+            existingEvent.isprivate = updatedEvent.isprivate;
+
+            try
+            {
+                // Save the updated event to the database
+                await _dbContext.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!EventExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent(); // Return 204 No Content when successful
+        }
+
+        private bool EventExists(string id)
+        {
+            return _dbContext.Events.Any(e => e.id == id);
+        }
+    
 
 
-        [HttpPost("Create")]
+        // create event
+    [HttpPost("Create")]
         public async Task<IActionResult> PostUser([FromForm] CreateEventDTO eventCreate)
         {
 
