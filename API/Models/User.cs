@@ -1,3 +1,4 @@
+using Mysqlx.Crud;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace API.Models
@@ -38,7 +39,12 @@ namespace API.Models
         public string Email { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
+        public string address { get; set; }
+        public string postal { get; set; }
+        public string city { get; set; }
         public IFormFile ProfilePicture { get; set; }
+
+    
 
     }
 
