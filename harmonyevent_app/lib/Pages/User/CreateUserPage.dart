@@ -110,33 +110,33 @@ class _CreateUserPageState extends State<CreateUserPage> {
       'accept': '*/*',
       'Content-Type': 'multipart/form-data',
     });
-
+            setState(() {
+        _isLoading = true; 
+      });
     final response = await request.send();
 
-    if (response.statusCode == 201) {
+    if (response.statusCode == 200 || response.statusCode == 201) {
       final responseBody = await response.stream.bytesToString();
       // showSuccessAlert(context);
-      //   Navigator.pushReplacement(
-      //     context,
-      //     MaterialPageRoute(builder: (context) => LoginPage()), // Replace with the correct page
-      //   );  
+
+                        setState(() {
+        _isLoading = false; 
+              });
       showSuccessAlert(context);
+
       return CreateUserDTO.fromJson(jsonDecode(responseBody) as Map<String, dynamic>);
        
     } else {
-      showSuccessAlert(context);
       // return print("What1?");
       //final responseBody = await response.stream.bytesToString();
-      
       throw Exception('Failed to create user: ${response.statusCode}');
+      
     }
   }
 
   void _createUser() async {
     if (_formKey.currentState!.validate() || _formKeyNext.currentState!.validate()) {
-            setState(() {
-        _isLoading = true; 
-      });
+
       final String firstName = _firstNameController.text;
       final String lastName = _lastNameController.text;
       final String email = _emailController.text;
