@@ -1,16 +1,15 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:harmonyevent_app/Pages/Event/SeeAllEvents.dart';
-import 'package:harmonyevent_app/models/event.dart';
-// import 'package:http/http.dart' as http;
-// import 'dart:convert';
-import 'package:harmonyevent_app/config/api_config.dart';
 import 'package:status_alert/status_alert.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:harmonyevent_app/services/event_service.dart';
-import 'package:flutter_gradient_button/flutter_gradient_button.dart';
-import 'dart:io';
 
-class CreateEvent extends StatefulWidget {
+import 'package:flutter_gradient_button/flutter_gradient_button.dart';
+
+import 'package:harmonyevent_app/models/event.dart';
+import 'package:harmonyevent_app/pages/EventPage.dart';
+import 'package:harmonyevent_app/services/createevent_service.dart';
+
+class CreateEventPage extends StatefulWidget {
   @override
   CreateEventState createState() {
     return CreateEventState();
@@ -47,19 +46,19 @@ void showErrorAlert(BuildContext context) {
   ); 
 } 
 
-class CreateEventState extends State<CreateEvent> {
+class CreateEventState extends State<CreateEventPage> {
   final _formKey = GlobalKey<FormState>();
-  final String baseUrl = ApiConfig.apiUrl;
+  //final String baseUrl = ApiConfig.apiUrl;
   final TextEditingController dateController = TextEditingController();
   final TextEditingController user_idController = TextEditingController();
   final TextEditingController place_idController = TextEditingController();
   final TextEditingController typeController = TextEditingController();
   final TextEditingController categoryController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
-  
+
   File? _image; // To store the selected image
   final picker = ImagePicker(); // Image picker instance
-  final EventService _eventService = EventService(); // Instance of EventService
+  final CreateEventService _createEventService = CreateEventService(); // Instance of EventService
 
   @override
   void dispose() {
@@ -100,12 +99,12 @@ class CreateEventState extends State<CreateEvent> {
       final String description = descriptionController.text;
     
       try {
-        final EventDTO newEventDTO = await _eventService.createEvent(
+        final EventDTO newEventDTO = await _createEventService.createEvent(
           place_id, date, type, category, description, _image);
           showSuccessAlert(context);
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => SeeAllEvents()), // Replace with the correct page
+            MaterialPageRoute(builder: (context) => EventPage()), // Replace with the correct page
           );
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -156,7 +155,7 @@ class CreateEventState extends State<CreateEvent> {
             // Navigate back to the previous screen by popping the current route
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => SeeAllEvents()), // Replace with the correct page
+              MaterialPageRoute(builder: (context) => EventPage()), // Replace with the correct page
             );
           },
         ),

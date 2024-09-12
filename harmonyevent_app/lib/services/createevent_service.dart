@@ -1,15 +1,24 @@
+
 import 'dart:io';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:harmonyevent_app/models/event.dart';
+//import 'package:http_parser/http_parser.dart'; 
 import 'package:harmonyevent_app/config/api_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class EventService {
-  final String _baseUrl = ApiConfig.apiUrl;
+import 'package:harmonyevent_app/models/event.dart';
 
+class CreateEventService {
+  final String _baseUrl = ApiConfig.apiUrl;
   // Method to create event with image upload
-  Future<EventDTO> createEvent(String place_id, String date, String type, String category, String description, File? image) async {
+  Future<EventDTO> createEvent (
+    String place_id, 
+    String date, 
+    String type, 
+    String category, 
+    String description, 
+    File? image) 
+  async {
     var request = http.MultipartRequest('POST', Uri.parse('$_baseUrl/api/event/create'));
 
     // Get the JWT token from shared preferences
@@ -39,7 +48,7 @@ class EventService {
         ),
       );
     }
-
+    
     var response = await request.send();
 
     if (response.statusCode == 201) {

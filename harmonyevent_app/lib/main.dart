@@ -2,12 +2,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gradient_button/flutter_gradient_button.dart';
 
-import 'package:harmonyevent_app/Pages/User/LoginPage.dart';   
-import 'package:harmonyevent_app/Pages/User/CreateUserPage.dart';   
-// import 'package:harmonyevent_app/Pages/User/DeleteUserPage.dart';
-// import 'package:harmonyevent_app/Pages/User/UpdateUserPage.dart';
-import 'package:harmonyevent_app/Pages/Event/SeeAllEvents.dart';
-import 'package:harmonyevent_app/Http/User/loginuser.dart';
+import 'package:harmonyevent_app/pages/LoginPage.dart';   
+import 'package:harmonyevent_app/pages/CreateUserPage.dart';   
+import 'package:harmonyevent_app/pages/EventPage.dart';
+
+import 'package:harmonyevent_app/services/login_service.dart';
 
 void main() {
   runApp(
@@ -39,7 +38,7 @@ class MyApp extends StatelessWidget {
           scaffoldBackgroundColor: const Color.fromARGB(255, 36, 51, 6),
           fontFamily: 'Purisa', 
             ),
-            home: isLoggedIn ? SeeAllEvents() : HomeScreen(), 
+            home: isLoggedIn ? EventPage() : HomeScreen(), 
             //home: HomeScreen()
           );
         }
@@ -72,7 +71,6 @@ class MyAppState extends ChangeNotifier {
 
 }
 class HomeScreen extends StatelessWidget {
-  //get child => null;
   @override
   Widget build(BuildContext context) {
     return Scaffold(     

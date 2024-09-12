@@ -1,12 +1,14 @@
-//import 'package:flutter/foundation.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_gradient_button/flutter_gradient_button.dart';
-import 'package:harmonyevent_app/Pages/Event/SeeAllEvents.dart';
+
 import 'package:status_alert/status_alert.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:harmonyevent_app/Http/User/loginuser.dart';
+
 import 'package:harmonyevent_app/models/user.dart';
-//import 'package:harmonyevent_app/main.dart';
+import 'package:harmonyevent_app/services/login_service.dart';
+
+import 'package:harmonyevent_app/pages/EventPage.dart';
 
 
 void main() {
@@ -89,7 +91,7 @@ class _LoginPageState extends State<LoginPage> {
         showSuccessAlert(context);
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => SeeAllEvents()), // Replace with the correct page
+          MaterialPageRoute(builder: (context) => EventPage()), // Replace with the correct page
         );
       } catch (e) {
         showErrorAlert(context);

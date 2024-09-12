@@ -1,26 +1,23 @@
-//import 'dart:math';
-//import 'package:date_utils/date_utils.dart';
-import 'package:flutter/material.dart';
-import 'package:harmonyevent_app/Pages/Event/EventPage.dart';
-import 'package:harmonyevent_app/config/api_config.dart';
-import 'package:harmonyevent_app/models/event.dart';
-//import 'package:harmonyevent_app/Pages/User/LoginPage.dart';
-// import 'package:http_parser/http_parser.dart';
-// import 'package:image_picker/image_picker.dart';
-//import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'dart:core';
+import 'package:http/http.dart' as http;
+import 'package:harmonyevent_app/config/api_config.dart';
+
+import 'package:flutter/material.dart';
 import 'package:flutter_gradient_button/flutter_gradient_button.dart';
 
-class SeeAllEvents extends StatefulWidget {
-  const SeeAllEvents({super.key});
+import 'package:harmonyevent_app/models/event.dart';
+import 'package:harmonyevent_app/pages/CreateEventPage.dart';
+
+//import 'dart:core';
+
+class EventPage extends StatefulWidget {
+  const EventPage({super.key});
 
   @override
-  State<SeeAllEvents> createState() => _SeeAllEventsState();
+  State<EventPage> createState() => _EventPageState();
 }
 
-class _SeeAllEventsState extends State<SeeAllEvents> {
+class _EventPageState extends State<EventPage> {
   late Future<List<EventDTO>> eventsFuture;
 
   @override
@@ -99,7 +96,7 @@ class _SeeAllEventsState extends State<SeeAllEvents> {
             onPressed: () {
               Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => CreateEvent()), // Replace with the correct page
+              MaterialPageRoute(builder: (context) => CreateEventPage()), // Replace with the correct page
               );
             }
           ),
