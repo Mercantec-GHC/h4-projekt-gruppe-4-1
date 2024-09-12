@@ -132,11 +132,9 @@ class _CreateUserPageState extends State<CreateUserPage> {
       final String address = _addressController.text;
       final String postal = _postalController.text;
       final String city = _cityController.text;
-
-      final CreateUserDTO newUser = await createUser(
-        firstName, lastName, email, username, password, address, postal, city, _image);
-
       try {
+        final CreateUserDTO newUser = await createUser(
+        firstName, lastName, email, username, password, address, postal, city, _image);
         showSuccessAlert(context);
         Navigator.pushReplacement(
           context,

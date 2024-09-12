@@ -66,12 +66,10 @@ class _LoginPageState extends State<LoginPage> {
   final AuthService _authService = AuthService(); // Initialize AuthService
   bool _isLoading = false;
 
-
   void _login() async {
     if (_formKey.currentState!.validate()) {
       setState(() {
-        _isLoading = true;
-        
+        _isLoading = true;      
       });
 
       final loginDTO = LoginDTO(

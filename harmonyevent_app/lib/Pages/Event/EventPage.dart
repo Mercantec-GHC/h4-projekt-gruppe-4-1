@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:harmonyevent_app/Pages/Event/SeeAllEvents.dart';
 import 'package:harmonyevent_app/models/event.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+// import 'package:http/http.dart' as http;
+// import 'dart:convert';
 import 'package:harmonyevent_app/config/api_config.dart';
 import 'package:status_alert/status_alert.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:harmonyevent_app/services/event_service.dart';
 import 'package:flutter_gradient_button/flutter_gradient_button.dart';
 import 'dart:io';
-
-
-
 
 class CreateEvent extends StatefulWidget {
   @override
@@ -125,28 +122,28 @@ class CreateEventState extends State<CreateEvent> {
     }
   }
 
-  Future<EventDTO> createevent(String place_id, String date, String type, String category, String description) async {
-  final String baseUrl = ApiConfig.apiUrl;
-  final response = await http.post(
-    Uri.parse('$baseUrl/api/event/create'),
-    headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-    },
-    body: json.encode(<String, String>{
-      'date': date,
-      'place_id': place_id,
-      'type': type,
-      'category': category,
-      'description': description,
-    }),
-  );
+  // Future<EventDTO> createevent(String place_id, String date, String type, String category, String description, File? image) async {
+  // final String baseUrl = ApiConfig.apiUrl;
+  // final response = await http.post(
+  //   Uri.parse('$baseUrl/api/event/create'),
+  //   headers: <String, String>{
+  //     'Content-Type': 'application/json; charset=UTF-8',
+  //   },
+  //   body: json.encode(<String, String>{
+  //     'date': date,
+  //     'place_id': place_id,
+  //     'type': type,
+  //     'category': category,
+  //     'description': description,
+  //   }),
+  // );
 
-  if (response.statusCode == 201) {
-    return EventDTO.fromJson(jsonDecode(response.body) as Map<String, dynamic>);
-  } else {
-    throw Exception('Failed to create event: ${response.statusCode} - ${response.body}');
-    }
-  }
+  // if (response.statusCode == 201) {
+  //   return EventDTO.fromJson(jsonDecode(response.body) as Map<String, dynamic>);
+  // } else {
+  //   throw Exception('Failed to create event: ${response.statusCode} - ${response.body}');
+  //   }
+  // }
   
   @override
   Widget build(BuildContext context) {
@@ -281,8 +278,8 @@ class CreateEventState extends State<CreateEvent> {
              const SizedBox(height: 15),
             TextFormField(
               style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
-              maxLines: 6,
-              minLines: 6,
+              maxLines: 2,
+              minLines: 2,
               controller: descriptionController,
               decoration: InputDecoration(
                 alignLabelWithHint: true,

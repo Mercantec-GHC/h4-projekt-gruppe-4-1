@@ -3,7 +3,7 @@ import 'dart:core';
 class EventDTO {
   final DateTime date;
   final String place_id;
-  //final String ImageURL;
+  final String ImageURL;
   final String type;
   final String category;
   final String description;
@@ -11,7 +11,7 @@ class EventDTO {
   EventDTO({
     required this.date,
     required this.place_id,
-    //required this.ImageURL,
+    required this.ImageURL,
     required this.type,
     required this.category,
     required this.description,
@@ -22,7 +22,7 @@ class EventDTO {
     return {
       'date': date.toIso8601String(),  // Serializes DateTime to a String in ISO format
       'place_id': place_id,
-      //'ImageURL': ImageURL,
+      'ImageURL': ImageURL,
       'type': type,
       'category': category,
       'description': description,
@@ -34,7 +34,7 @@ class EventDTO {
     return EventDTO(
       date: DateTime.parse(json['date'] ??'' ),
       place_id: json['place_id'] ?? '',
-      //ImageURL: json['ImageURL'] ?? '',
+      ImageURL: json['ImageURL'] ?? '',
       type: json['type'] ?? '',
       category: json['category'] ??'',
       description: json['description'] ??'' ,
