@@ -53,15 +53,26 @@ namespace API.Controllers
             return Ok(users);
         }
 
-        [HttpGet("id")]
-        public async Task<ActionResult<User>> GetUserById(string id)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<UserDTO>> GetUserById(string id)
         {
-            var user = await _dbContext.Users.FindAsync(id);
+            var user = await _dbContext.Users
+                .Where(u => u.id == id)
+                .Select(user => new UserDTO
+                {
+                    Id = user.id,
+                    Email = user.Email,
+                    Username = user.Username,
+                    ProfilePicture = user.ProfilePicture
+                })
+                .FirstOrDefaultAsync();
+
             if (user == null)
             {
                 return NotFound();
             }
-            return user;
+
+            return Ok(user);
         }
 
 
