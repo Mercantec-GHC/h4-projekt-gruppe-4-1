@@ -68,6 +68,12 @@ namespace API.Controllers
         [HttpPost("SignUp")]
         public async Task<IActionResult> PostUser([FromForm] SignUpDTO userSignUp)
         {
+            // Check if address is null or empty
+            if (string.IsNullOrWhiteSpace(userSignUp.Address))
+            {
+                return BadRequest(new { message = "Address is required." });
+            }
+
             if (await _dbContext.Users.AnyAsync(u => u.Username == userSignUp.Username))
             {
                 return Conflict(new { message = "Username is already in use." });
