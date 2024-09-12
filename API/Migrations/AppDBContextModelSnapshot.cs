@@ -46,13 +46,11 @@ namespace API.Migrations
                     b.Property<string>("EventCreatorid")
                         .HasColumnType("text");
 
-                    b.Property<string>("ImageURL")
+                    b.Property<string>("EventPictureURL")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Place_id")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Type")
                         .HasColumnType("text");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -60,6 +58,9 @@ namespace API.Migrations
 
                     b.Property<string>("User_id")
                         .HasColumnType("text");
+
+                    b.Property<bool>("isprivate")
+                        .HasColumnType("boolean");
 
                     b.HasKey("id");
 
@@ -125,6 +126,10 @@ namespace API.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("ProfilePicture")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Salt")
                         .IsRequired()
                         .HasColumnType("text");
@@ -133,6 +138,18 @@ namespace API.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("address")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("city")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("postal")
                         .IsRequired()
                         .HasColumnType("text");
 

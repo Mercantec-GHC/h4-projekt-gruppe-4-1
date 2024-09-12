@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace API.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20240902130816_init2")]
-    partial class init2
+    [Migration("20240912085728_please")]
+    partial class please
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -49,13 +49,11 @@ namespace API.Migrations
                     b.Property<string>("EventCreatorid")
                         .HasColumnType("text");
 
-                    b.Property<string>("ImageURL")
+                    b.Property<string>("EventPictureURL")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Place_id")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Type")
                         .HasColumnType("text");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -63,6 +61,9 @@ namespace API.Migrations
 
                     b.Property<string>("User_id")
                         .HasColumnType("text");
+
+                    b.Property<bool>("isprivate")
+                        .HasColumnType("boolean");
 
                     b.HasKey("id");
 
@@ -125,6 +126,10 @@ namespace API.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ProfilePicture")
                         .IsRequired()
                         .HasColumnType("text");
 

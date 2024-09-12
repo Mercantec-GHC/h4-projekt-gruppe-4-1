@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace API.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20240902074324_init")]
-    partial class init
+    [Migration("20240912090437_please2")]
+    partial class please2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,8 +36,9 @@ namespace API.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<string>("Date")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
@@ -48,13 +49,11 @@ namespace API.Migrations
                     b.Property<string>("EventCreatorid")
                         .HasColumnType("text");
 
-                    b.Property<string>("ImageURL")
+                    b.Property<string>("EventPictureURL")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Place_id")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Type")
                         .HasColumnType("text");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -62,6 +61,9 @@ namespace API.Migrations
 
                     b.Property<string>("User_id")
                         .HasColumnType("text");
+
+                    b.Property<bool>("isprivate")
+                        .HasColumnType("boolean");
 
                     b.HasKey("id");
 
@@ -127,6 +129,10 @@ namespace API.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("ProfilePicture")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Salt")
                         .IsRequired()
                         .HasColumnType("text");
@@ -135,6 +141,18 @@ namespace API.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("address")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("city")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("postal")
                         .IsRequired()
                         .HasColumnType("text");
 
