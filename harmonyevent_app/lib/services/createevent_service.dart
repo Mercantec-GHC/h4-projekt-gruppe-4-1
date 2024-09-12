@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:harmonyevent_app/config/api_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:harmonyevent_app/models/event.dart';
+import 'package:harmonyevent_app/models/event_model.dart';
 
 class CreateEventService {
   final String _baseUrl = ApiConfig.apiUrl;

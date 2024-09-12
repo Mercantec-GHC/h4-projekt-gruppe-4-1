@@ -3,35 +3,35 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 //import 'package:http_parser/http_parser.dart'; 
-import 'package:harmonyevent_app/models/user.dart';
+import 'package:harmonyevent_app/models/login_model.dart';
 import 'package:harmonyevent_app/config/api_config.dart';
 
 class AuthService {
   final String baseUrl = ApiConfig.apiUrl;
   final storage = FlutterSecureStorage();
 
-Future<String> login(LoginDTO loginDTO) 
-async {
-  final url = Uri.parse('$baseUrl/api/User/login');
-  final response = await http.post(
-    url,
-    headers: {'Content-Type': 'application/json'},
-    body: jsonEncode(loginDTO.toJson()),
-  );
+  Future<String> login(LoginDTO loginDTO) 
+  async {
+    final url = Uri.parse('$baseUrl/api/User/login');
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(loginDTO.toJson()),
+    );
 
-  if (response.statusCode == 200) {
-    final token = jsonDecode(response.body)['token'];
-    await storage.write(key: 'jwt', value: token);
+    if (response.statusCode == 200) {
+      final token = jsonDecode(response.body)['token'];
+      await storage.write(key: 'jwt', value: token);
 
-    if (kDebugMode) {
-      print('JWT Token: $token');
+      if (kDebugMode) {
+        print('JWT Token: $token');
+      }
+      return token; // Return the token here
+    } 
+    else {
+      throw Exception('Login failed');
     }
-
-    return token; // Return the token here
-  } else {
-    throw Exception('Login failed');
   }
-}
 
   // Future<void> register(String email, String username, String password,
   //     Uint8List? profilePictureData, String? fileName) async {

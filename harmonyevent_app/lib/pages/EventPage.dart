@@ -5,7 +5,7 @@ import 'package:harmonyevent_app/config/api_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gradient_button/flutter_gradient_button.dart';
 
-import 'package:harmonyevent_app/models/event.dart';
+import 'package:harmonyevent_app/models/event_model.dart';
 import 'package:harmonyevent_app/pages/CreateEventPage.dart';
 
 //import 'dart:core';

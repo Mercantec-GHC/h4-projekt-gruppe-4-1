@@ -6,7 +6,7 @@ import 'package:http_parser/http_parser.dart';
 import 'package:harmonyevent_app/config/api_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:harmonyevent_app/models/user.dart';
+import 'package:harmonyevent_app/models/user_model.dart';
 
 class CreateUserService {
   final String _baseUrl = ApiConfig.apiUrl;
