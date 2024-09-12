@@ -1,16 +1,12 @@
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter_gradient_button/flutter_gradient_button.dart';
 
 import 'package:harmonyevent_app/Pages/User/LoginPage.dart';   
 import 'package:harmonyevent_app/Pages/User/CreateUserPage.dart';   
-import 'package:harmonyevent_app/Pages/Event/EventPage.dart';
-import 'package:harmonyevent_app/Pages/User/CreateUserPage.dart';
 // import 'package:harmonyevent_app/Pages/User/DeleteUserPage.dart';
 // import 'package:harmonyevent_app/Pages/User/UpdateUserPage.dart';
 import 'package:harmonyevent_app/Pages/Event/SeeAllEvents.dart';
-import 'package:harmonyevent_app/Pages/User/LoginPage.dart';
 import 'package:harmonyevent_app/Http/User/loginuser.dart';
 
 void main() {
@@ -43,7 +39,8 @@ class MyApp extends StatelessWidget {
           scaffoldBackgroundColor: const Color.fromARGB(255, 36, 51, 6),
           fontFamily: 'Purisa', 
             ),
-            home: isLoggedIn ?  LoginPage() : SeeAllEvents(), 
+            home: isLoggedIn ? SeeAllEvents() : HomeScreen(), 
+            //home: HomeScreen()
           );
         }
       },

@@ -4,6 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:harmonyevent_app/Pages/Event/EventPage.dart';
 import 'package:harmonyevent_app/config/api_config.dart';
 import 'package:harmonyevent_app/models/event.dart';
+import 'package:harmonyevent_app/Pages/User/LoginPage.dart';
+// import 'package:http_parser/http_parser.dart';
+// import 'package:image_picker/image_picker.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:core';
@@ -66,6 +70,16 @@ class _SeeAllEventsState extends State<SeeAllEvents> {
     return []; // Return an empty list or handle the error as needed
   }
 }
+// Logout function
+  // Future<void> logout() async {
+  //   await _secureStorage.delete(key: 'token'); // Remove the stored token
+
+  //   // Navigate to the login page after logging out
+  //   Navigator.pushReplacement(
+  //     context,
+  //     MaterialPageRoute(builder: (context) => LoginPage()), // Fixed missing closing
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -126,7 +140,7 @@ class _SeeAllEventsState extends State<SeeAllEvents> {
             ),
             tooltip: "Your account",
             onPressed: () {
-              print("Hmm");
+             
             }
           ),
         ],
@@ -219,7 +233,16 @@ class _SeeAllEventsState extends State<SeeAllEvents> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    
+              //       Expanded(
+              //   flex: 1,
+              //   child: Image.network(
+              //     event.ImageURL, // Display event image from the URL
+              //     fit: BoxFit.cover, // Ensure the image fits properly
+              //     errorBuilder: (context, error, stackTrace) {
+              //       return const Icon(Icons.broken_image, size: 100); // Handle broken images
+              //     },
+              //   ),
+              // ),
                     Text(
                       event.description,
                       style: const TextStyle(

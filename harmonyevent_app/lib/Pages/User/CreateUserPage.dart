@@ -60,7 +60,7 @@ class _CreateUserPageState extends State<CreateUserPage> {
   final TextEditingController _postalController = TextEditingController();
   final TextEditingController _cityController = TextEditingController();
   File? _image;
-  bool _isLoading = false;
+ // bool _isLoading = false;
 
   final ImagePicker _picker = ImagePicker();
 
@@ -110,13 +110,11 @@ class _CreateUserPageState extends State<CreateUserPage> {
       'accept': '*/*',
       'Content-Type': 'multipart/form-data',
     });
-            setState(() {
-        _isLoading = true; 
-      });
     final response = await request.send();
 
-    if (response.statusCode == 200 || response.statusCode == 201) {
+    if (response.statusCode == 201) {
       final responseBody = await response.stream.bytesToString();
+
       return CreateUserDTO.fromJson(jsonDecode(responseBody) as Map<String, dynamic>);
     } else {
       throw Exception('Failed to create user: ${response.statusCode}'); 
@@ -134,7 +132,6 @@ class _CreateUserPageState extends State<CreateUserPage> {
       final String address = _addressController.text;
       final String postal = _postalController.text;
       final String city = _cityController.text;
-      // final File _image;
 
       final CreateUserDTO newUser = await createUser(
         firstName, lastName, email, username, password, address, postal, city, _image);

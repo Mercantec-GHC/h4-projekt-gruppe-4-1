@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gradient_button/flutter_gradient_button.dart';
 import 'package:harmonyevent_app/Pages/Event/SeeAllEvents.dart';
 import 'package:status_alert/status_alert.dart';
-
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:harmonyevent_app/Http/User/loginuser.dart';
 import 'package:harmonyevent_app/models/user.dart';
 //import 'package:harmonyevent_app/main.dart';
@@ -59,11 +59,13 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final _formKey = GlobalKey<FormState>();
+ final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  final AuthService _authService = AuthService();
+  final FlutterSecureStorage _secureStorage = FlutterSecureStorage(); // Secure storage for token
+  final AuthService _authService = AuthService(); // Initialize AuthService
   bool _isLoading = false;
+
 
   void _login() async {
     if (_formKey.currentState!.validate()) {
@@ -78,7 +80,13 @@ class _LoginPageState extends State<LoginPage> {
       );
 
       try {
-        await _authService.login(loginDTO);
+         // Perform login and get the token
+        final String token = await _authService.login(loginDTO); // Correctly call the method
+
+        // Store the token securely in FlutterSecureStorage
+        await _secureStorage.write(key: 'token', value: token);
+        
+        //await _authService.login(loginDTO);
         // Navigate to HomePage or another page on successful login
         showSuccessAlert(context);
         Navigator.pushReplacement(

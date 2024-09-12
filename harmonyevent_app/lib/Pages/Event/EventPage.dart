@@ -5,7 +5,11 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:harmonyevent_app/config/api_config.dart';
 import 'package:status_alert/status_alert.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:harmonyevent_app/services/event_service.dart';
 import 'package:flutter_gradient_button/flutter_gradient_button.dart';
+import 'dart:io';
+
 
 
 
@@ -55,11 +59,26 @@ class CreateEventState extends State<CreateEvent> {
   final TextEditingController typeController = TextEditingController();
   final TextEditingController categoryController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
+  
+  File? _image; // To store the selected image
+  final picker = ImagePicker(); // Image picker instance
+  final EventService _eventService = EventService(); // Instance of EventService
 
   @override
   void dispose() {
     super.dispose();
   }
+
+// Function to pick an image
+  Future<void> _pickImage() async {
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery); // or ImageSource.camera
+    if (pickedFile != null) {
+      setState(() {
+        _image = File(pickedFile.path); // Save the selected image
+      });
+    }
+  }
+
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? selected = await showDatePicker(
       context: context,
@@ -84,8 +103,8 @@ class CreateEventState extends State<CreateEvent> {
       final String description = descriptionController.text;
     
       try {
-        final EventDTO newEventDTO = await createevent(
-          place_id, date, type, category, description);
+        final EventDTO newEventDTO = await _eventService.createEvent(
+          place_id, date, type, category, description, _image);
           showSuccessAlert(context);
           Navigator.pushReplacement(
             context,
@@ -194,6 +213,18 @@ class CreateEventState extends State<CreateEvent> {
               },
             ),
             const SizedBox(height: 15),
+                          ElevatedButton.icon(
+                onPressed: _pickImage,
+                icon: Icon(Icons.image),
+                label: Text('Pick Event Image'),
+              ),
+              SizedBox(height: 10),
+              _image != null
+                  ? Image.file(
+                      _image!,
+                      height: 150,
+                    )
+                  : Text('No image selected'),
             TextFormField(
               style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
               controller: place_idController,
