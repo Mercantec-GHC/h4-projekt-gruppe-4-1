@@ -48,7 +48,6 @@ class CreateEventService {
         ),
       );
     }
-    
     var response = await request.send();
 
     if (response.statusCode == 201) {

@@ -67,7 +67,6 @@ class CreateUserService {
       'accept': '*/*',
       'Content-Type': 'multipart/form-data',
     });
-    
     var response = await request.send();
 
     if (response.statusCode == 201) {
