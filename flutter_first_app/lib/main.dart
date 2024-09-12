@@ -10,6 +10,7 @@ import 'package:flutter_first_app/Pages/User/LoginPage.dart';
 import 'package:flutter_first_app/Http/User/loginuser.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(ChangeNotifierProvider(
     create: (context) => MyAppState(),
     child: MyApp(),
@@ -40,7 +41,7 @@ class MyApp extends StatelessWidget {
                 seedColor: const Color.fromARGB(255, 92, 208, 77),
               ),
             ),
-            home: isLoggedIn ?  LoginPage() : SeeAllEvents(), 
+            home: isLoggedIn ?  SeeAllEvents(): LoginPage(), 
           );
         }
       },

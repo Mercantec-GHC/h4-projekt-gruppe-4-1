@@ -12,11 +12,12 @@ class CreateEvent extends StatefulWidget {
 }
 
 class CreateEventState extends State<CreateEvent> {
+  
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController dateController = TextEditingController();
   final TextEditingController place_idController = TextEditingController();
-  final TextEditingController typeController = TextEditingController();
+  final TextEditingController isprivateController = TextEditingController();
   final TextEditingController categoryController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
 
@@ -57,17 +58,17 @@ class CreateEventState extends State<CreateEvent> {
   Future<void> _submitData() async {
     if (_formKey.currentState!.validate()) {
       final String date = dateController.text;
-      final String place_id = place_idController.text;
-      final String type = typeController.text;
+      final String placeId = place_idController.text;
+      final bool isprivate = isprivateController.text as bool;
       final String category = categoryController.text;
       final String description = descriptionController.text;
 
       try {
         // Call EventService to create the event
-        final EventDTO newEventDTO = await _eventService.createEvent(
-          place_id,
+        final CreateEventDTO newEventDTO = await _eventService.createEvent(
+          placeId,
           date,
-          type,
+          isprivate,
           category,
           description,
           _image, // Pass the image file for upload
@@ -90,6 +91,7 @@ class CreateEventState extends State<CreateEvent> {
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       appBar: AppBar(
         title: Text('Create Event'),
@@ -127,8 +129,10 @@ class CreateEventState extends State<CreateEvent> {
                   return null;
                 },
               ),
-              TextFormField(
-                controller: typeController,
+              
+
+                         TextFormField(
+                controller: isprivateController,
                 decoration: InputDecoration(labelText: 'Type'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -136,14 +140,15 @@ class CreateEventState extends State<CreateEvent> {
                   }
                   return null;
                 },
-              ),
+              ), 
+ 
               TextFormField(
                 controller: categoryController,
                 decoration: InputDecoration(labelText: 'Category'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please specify a category';
-                  }
+                  }                                                                                                                  
                   return null;
                 },
               ),

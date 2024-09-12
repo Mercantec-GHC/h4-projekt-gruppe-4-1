@@ -1,11 +1,8 @@
 import 'dart:io';
-import 'dart:convert'; 
 import 'package:flutter/material.dart';
+import 'package:flutter_first_app/Http/User/createuser.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:http/http.dart' as http;
-import 'package:http_parser/http_parser.dart';
-import 'package:flutter_first_app/config/api_config.dart'; 
-import 'package:flutter_first_app/models/user.dart'; 
+
 
 class CreateUserPage extends StatefulWidget {
   @override
@@ -23,6 +20,7 @@ class _CreateUserPageState extends State<CreateUserPage> {
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _postalController = TextEditingController();
   final TextEditingController _cityController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
   File? _image;
 
   final ImagePicker _picker = ImagePicker();
@@ -37,84 +35,58 @@ class _CreateUserPageState extends State<CreateUserPage> {
     });
   }
 
-  Future<CreateUserDTO> createUser(
-      String firstname,
-      String lastname,
-      String email,
-      String username,
-      String password,
-      String address,
-      String postal,
-      String city,
-      File? image) async {
-    final String baseUrl = ApiConfig.apiUrl;
-    final uri = Uri.parse('$baseUrl/api/user/signup');
-    final request = http.MultipartRequest('POST', uri);
+void _createUser() async {
+  if (_formKey.currentState!.validate()) {
+    final String firstName = _firstNameController.text;
+    final String lastName = _lastNameController.text;
+    final String email = _emailController.text;
+    final String username = _usernameController.text;
+    final String password = _passwordController.text;
+    final String address = _addressController.text;
+    final String postal = _postalController.text;
+    final String city = _cityController.text;
 
-   
-    request.fields['firstname'] = firstname;
-    request.fields['lastname'] = lastname;
-    request.fields['email'] = email;
-    request.fields['username'] = username;
-    request.fields['password'] = password;
-    request.fields['address'] = address;
-    request.fields['postal'] = postal;
-    request.fields['city'] = city;
+    try {
+      await createUser(
+        firstName,
+        lastName,
+        email,
+        username,
+        password,
+        address,
+        postal,
+        city,
+        _image,
+      );
 
-    
-    if (image != null) {
-      request.files.add(await http.MultipartFile.fromPath(
-        'ProfilePicture', 
-        image.path,
-        contentType: MediaType('image', 'png'),
-      ));
-    }
-
-    request.headers.addAll({
-      'accept': '*/*',
-      'Content-Type': 'multipart/form-data',
-    });
-
-    final response = await request.send();
-
-    if (response.statusCode == 201) {
-      final responseBody = await response.stream.bytesToString();
-      return CreateUserDTO.fromJson(jsonDecode(responseBody) as Map<String, dynamic>);
-    } else {
-      final responseBody = await response.stream.bytesToString();
-      throw Exception('Failed to create user: ${response.statusCode} - $responseBody');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("User created successfully."),
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Failed to create user: $e"),
+        ),
+      );
     }
   }
-
-  void _createUser() async {
-    if (_formKey.currentState!.validate()) {
-      final String firstName = _firstNameController.text;
-      final String lastName = _lastNameController.text;
-      final String email = _emailController.text;
-      final String username = _emailController.text;
-      final String password = _passwordController.text;
-      final String address = _addressController.text;
-      final String postal = _postalController.text;
-      final String city = _cityController.text;
-
-      try {
-        final CreateUserDTO newUser = await createUser(
-            firstName, lastName, email, username, password, address, postal, city, _image);
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text("User ${newUser.username} created successfully."),
-          ),
-        );
-      } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text("Failed to create user: $e"),
-          ),
-        );
-      }
-    }
-  }
+}
+ @override
+void dispose() {
+  _firstNameController.dispose();
+  _lastNameController.dispose();
+  _emailController.dispose();
+  _confirmEmailController.dispose();
+  _passwordController.dispose();
+  _confirmPasswordController.dispose();
+  _addressController.dispose();
+  _postalController.dispose();
+  _cityController.dispose();
+  _usernameController.dispose();
+  super.dispose();
+}
 
   @override
   Widget build(BuildContext context) {
@@ -164,6 +136,7 @@ class _CreateUserPageState extends State<CreateUserPage> {
                       return null;
                     },
                   ),
+                  
                   TextFormField(
                     controller: _confirmEmailController,
                     decoration: const InputDecoration(labelText: "Confirm Email"),
@@ -173,6 +146,16 @@ class _CreateUserPageState extends State<CreateUserPage> {
                         return "Please confirm your email";
                       } else if (value != _emailController.text) {
                         return "Emails do not match";
+                      }
+                      return null;
+                    },
+                  ),
+                  TextFormField(
+                    controller: _usernameController,
+                    decoration: const InputDecoration(labelText: "Username"),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "please enter";
                       }
                       return null;
                     },
@@ -244,9 +227,19 @@ class _CreateUserPageState extends State<CreateUserPage> {
                   ),
                   const SizedBox(height: 16),
                   ElevatedButton(
-                    onPressed: _createUser, 
-                    child: const Text("Create User"),
-                  ),
+                  onPressed: () {
+                    print('First Name: ${_firstNameController.text}');
+                    print('Last Name: ${_lastNameController.text}');
+                    print('Email: ${_emailController.text}');
+                    print('Username: ${_usernameController.text}');
+                    print('Password: ${_passwordController.text}');
+                    print('Address: ${_addressController.text}');
+                    print('Postal: ${_postalController.text}');
+                    print('City: ${_cityController.text}');
+                    _createUser();
+                  },
+                  child: const Text("Create User"),
+                )
                 ],
               ),
             ),

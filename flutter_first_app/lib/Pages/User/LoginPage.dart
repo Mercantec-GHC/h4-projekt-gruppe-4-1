@@ -37,6 +37,11 @@ class _LoginPageState extends State<LoginPage> {
         // Store the token securely in FlutterSecureStorage
         await _secureStorage.write(key: 'token', value: token);
 
+        // Show success message
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Login Successful!")),
+        );
+
         // Navigate to SeeAllEvents page after successful login
         Navigator.pushReplacement(
           context,
@@ -44,7 +49,7 @@ class _LoginPageState extends State<LoginPage> {
         );
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(e.toString())),
+          SnackBar(content: Text("Login failed: ${e.toString()}")),
         );
       } finally {
         setState(() {
@@ -108,6 +113,8 @@ class _LoginPageState extends State<LoginPage> {
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Please enter your email';
+                                } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                                  return 'Please enter a valid email';
                                 }
                                 return null;
                               },
@@ -125,6 +132,8 @@ class _LoginPageState extends State<LoginPage> {
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Please enter your password';
+                                } else if (value.length < 6) {
+                                  return 'Password must be at least 6 characters long';
                                 }
                                 return null;
                               },

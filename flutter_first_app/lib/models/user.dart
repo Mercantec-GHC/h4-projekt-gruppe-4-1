@@ -52,26 +52,26 @@ class UserDTO{
 
 // model for at lave en bruger
 class CreateUserDTO {
-  final String firstname;
-  final String lastname;
-  final String email;
-  final String username;
-  final String password;
-  final String address;
-  final String postal;
-  final String city;
-  final String profilePicture;
+  final String? firstname;
+  final String? lastname;
+  final String? email;
+  final String? username;
+  final String? password;
+  final String? address;
+  final String? postal;
+  final String? city;
+  final String? profilePicture;
 
   CreateUserDTO({
-    required this.firstname,
-    required this.lastname,
-    required this.email,
-    required this.username,
-    required this.password,
-    required this.address,
-    required this.postal,
-    required this.city,
-    required this.profilePicture,
+    this.firstname,
+    this.lastname,
+    this.email,
+    this.username,
+    this.password,
+    this.address,
+    this.postal,
+    this.city,
+    this.profilePicture,
   });
 
   Map<String, dynamic> toJson() {
@@ -86,19 +86,5 @@ class CreateUserDTO {
       'city': city,
       'profilePicture': profilePicture,
     };
-  }
-
-  factory CreateUserDTO.fromJson(Map<String, dynamic> json) {
-    return CreateUserDTO(
-      firstname: json['firstname'] as String,
-      lastname: json['lastname'] as String,
-      email: json['email'] as String,
-      username: json['username'] as String,
-      password: json['password'] as String,
-      address: json['address'] as String,
-      postal: json['postal'] as String,
-      city: json['city'] as String,
-      profilePicture: json['profilePicture'] as String,
-    );
   }
 }

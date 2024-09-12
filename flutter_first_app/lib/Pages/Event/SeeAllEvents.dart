@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_first_app/Pages/User/LoginPage.dart';
+import 'package:flutter_first_app/Pages/Event/EventPage.dart';
 
 class SeeAllEvents extends StatefulWidget {
   const SeeAllEvents({super.key});
@@ -25,7 +26,7 @@ class _SeeAllEventsState extends State<SeeAllEvents> {
 
   // Fetch events from API
   Future<List<EventDTO>> fetchEvents() async {
-    final String baseUrl = ApiConfig.apiUrl;
+    const String baseUrl = ApiConfig.apiUrl;
     final url = Uri.parse('$baseUrl/api/Event');
 
     try {
@@ -34,6 +35,8 @@ class _SeeAllEventsState extends State<SeeAllEvents> {
       if (response.statusCode == 200) {
         final List body = json.decode(response.body);
         final events = body.map((e) => EventDTO.fromJson(e)).toList();
+        print(events[0].EventPicture);
+
         return events;
       } else {
         throw Exception('Failed to load events: ${response.statusCode}');
@@ -78,9 +81,12 @@ class _SeeAllEventsState extends State<SeeAllEvents> {
               return const Text("Failed to load events.");
             } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
               final events = snapshot.data!;
+              print(events);
               return buildEvents(events);
             } else {
-              return const Text("No events available.");
+              
+              return const Text("No events available.")
+              ;
             }
           },
         ),
@@ -88,7 +94,7 @@ class _SeeAllEventsState extends State<SeeAllEvents> {
     );
   }
 
-  // Build the event list UI with image display
+  
   Widget buildEvents(List<EventDTO> events) {
     return ListView.builder(
       itemCount: events.length,
@@ -104,11 +110,10 @@ class _SeeAllEventsState extends State<SeeAllEvents> {
             children: [
               Expanded(
                 flex: 1,
-                child: Image.network(
-                  event.ImageURL, // Display event image from the URL
-                  fit: BoxFit.cover, // Ensure the image fits properly
+                child: Image.network('https://eventharmoni.mercantec.tech/eventharmoni/PP5db7569155f64d3b84e2a9ba7db44da7.png', 
+                  fit: BoxFit.cover, 
                   errorBuilder: (context, error, stackTrace) {
-                    return const Icon(Icons.broken_image, size: 100); // Handle broken images
+                    return const Icon(Icons.broken_image, size: 100); 
                   },
                 ),
               ),
@@ -128,17 +133,29 @@ class _SeeAllEventsState extends State<SeeAllEvents> {
                     const SizedBox(height: 5),
                     Text('Place_id: ${event.place_id}'),
                     Text('Date: ${event.date}'),
-                    Text('Type: ${event.type}'),
+                    Text('isprivate: ${event.isprivate}'),
                     Text('Category: ${event.category}'),
                     Text('Description: ${event.description}'),
                   ],
                 ),
               ),
-            ],
-          ),
-        );
-      },
-    );
+                TextButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => CreateEvent()),
+                                );
+                              },
+                              child: Text(
+                                'Opret Event her',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Theme.of(context).primaryColor,
+                                )))
+          ],                  
+          ),         
+        );       
+      },      
+    );   
   }
 }
-
