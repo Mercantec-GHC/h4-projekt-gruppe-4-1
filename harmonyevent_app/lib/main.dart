@@ -1,10 +1,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_gradient_button/flutter_gradient_button.dart';
+import 'package:harmonyevent_app/pages/CreateEventPage.dart';
 
 import 'package:harmonyevent_app/pages/LoginPage.dart';   
 import 'package:harmonyevent_app/pages/CreateUserPage.dart';   
-import 'package:harmonyevent_app/pages/EventPage.dart';
 
 import 'package:harmonyevent_app/services/login_service.dart';
 
@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
           scaffoldBackgroundColor: const Color.fromARGB(255, 36, 51, 6),
           fontFamily: 'Purisa', 
             ),
-            home: isLoggedIn ? EventPage() : HomeScreen(), 
+            home: isLoggedIn ? CreateEventPage() : HomeScreen(), 
             //home: HomeScreen()
           );
         }

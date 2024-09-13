@@ -11,7 +11,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 class CreateUserService {
 // Initialize secure storage
 final FlutterSecureStorage secureStorage = FlutterSecureStorage();
-
+final String baseUrl = ApiConfig.apiUrl;
 Future<void> createUser(
   String firstName,
   String lastName,
@@ -23,7 +23,7 @@ Future<void> createUser(
   String city,
   File? image
 ) async {
-  final String baseUrl = ApiConfig.apiUrl;
+
   final request = http.MultipartRequest('POST', Uri.parse('$baseUrl/api/User/SignUp'));
 
   // Add all fields to the request

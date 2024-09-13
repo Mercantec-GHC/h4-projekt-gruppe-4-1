@@ -250,7 +250,7 @@ class _EventPageState extends State<EventPage> {
                     ),
                                         const SizedBox(height: 5),
                     Text(
-                      "Type:" + " " + event.type,
+                      "Type:" + " " + event.isprivate,
                       style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
@@ -260,7 +260,8 @@ class _EventPageState extends State<EventPage> {
                     const SizedBox(height: 10),
                     Text(
                       //"Date:" + " " + DateUtils.dateOnly(event.date).toString(),
-                      "Occurs:" + " " + event.date.day.toString() + "/" + event.date.month.toString() + " " + event.date.year.toString() + " " + "at 11 am",
+                      // "Occurs:" + " " + event.date.day.toString() + "/" + event.date.month.toString() + " " + event.date.year.toString() + " " + "at 11 am",
+                      "Occurs:" + " " + event.date,
                       style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,

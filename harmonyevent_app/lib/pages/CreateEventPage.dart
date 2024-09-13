@@ -1,11 +1,13 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:harmonyevent_app/models/event_model.dart';
 import 'package:status_alert/status_alert.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_gradient_button/flutter_gradient_button.dart';
 //import 'package:harmonyevent_app/models/event_model.dart';
 import 'package:harmonyevent_app/pages/EventPage.dart';
 import 'package:harmonyevent_app/services/createevent_service.dart';
+import 'package:harmonyevent_app/services/login_service.dart';
 
 class CreateEventPage extends StatefulWidget {
   @override
@@ -53,22 +55,37 @@ class CreateEventState extends State<CreateEventPage> {
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _isPrivateController = TextEditingController();
-  File? _image; // To store the selected image
+
+  
+  File? EventPicture; // To store the selected image
   
   final picker = ImagePicker(); // Image picker instance
-  final CreateEventService _createEventService = CreateEventService(); // Instance of EventService
   bool _isLoading = false;
 
+  final CreateEventService _eventService = CreateEventService(); 
+
+    @override
+    void dispose() {
+    _dateController.dispose();
+    _placeIdController.dispose();
+    _isPrivateController.dispose();
+    _categoryController.dispose();
+    _titleController.dispose();
+    _descriptionController.dispose();
+    super.dispose();
+  }
+
 // Function to pick an image
-  Future<void> _pickImage() async {
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery); // or ImageSource.camera
+ Future<void> _pickImage() async {
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       setState(() {
-        _image = File(pickedFile.path); // Save the selected image
+        EventPicture= File(pickedFile.path); // Save the selected image
       });
     }
   }
 
+  // Function to select a date using DatePicker
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? selected = await showDatePicker(
       context: context,
@@ -76,76 +93,72 @@ class CreateEventState extends State<CreateEventPage> {
       firstDate: DateTime(2000),
       lastDate: DateTime(2050),
     );
-    print(selected);
+
     if (selected != null) {
       setState(() {
-        _dateController.text = selected.toUtc().toString().split(' ')[0]; 
+        _dateController.text = selected.toUtc().toString().split(' ')[0]; // Update date
       });
     }
   }
 
+  // Function to handle form submission
   Future<void> _submitData() async {
-    if (_formKey.currentState!.validate()) {
-      setState(() {
-        _isLoading = true;      
-      });
-      final String date = _dateController.text; 
-      final String user_id = _userIdController.text;  
-      final String place_id = _placeIdController.text;  
-      final String category = _categoryController.text;
-      final String description = _descriptionController.text;
-      final String title = _titleController.text;
-      final bool isPrivate = _isPrivateController.text as bool;
+  if (_formKey.currentState!.validate()) {
+    final String date = _dateController.text;
+    final String placeId = _placeIdController.text;
+    final String isPrivate = _isPrivateController.text;
+    final String title = _titleController.text;
+    final String category = _categoryController.text;
+    final String description = _descriptionController.text;
+    
+    File? eventPicture; // Declared as a nullable File
 
-      try {
-        await _createEventService.createEvent(
-          date, 
-          user_id, 
-          place_id, 
-          category, 
-          description, 
-          title, 
-          isPrivate,
-          _image,
-        );
-        showSuccessAlert(context);
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => EventPage()), // Replace with the correct page
-          );
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              // content: Text("Description ${newEventDTO.description} created successfully."),
-              content: Text("Event created successfully."),
-            ),
-          );
-      } 
-      catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text("Failed to create Event: $e"),
-          ),
-        );
-      }
-      finally {
-        setState(() {
-          _isLoading = false;
-        });
-      }
+    // Ensure that the user has picked an image
+    if (EventPicture != null) {
+      eventPicture = EventPicture; // Set the image from the file picker
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Please select an event picture."),
+        ),
+      );
+      return;
+    }
+
+    try {
+      // Call EventService to create the event
+      final CreateEventDTO newEventDTO = await _eventService.createEvent(
+        placeId,
+        date,
+        category,
+        isPrivate,
+        title,
+        description,
+        eventPicture, // Pass the image file for upload
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Event '${newEventDTO.title}' created successfully."),
+        ),
+      );
+
+      // Reset the form after successful submission
+      _formKey.currentState?.reset();
+      setState(() {
+        EventPicture = null; // Clear the selected image
+      });
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Failed to create event: $e"),
+        ),
+      );
     }
   }
-  @override
-  void dispose() {
-    _dateController.dispose();
-    _userIdController.dispose();
-    _placeIdController.dispose();
-    _categoryController.dispose();
-    _descriptionController.dispose();
-    _titleController.dispose();
-    _isPrivateController.dispose();
-    super.dispose();
-  }
-  
+}
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -217,9 +230,9 @@ class CreateEventState extends State<CreateEventPage> {
                 label: Text('Pick Event Image'),
               ),
               SizedBox(height: 10),
-              _image != null
+              EventPicture != null
                   ? Image.file(
-                      _image!,
+                      EventPicture!,
                       height: 150,
                     )
                   : Text('No image selected'),
