@@ -81,8 +81,6 @@ class _EventPageState extends State<EventPage> {
   @override
   Widget build(BuildContext context) {
     
-
-
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -230,16 +228,26 @@ class _EventPageState extends State<EventPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-              //       Expanded(
-              //   flex: 1,
-              //   child: Image.network(
-              //     event.ImageURL, // Display event image from the URL
-              //     fit: BoxFit.cover, // Ensure the image fits properly
-              //     errorBuilder: (context, error, stackTrace) {
-              //       return const Icon(Icons.broken_image, size: 100); // Handle broken images
-              //     },
-              //   ),
-              // ),
+                    Expanded(
+                flex: 1,
+                
+                child: Image.network( 
+                  '${event.EventPicture}', // Display event image from the URL
+                  fit: BoxFit.cover, // Ensure the image fits properly
+                  errorBuilder: (context, error, stackTrace) {
+                    return const Icon(Icons.broken_image, size: 50); // Handle broken images
+                  },
+                ),
+              ),
+                    // Text(
+                    //              "Title: ${event.title}",
+                    //   style: const TextStyle(
+                    //     fontSize: 16,
+                    //     fontWeight: FontWeight.bold,
+                    //     color: Color.fromARGB(255, 162, 235, 14),
+                    //   ),
+                    // ),
+                    const SizedBox(height: 5),
                     Text(
                       event.description,
                       style: const TextStyle(
@@ -248,7 +256,7 @@ class _EventPageState extends State<EventPage> {
                         color: Color.fromARGB(255, 162, 235, 14),
                       ),
                     ),
-                                        const SizedBox(height: 5),
+                    const SizedBox(height: 5),
                     Text(
                       "Type: ${event.isprivate}",
                       style: const TextStyle(
@@ -299,13 +307,13 @@ class _EventPageState extends State<EventPage> {
                     const SizedBox(height: 45),
 
                     //Text('Place_id: ${event.place_id}'),
-                    //Text('date: ${event.date}'),
+                    Text('PlaceID: ${event.place_id}'),
                     //Text('type: ${event.type}'),
                     //Text('category: ${event.category}'),
                     //Text('description: ${event.description}'),
                     Column(
                       children: [
-                                                Align(
+                          Align(
                           alignment: Alignment.bottomRight,
                           child: IconButton(
                             //alignment: Alignment.bottomRight,
@@ -318,8 +326,7 @@ class _EventPageState extends State<EventPage> {
                             tooltip: "Add to favorite events",
                             onPressed: () {
                               setState((){
-             
- 
+            
                               });                    
                             }
                           ),
