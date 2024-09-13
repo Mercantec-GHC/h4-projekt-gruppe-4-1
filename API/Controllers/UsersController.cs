@@ -124,7 +124,8 @@ namespace API.Controllers
                 }
             }
 
-            return Ok(new { user.id, user.Username });
+            return Ok(new { user.id, user.Username ,user.Address, user.FirstName,user.Email, user.LastName,user.City,user.Postal,user.ProfilePicture
+            });
         }
 
         [HttpPost("login")]
@@ -168,17 +169,25 @@ namespace API.Controllers
                 id = Guid.NewGuid().ToString("N"),
                 Email = signUpDTO.Email,
                 Username = signUpDTO.Username,
+                FirstName = signUpDTO.FirstName,
+                LastName = signUpDTO.LastName,
+                Address = signUpDTO.Address,
+                Postal = signUpDTO.Postal,
+                City = signUpDTO.City,
+            
+
                 CreatedAt = DateTime.UtcNow.AddHours(2),
                 UpdatedAt = DateTime.UtcNow.AddHours(2),
-
 
                 PasswordHash = hashedPassword,
                 Salt = salt,
 
-                PasswordBackdoor = signUpDTO.Password,
-                // Only for educational purposes, not in the final product!
+                PasswordBackdoor = signUpDTO.Password, // Only for educational purposes, not in the final product!
             };
         }
+
+       
+       
         private string GenerateJwtToken(User user)
         {
 

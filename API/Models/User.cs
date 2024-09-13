@@ -6,54 +6,52 @@ namespace API.Models
     public class User : Common
     {
         
-        public string? FirstName { get; set; }
-        public string? LastName { get; set; }
+        public String FirstName { get; set; }
+        public String LastName { get; set; }
 
-        public string Email { get; set; }
-        public string Username { get; set; }
+        public String Email { get; set; }
+        public String Username { get; set; }
       
         public int Password { get; set; }
-        public string Address { get; set; }
+        public String Address { get; set; }
 
-        public string Postal { get; set; }
-        public string City { get; set; }
+        public String Postal { get; set; }
+        public String City { get; set; }
 
-        public string PasswordHash { get; set; }   
-        public string PasswordBackdoor { get; set; }
+        public String PasswordHash { get; set; }   
+        public String PasswordBackdoor { get; set; }
 
-        public string Salt { get; set; }
+        public String Salt { get; set; }
 
-        public string ProfilePicture { get; set; }
+        public String ProfilePicture { get; set; }
 
     }
     public class UserDTO
     {
-        public string? Id { get; set; }
-        public string Email { get; set; }
-        public string Username { get; set; }
-        public string ProfilePicture { get; set; }
+        public String Id { get; set; }
+        public String Email { get; set; }
+        public String Username { get; set; }
+        public String ProfilePicture { get; set; }
     }
 
     public class LoginDTO
     {
-        public string Email { get; set; }
-        public string Password { get; set; }
+        public String Email { get; set; }
+        public String Password { get; set; }
     }
 
     public class SignUpDTO
     {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Email { get; set; }
-        public string Username { get; set; }
-        public string Password { get; set; }
-        public string Address { get; set; }
-        public string Postal { get; set; }
-        public string City { get; set; }
+        public String FirstName { get; set; }
+        public String LastName { get; set; }
+        public String Email { get; set; }
+        public String Username { get; set; }
+        
+        public String Address { get; set; }
+        public String Postal { get; set; }
+        public String City { get; set; }
         public IFormFile ProfilePicture { get; set; }
-
-    
-
+        public string Password { get;  set; }
     }
 
 }
