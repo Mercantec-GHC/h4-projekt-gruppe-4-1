@@ -26,7 +26,7 @@ class UserDTO{
   }
 }
 
-// model for at lave en bruger
+// model for oprettelse af bruger
 class CreateUserDTO {
   final String firstname;
   final String lastname;
