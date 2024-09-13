@@ -11,7 +11,7 @@ namespace API.Models
         public string? User_id { get; set; }
         public string? Place_id { get; set; }
         public string EventPictureURL { get; set; }
-        public bool isprivate { get; set; }
+        public string isprivate { get; set; }
         public string? Category { get; set; }
         public string? Description { get; set; }
         public string? EventCreator_id { get; set; }
@@ -33,7 +33,7 @@ namespace API.Models
         public string Title { get; set; }
         public string ImageURL { get; set; }
         public string Category { get; set; }
-        public bool isprivate { get; set; }
+        public string isprivate { get; set; }
     }
 
 
@@ -43,7 +43,7 @@ namespace API.Models
         
         public string? Place_id { get; set; }
         public IFormFile EventPicture { get; set; }
-        public bool isprivate { get; set; }
+        public string isprivate { get; set; }
         public string Title { get; set; }
         public string? Category { get; set; }
         public string? Description { get; set; }
