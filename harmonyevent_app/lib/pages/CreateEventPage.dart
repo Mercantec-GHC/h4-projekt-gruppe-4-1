@@ -2,9 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:status_alert/status_alert.dart';
 import 'package:image_picker/image_picker.dart';
-
 import 'package:flutter_gradient_button/flutter_gradient_button.dart';
-
 //import 'package:harmonyevent_app/models/event_model.dart';
 import 'package:harmonyevent_app/pages/EventPage.dart';
 import 'package:harmonyevent_app/services/createevent_service.dart';
@@ -48,25 +46,18 @@ void showErrorAlert(BuildContext context) {
 
 class CreateEventState extends State<CreateEventPage> {
   final _formKey = GlobalKey<FormState>();
-  //final String baseUrl = ApiConfig.apiUrl;
-  final TextEditingController dateController = TextEditingController();
-  final TextEditingController user_idController = TextEditingController();
-  final TextEditingController place_idController = TextEditingController();
-  final TextEditingController typeController = TextEditingController();
-  final TextEditingController categoryController = TextEditingController();
-  final TextEditingController descriptionController = TextEditingController();
-  final TextEditingController titleController = TextEditingController();
-  final TextEditingController isPrivateController = TextEditingController();
-
+  final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _userIdController = TextEditingController();
+  final TextEditingController _placeIdController = TextEditingController();
+  final TextEditingController _categoryController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _isPrivateController = TextEditingController();
   File? _image; // To store the selected image
+  
   final picker = ImagePicker(); // Image picker instance
   final CreateEventService _createEventService = CreateEventService(); // Instance of EventService
   bool _isLoading = false;
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
 
 // Function to pick an image
   Future<void> _pickImage() async {
@@ -88,7 +79,7 @@ class CreateEventState extends State<CreateEventPage> {
     print(selected);
     if (selected != null) {
       setState(() {
-        dateController.text = selected.toUtc().toString().split(' ')[0]; 
+        _dateController.text = selected.toUtc().toString().split(' ')[0]; 
       });
     }
   }
@@ -98,27 +89,19 @@ class CreateEventState extends State<CreateEventPage> {
       setState(() {
         _isLoading = true;      
       });
-      final String date = dateController.text; 
-      final String place_id = place_idController.text; 
-      final String type = typeController.text;
-      final String category = categoryController.text;
-      final String description = descriptionController.text;
-      final String title = titleController.text;
-      final String isPrivate = isPrivateController.text;
+      final String date = _dateController.text; 
+      final String user_id = _userIdController.text;  
+      final String place_id = _placeIdController.text;  
+      final String category = _categoryController.text;
+      final String description = _descriptionController.text;
+      final String title = _titleController.text;
+      final bool isPrivate = _isPrivateController.text as bool;
 
       try {
-        // final EventDTO newEventDTO = await _createEventService.createEvent(
-        //   place_id, 
-        //   date, 
-        //   type, 
-        //   category, 
-        //   description, 
-        //   _image
-        // );
         await _createEventService.createEvent(
-          place_id, 
           date, 
-          type, 
+          user_id, 
+          place_id, 
           category, 
           description, 
           title, 
@@ -151,29 +134,17 @@ class CreateEventState extends State<CreateEventPage> {
       }
     }
   }
-
-  // Future<EventDTO> createevent(String place_id, String date, String type, String category, String description, File? image) async {
-  // final String baseUrl = ApiConfig.apiUrl;
-  // final response = await http.post(
-  //   Uri.parse('$baseUrl/api/event/create'),
-  //   headers: <String, String>{
-  //     'Content-Type': 'application/json; charset=UTF-8',
-  //   },
-  //   body: json.encode(<String, String>{
-  //     'date': date,
-  //     'place_id': place_id,
-  //     'type': type,
-  //     'category': category,
-  //     'description': description,
-  //   }),
-  // );
-
-  // if (response.statusCode == 201) {
-  //   return EventDTO.fromJson(jsonDecode(response.body) as Map<String, dynamic>);
-  // } else {
-  //   throw Exception('Failed to create event: ${response.statusCode} - ${response.body}');
-  //   }
-  // }
+  @override
+  void dispose() {
+    _dateController.dispose();
+    _userIdController.dispose();
+    _placeIdController.dispose();
+    _categoryController.dispose();
+    _descriptionController.dispose();
+    _titleController.dispose();
+    _isPrivateController.dispose();
+    super.dispose();
+  }
   
   @override
   Widget build(BuildContext context) {
@@ -219,7 +190,7 @@ class CreateEventState extends State<CreateEventPage> {
           children: [
             TextFormField(
               style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
-              controller: dateController,
+              controller: _dateController,
               readOnly: true, 
               decoration: InputDecoration(
                 labelText: 'Date',
@@ -240,7 +211,7 @@ class CreateEventState extends State<CreateEventPage> {
               },
             ),
             //const SizedBox(height: 15),
-                          ElevatedButton.icon(
+            ElevatedButton.icon(
                 onPressed: _pickImage,
                 icon: Icon(Icons.image),
                 label: Text('Pick Event Image'),
@@ -252,14 +223,14 @@ class CreateEventState extends State<CreateEventPage> {
                       height: 150,
                     )
                   : Text('No image selected'),
-                           const SizedBox(height: 15),
-                   TextFormField(
+              //const SizedBox(height: 15),
+            TextFormField(
               style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
-              controller: titleController,
+              controller: _titleController,
               decoration: InputDecoration(
                 labelText: 'Title',
                 labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
-                                border: OutlineInputBorder(
+                  border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
                 ),
               ),
@@ -273,11 +244,11 @@ class CreateEventState extends State<CreateEventPage> {
             //const SizedBox(height: 15),
             TextFormField(
               style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
-              controller: place_idController,
+              controller: _placeIdController,
               decoration: InputDecoration(
-                labelText: 'Location',
+                labelText: 'Location (PlaceId)',
                 labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
-                                border: OutlineInputBorder(
+                border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
                 ),
               ),
@@ -291,9 +262,9 @@ class CreateEventState extends State<CreateEventPage> {
             //const SizedBox(height: 15),
             TextFormField(
               style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
-              controller: isPrivateController,
+              controller: _isPrivateController,
               decoration: InputDecoration(
-                labelText: 'Type',
+                labelText: 'Type (IsPrivate)',
                 labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
@@ -309,7 +280,7 @@ class CreateEventState extends State<CreateEventPage> {
             //const SizedBox(height: 15),
             TextFormField(
               style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
-              controller: categoryController,
+              controller: _categoryController,
               decoration: InputDecoration(
                 labelText: 'Category',
                 labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
@@ -329,7 +300,7 @@ class CreateEventState extends State<CreateEventPage> {
               style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
               maxLines: 1,
               minLines: 1,
-              controller: descriptionController,
+              controller: _descriptionController,
               decoration: InputDecoration(
                 alignLabelWithHint: true,
                 labelText: 'Description',   
@@ -348,9 +319,9 @@ class CreateEventState extends State<CreateEventPage> {
             //SizedBox(height: 15),
             TextFormField(         
               style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
-              controller: user_idController,
+              controller: _userIdController,
               decoration: InputDecoration(    
-                labelText: 'Organized by',
+                labelText: 'Organized by (UserID)',
                 labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),

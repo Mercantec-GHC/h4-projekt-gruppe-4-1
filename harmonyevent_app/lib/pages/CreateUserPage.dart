@@ -65,11 +65,6 @@ class _CreateUserPageState extends State<CreateUserPage> {
   final CreateUserService _createUserService = CreateUserService(); // Instance of EventService
   bool _isLoading = false;
   
-  // @override
-  // void dispose() {
-  //   super.dispose();
-  // }
-
   // Function to pick an image
   Future<void> _pickImage() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
@@ -95,17 +90,8 @@ class _CreateUserPageState extends State<CreateUserPage> {
       final String address = _addressController.text;
       final String postal = _postalController.text;
       final String city = _cityController.text;
+
       try {
-        // final CreateUserDTO newUserDTO = await _createUserService.createUser(
-        //   firstName, 
-        //   lastName, 
-        //   email, 
-        //   username, 
-        //   password, 
-        //   address, 
-        //   postal, 
-        //   city, 
-        //   _image
         await _createUserService.createUser(
         firstName,
         lastName,
