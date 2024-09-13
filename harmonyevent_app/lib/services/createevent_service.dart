@@ -46,27 +46,26 @@ class CreateEventService {
         ),
       );
     }
-      //DET ER HER DET MANGLER - SE CREATEUSERSERVICE!!!!!
-     // Retrieve the token securely
-  final String? token = await secureStorage.read(key: 'token');
-  if (token != null) {
-    request.headers[HttpHeaders.authorizationHeader] = 'Bearer $token';
-  }
-
-  try {
-    final response = await request.send();
-
-    if (response.statusCode == 200) {
-      final responseBody = await response.stream.bytesToString();
-      print("User created successfully: $responseBody");
-    } else {
-      final responseBody = await response.stream.bytesToString();
-      throw Exception('Failed to create user. Status code: ${response.statusCode}, Response: $responseBody');
+    // Retrieve the token securely
+    final String? token = await secureStorage.read(key: 'token');
+    if (token != null) {
+      request.headers[HttpHeaders.authorizationHeader] = 'Bearer $token';
     }
-  } catch (e) {
-    print("Error: $e");
-    throw Exception('Failed to create user: $e');
-  }
-  }
+    try {
+      final response = await request.send();
 
+      if (response.statusCode == 200) {
+        final responseBody = await response.stream.bytesToString();
+        print("User created successfully: $responseBody");
+      } 
+      else {
+        final responseBody = await response.stream.bytesToString();
+        throw Exception('Failed to create user. Status code: ${response.statusCode}, Response: $responseBody');
+      }
+    } 
+    catch (e) {
+      print("Error: $e");
+      throw Exception('Failed to create user: $e');
+    }
+  }
 }  

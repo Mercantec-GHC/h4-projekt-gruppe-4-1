@@ -58,13 +58,15 @@ Future<void> createUser(
     if (response.statusCode == 200) {
       final responseBody = await response.stream.bytesToString();
       print("User created successfully: $responseBody");
-    } else {
+    } 
+    else {
       final responseBody = await response.stream.bytesToString();
       throw Exception('Failed to create user. Status code: ${response.statusCode}, Response: $responseBody');
     }
-  } catch (e) {
-    print("Error: $e");
-    throw Exception('Failed to create user: $e');
+    } 
+    catch (e) {
+      print("Error: $e");
+      throw Exception('Failed to create user: $e');
+    }
   }
-}
 }
