@@ -239,7 +239,7 @@ class CreateEventState extends State<CreateEventPage> {
                 return null;
               },
             ),
-            const SizedBox(height: 15),
+            //const SizedBox(height: 15),
                           ElevatedButton.icon(
                 onPressed: _pickImage,
                 icon: Icon(Icons.image),
@@ -270,7 +270,7 @@ class CreateEventState extends State<CreateEventPage> {
                 return null;
               },
             ),
-            const SizedBox(height: 15),
+            //const SizedBox(height: 15),
             TextFormField(
               style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
               controller: place_idController,
@@ -288,7 +288,7 @@ class CreateEventState extends State<CreateEventPage> {
                 return null;
               },
             ),
-            const SizedBox(height: 15),
+            //const SizedBox(height: 15),
             TextFormField(
               style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
               controller: isPrivateController,
@@ -306,7 +306,7 @@ class CreateEventState extends State<CreateEventPage> {
                 return null;
               },
             ),
-            const SizedBox(height: 15),
+            //const SizedBox(height: 15),
             TextFormField(
               style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
               controller: categoryController,
@@ -324,11 +324,11 @@ class CreateEventState extends State<CreateEventPage> {
                 return null;
               },
             ),
-             const SizedBox(height: 15),
+             //const SizedBox(height: 15),
             TextFormField(
               style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
-              maxLines: 2,
-              minLines: 2,
+              maxLines: 1,
+              minLines: 1,
               controller: descriptionController,
               decoration: InputDecoration(
                 alignLabelWithHint: true,
@@ -345,7 +345,7 @@ class CreateEventState extends State<CreateEventPage> {
                 return null;
               },
             ),
-            SizedBox(height: 15),
+            //SizedBox(height: 15),
             TextFormField(         
               style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
               controller: user_idController,
