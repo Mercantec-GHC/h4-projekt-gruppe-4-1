@@ -15,35 +15,35 @@ void main() {
   runApp(MyApp());
 }
 
-  void showSuccessAlert(BuildContext context) {     
-    StatusAlert.show( 
-      context, 
-      duration: Duration(seconds: 2), 
-      title: 'Success',
-      subtitle: 'Login completed successfully!', 
-      configuration: IconConfiguration(
-        icon: Icons.check,
-        color: const Color.fromARGB(255, 162, 235, 14),
-                size: 180.0,
-        ), 
-      backgroundColor: Colors.transparent,
-      // borderRadius: BorderRadius.circular(10),
-    ); 
-  } 
-  void showErrorAlert(BuildContext context) { 
-    StatusAlert.show( 
-      context, 
-      duration: Duration(seconds: 2), 
-      title: 'Invalid username or password!', 
-      subtitle: 'Please try again.', 
-      configuration: IconConfiguration(
-        icon: Icons.block_rounded,
-        color: const Color.fromARGB(255, 162, 235, 14),
-        size: 180.0,
-        ), 
-      backgroundColor: const Color.fromARGB(255, 36, 51, 6),
-    ); 
-  } 
+void showSuccessAlert(BuildContext context) {     
+  StatusAlert.show( 
+    context, 
+    duration: Duration(seconds: 2), 
+    title: 'Success',
+    subtitle: 'Login completed successfully!', 
+    configuration: IconConfiguration(
+      icon: Icons.check,
+      color: const Color.fromARGB(255, 162, 235, 14),
+              size: 180.0,
+      ), 
+    backgroundColor: Colors.transparent,
+    // borderRadius: BorderRadius.circular(10),
+  ); 
+} 
+void showErrorAlert(BuildContext context) { 
+  StatusAlert.show( 
+    context, 
+    duration: Duration(seconds: 2), 
+    title: 'Invalid username or password!', 
+    subtitle: 'Please try again.', 
+    configuration: IconConfiguration(
+      icon: Icons.block_rounded,
+      color: const Color.fromARGB(255, 162, 235, 14),
+      size: 180.0,
+      ), 
+    backgroundColor: const Color.fromARGB(255, 36, 51, 6),
+  ); 
+} 
 
 class MyApp extends StatelessWidget {
   @override
@@ -61,7 +61,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
- final _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final FlutterSecureStorage _secureStorage = FlutterSecureStorage(); // Secure storage for token
@@ -93,12 +93,14 @@ class _LoginPageState extends State<LoginPage> {
           context,
           MaterialPageRoute(builder: (context) => EventPage()), // Replace with the correct page
         );
-      } catch (e) {
+      } 
+      catch (e) {
         showErrorAlert(context);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(e.toString())), // Shows specific error message
         );
-      } finally {
+      } 
+      finally {
         setState(() {
           _isLoading = false;
         });
@@ -179,19 +181,16 @@ class _LoginPageState extends State<LoginPage> {
                               },
                             ),
                             SizedBox(height: 20),
-                            _isLoading
-                                ? Center(child: CircularProgressIndicator())
-                                : 
-                                GradientButton(
-                                  colors: [const Color.fromARGB(255, 183, 211, 54), const Color.fromARGB(255, 109, 190, 66)],
-                                  height: 40,
-                                  width: 300,
-                                  radius: 20,
-                                  gradientDirection: GradientDirection.leftToRight,
-                                  textStyle: TextStyle(color: const Color.fromARGB(255, 234, 208, 225)),
-                                  text: "Login",
-                                  onPressed: _login,                                 
-                                ),
+                            _isLoading ? Center(child: CircularProgressIndicator()) : GradientButton(
+                              colors: [const Color.fromARGB(255, 183, 211, 54), const Color.fromARGB(255, 109, 190, 66)],
+                              height: 40,
+                              width: 300,
+                              radius: 20,
+                              gradientDirection: GradientDirection.leftToRight,
+                              textStyle: TextStyle(color: const Color.fromARGB(255, 234, 208, 225)),
+                              text: "Login",
+                              onPressed: _login,                                 
+                            ),
                           ],
                         ),
                       ),

@@ -63,11 +63,12 @@ class _CreateUserPageState extends State<CreateUserPage> {
 
   final ImagePicker _picker = ImagePicker();
   final CreateUserService _createUserService = CreateUserService(); // Instance of EventService
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
+  bool _isLoading = false;
+  
+  // @override
+  // void dispose() {
+  //   super.dispose();
+  // }
 
   // Function to pick an image
   Future<void> _pickImage() async {
@@ -82,6 +83,9 @@ class _CreateUserPageState extends State<CreateUserPage> {
   void _createUser() async {
     // if (_formKey.currentState!.validate() || _formKeyNext.currentState!.validate()) {
     if (_formKeyNext.currentState!.validate()) {
+      setState(() {
+        _isLoading = true;      
+      });
 
       final String firstName = _firstNameController.text;
       final String lastName = _lastNameController.text;
@@ -133,22 +137,27 @@ class _CreateUserPageState extends State<CreateUserPage> {
           ),
         ); 
       } 
+      finally {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
-//   @override
-//   void dispose() {
-//   _firstNameController.dispose();
-//   _lastNameController.dispose();
-//   _emailController.dispose();
-//   _confirmEmailController.dispose();
-//   _passwordController.dispose();
-//   _confirmPasswordController.dispose();
-//   _addressController.dispose();
-//   _postalController.dispose();
-//   _cityController.dispose();
-//   _userNameController.dispose();
-//   super.dispose();
-// }
+  @override
+  void dispose() {
+  _firstNameController.dispose();
+  _lastNameController.dispose();
+  _emailController.dispose();
+  _confirmEmailController.dispose();
+  _passwordController.dispose();
+  _confirmPasswordController.dispose();
+  _addressController.dispose();
+  _postalController.dispose();
+  _cityController.dispose();
+  _userNameController.dispose();
+  super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -504,7 +513,7 @@ class _CreateUserPageState extends State<CreateUserPage> {
                               },
                             ),
                             const SizedBox(height: 20),
-                            GradientButton(
+                            _isLoading ? Center(child: CircularProgressIndicator()) : GradientButton(
                               colors: [const Color.fromARGB(255, 183, 211, 54), const Color.fromARGB(255, 109, 190, 66)],
                               height: 40,
                               width: 300,

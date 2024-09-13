@@ -59,6 +59,7 @@ class CreateEventState extends State<CreateEventPage> {
   File? _image; // To store the selected image
   final picker = ImagePicker(); // Image picker instance
   final CreateEventService _createEventService = CreateEventService(); // Instance of EventService
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -92,6 +93,9 @@ class CreateEventState extends State<CreateEventPage> {
 
   Future<void> _submitData() async {
     if (_formKey.currentState!.validate()) {
+      setState(() {
+        _isLoading = true;      
+      });
       final String date = dateController.text; 
       final String place_id = place_idController.text; 
       final String type = typeController.text;
@@ -126,12 +130,18 @@ class CreateEventState extends State<CreateEventPage> {
               content: Text("Event created successfully."),
             ),
           );
-      } catch (e) {
+      } 
+      catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text("Failed to create Event: $e"),
           ),
         );
+      }
+      finally {
+        setState(() {
+          _isLoading = false;
+        });
       }
     }
   }
@@ -337,7 +347,7 @@ class CreateEventState extends State<CreateEventPage> {
               ),
             ),
             SizedBox(height: 20),
-            GradientButton(
+            _isLoading ? Center(child: CircularProgressIndicator()) : GradientButton(
               colors: [const Color.fromARGB(255, 183, 211, 54), const Color.fromARGB(255, 109, 190, 66)],
               height: 40,
               width: 350,

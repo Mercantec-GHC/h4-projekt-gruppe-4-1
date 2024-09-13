@@ -9,7 +9,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 //import 'package:harmonyevent_app/models/user_model.dart';
 
 class CreateUserService {
-  // Initialize secure storage
+// Initialize secure storage
 final FlutterSecureStorage secureStorage = FlutterSecureStorage();
 
 Future<void> createUser(

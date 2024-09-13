@@ -43,15 +43,24 @@ class CreateEventService {
     request.fields['description'] = description;
 
     // Attach the image file if it's available
+    // if (image != null) {
+    //   var imageStream = http.ByteStream(image.openRead());
+    //   var imageLength = await image.length();
+    //   request.files.add(
+    //     http.MultipartFile(
+    //       'image',
+    //       imageStream,
+    //       imageLength,
+    //       filename: image.path.split('/').last,
+    //     ),
+    //   );
+    // }
     if (image != null) {
-      var imageStream = http.ByteStream(image.openRead());
-      var imageLength = await image.length();
-      request.files.add(
-        http.MultipartFile(
-          'image',
-          imageStream,
-          imageLength,
-          filename: image.path.split('/').last,
+    request.files.add(
+      http.MultipartFile.fromBytes(
+        'profilePicture',
+        await image.readAsBytes(),
+        filename: image.path.split('/').last,
         ),
       );
     }
