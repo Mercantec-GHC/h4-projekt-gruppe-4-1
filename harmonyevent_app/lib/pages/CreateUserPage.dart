@@ -358,7 +358,7 @@ class _CreateUserPageState extends State<CreateUserPage> {
           ),
         ],
       ),
-      drawer: Container(
+      drawer: SizedBox(
         width: MediaQuery.of(context).size.width,
         child: Drawer( 
           backgroundColor: const Color.fromARGB(255, 36, 51, 6),

@@ -23,6 +23,7 @@ dependencies:
   image_picker_macos: ^0.2.1+1
   shared_preferences: ^2.3.2
 
+  # flutter_secure_storage: any
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -41,16 +42,18 @@ flutter:
         # - asset: lib/fonts/PurisaBoldOblique.ttf
         # - asset: assets/purisamedium.ttf
         - asset: assets/purisabold.ttf
-
-
-
+        
 dependency_overrides:
   # temporary fix for https://github.com/mogol/flutter_secure_storage/issues/709
   flutter_secure_storage: 9.0.0
-  # flutter_secure_storage_linux: 1.2.0
+  flutter_secure_storage_linux: 1.2.0
   flutter_secure_storage_macos: 3.0.1
-  # flutter_secure_storage_platform_interface: 1.0.2
-  # flutter_secure_storage_windows: 3.0.0
-  # flutter_secure_storage_web:  1.2.0
+  flutter_secure_storage_platform_interface: 1.0.2
+  flutter_secure_storage_windows: 3.0.0
+  flutter_secure_storage_web:  1.2.0
 
-  
+# SECURE STORAGE VIRKER IKKE PÅ MACOS - UNDERSØGER LØSNINGSMULIGHEDER.
+# HVIS DU BRUGER WINDOW ELLER ANDROID SÅ:
+# - UDKOMMENTER flutter_secure_storage_macos: ^3.1.2 
+# - SLET UDKOMMENTERINGEN AF # flutter_secure_storage: ^9.2.2
+# - UDKOMMENTER ALLE dependency_overrides:

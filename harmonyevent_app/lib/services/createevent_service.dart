@@ -5,13 +5,17 @@ import 'package:http/http.dart' as http;
  
 import 'package:harmonyevent_app/config/api_config.dart';
 
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+/*VIRKER IKKE PÅ MACOS - UNDERSØGER LØSNINGSMULIGHEDER:
+//import 'package:flutter_secure_storage/flutter_secure_storage.dart';*/
 
 import 'package:harmonyevent_app/models/event_model.dart';
 
 class CreateEventService {
+  
   // Initialize secure storage
-  final FlutterSecureStorage secureStorage = FlutterSecureStorage();
+  /*VIRKER IKKE PÅ MACOS - UNDERSØGER LØSNINGSMULIGHEDER:
+  //final FlutterSecureStorage storage = FlutterSecureStorage();*/
+
   final String _baseUrl = ApiConfig.apiUrl;
   // Method to create event with image upload
 Future<CreateEventDTO> createEvent(
@@ -24,15 +28,15 @@ Future<CreateEventDTO> createEvent(
       File? EventPicture) async {
     var request = http.MultipartRequest('POST', Uri.parse('$_baseUrl/api/event/create'));
 
-     // Retrieve the token securely
-    final String? token = await secureStorage.read(key: 'jwt');
-    if (token == null) {
-      throw Exception('Authentication token not found. Please log in.');
-    }
-     
-    request.headers['Authorization'] = 'Bearer $token';
+    /*VIRKER IKKE PÅ MACOS - UNDERSØGER LØSNINGSMULIGHEDER:
+    // Retrieve the token securely
+    // final String? token = await storage.read(key: 'jwt');
+    // print(token);
+    // if (token == null) {
+    //   throw Exception('Authentication token not found. Please log in');
+    // }
+    // request.headers['Authorization'] = 'Bearer $token';*/
 
-    
     request.fields['place_id'] = placeId;
     request.fields['date'] = date;
     request.fields['isprivate'] = isprivate;

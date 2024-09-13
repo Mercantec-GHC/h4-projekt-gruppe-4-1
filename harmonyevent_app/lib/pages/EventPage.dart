@@ -28,7 +28,7 @@ class _EventPageState extends State<EventPage> {
 
   // Fetch events from API
   Future<List<EventDTO>> fetchEvents() async {
-    final String baseUrl = ApiConfig.apiUrl;
+    const String baseUrl = ApiConfig.apiUrl;
     final url = Uri.parse('$baseUrl/api/Event');
 
      try {
@@ -103,7 +103,7 @@ class _EventPageState extends State<EventPage> {
           IconButton(
             icon: const Icon(
               Icons.auto_awesome, 
-              color: const Color.fromARGB(255, 183, 211, 54)
+              color: Color.fromARGB(255, 183, 211, 54)
               ),
             tooltip: "My Events",
             onPressed: () {
@@ -113,7 +113,7 @@ class _EventPageState extends State<EventPage> {
           IconButton(
             icon: const Icon(
               Icons.favorite, 
-              color: const Color.fromARGB(255, 183, 211, 54)
+              color: Color.fromARGB(255, 183, 211, 54)
               ),
             tooltip: "Favorite Events",
             onPressed: () {
@@ -123,7 +123,7 @@ class _EventPageState extends State<EventPage> {
           IconButton(
             icon: const Icon(
               Icons.search, 
-              color: const Color.fromARGB(255, 183, 211, 54)
+              color: Color.fromARGB(255, 183, 211, 54)
               ),
             tooltip: "Search Events",
             onPressed: () {
@@ -133,7 +133,7 @@ class _EventPageState extends State<EventPage> {
           IconButton(
             icon: const Icon(
               Icons.account_circle, 
-              color: const Color.fromARGB(255, 183, 211, 54)
+              color: Color.fromARGB(255, 183, 211, 54)
             ),
             tooltip: "Your account",
             onPressed: () {
@@ -245,46 +245,46 @@ class _EventPageState extends State<EventPage> {
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
-                        color: const Color.fromARGB(255, 162, 235, 14),
+                        color: Color.fromARGB(255, 162, 235, 14),
                       ),
                     ),
                                         const SizedBox(height: 5),
                     Text(
-                      "Type:" + " " + event.isprivate,
+                      "Type: ${event.isprivate}",
                       style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
-                        color: const Color.fromARGB(255, 234, 208, 225),
+                        color: Color.fromARGB(255, 234, 208, 225),
                       ),
                     ),
                     const SizedBox(height: 10),
                     Text(
                       //"Date:" + " " + DateUtils.dateOnly(event.date).toString(),
                       // "Occurs:" + " " + event.date.day.toString() + "/" + event.date.month.toString() + " " + event.date.year.toString() + " " + "at 11 am",
-                      "Occurs:" + " " + event.date,
+                      "Occurs: ${event.date}",
                       style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
-                        color: const Color.fromARGB(255, 234, 208, 225),
+                        color: Color.fromARGB(255, 234, 208, 225),
                       ),
                     ),
                     const SizedBox(height: 5),
                     Text(
-                      "Category:" + " " + event.category,
+                      "Category: ${event.category}",
                       style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
-                        color: const Color.fromARGB(255, 234, 208, 225),
+                        color: Color.fromARGB(255, 234, 208, 225),
                       ),
                     ),
 
                     const SizedBox(height: 25),
                     Text(
-                      "Decription:" + " " + event.description,
+                      "Decription: ${event.description}",
                       style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
-                        color: const Color.fromARGB(255, 234, 208, 225),
+                        color: Color.fromARGB(255, 234, 208, 225),
                       ),
                     ),
                       const SizedBox(height: 25),
@@ -293,7 +293,7 @@ class _EventPageState extends State<EventPage> {
                       style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
-                        color: const Color.fromARGB(255, 234, 208, 225),
+                        color: Color.fromARGB(255, 234, 208, 225),
                       ),
                     ),
                     const SizedBox(height: 45),
@@ -311,7 +311,7 @@ class _EventPageState extends State<EventPage> {
                             //alignment: Alignment.bottomRight,
                             icon: const Icon(
                               Icons.favorite_border, 
-                              color: const Color.fromARGB(255, 183, 211, 54),
+                              color: Color.fromARGB(255, 183, 211, 54),
                               
                               size: 30,
                             ),  

@@ -7,7 +7,6 @@ import 'package:flutter_gradient_button/flutter_gradient_button.dart';
 //import 'package:harmonyevent_app/models/event_model.dart';
 import 'package:harmonyevent_app/pages/EventPage.dart';
 import 'package:harmonyevent_app/services/createevent_service.dart';
-import 'package:harmonyevent_app/services/login_service.dart';
 
 class CreateEventPage extends StatefulWidget {
   @override
@@ -49,7 +48,7 @@ void showErrorAlert(BuildContext context) {
 class CreateEventState extends State<CreateEventPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _dateController = TextEditingController();
-  final TextEditingController _userIdController = TextEditingController();
+  // final TextEditingController _userIdController = TextEditingController();
   final TextEditingController _placeIdController = TextEditingController();
   final TextEditingController _categoryController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
@@ -136,8 +135,13 @@ class CreateEventState extends State<CreateEventPage> {
         description,
         eventPicture, // Pass the image file for upload
       );
+      showSuccessAlert(context);
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => EventPage()), // Replace with the correct page
+        );  
 
-      ScaffoldMessenger.of(context).showSnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text("Event '${newEventDTO.title}' created successfully."),
         ),
@@ -330,29 +334,29 @@ class CreateEventState extends State<CreateEventPage> {
               },
             ),
             //SizedBox(height: 15),
-            TextFormField(         
-              style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
-              controller: _userIdController,
-              decoration: InputDecoration(    
-                labelText: 'Organized by (UserID)',
-                labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please choose him';
-                }
-                return null;
-              },
-            ),
+            // TextFormField(         
+            //   style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
+            //   controller: _userIdController,
+            //   decoration: InputDecoration(    
+            //     labelText: 'Organized by (UserID)',
+            //     labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
+            //     border: OutlineInputBorder(
+            //       borderRadius: BorderRadius.circular(8.0),
+            //     ),
+            //   ),
+            //   validator: (value) {
+            //     if (value == null || value.isEmpty) {
+            //       return 'Please choose him';
+            //     }
+            //     return null;
+            //   },
+            // ),
             Text(
-              "Organized by:" + " " + AutofillHints.username,
+              "Organized by: ${AutofillHints.username}",
               style: const TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.bold,
-                color: const Color.fromARGB(255, 234, 208, 225),
+                color: Color.fromARGB(255, 234, 208, 225),
               ),
             ),
             SizedBox(height: 20),
