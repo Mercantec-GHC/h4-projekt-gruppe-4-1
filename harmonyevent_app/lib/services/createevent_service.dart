@@ -22,6 +22,8 @@ class CreateEventService {
     String type, 
     String category, 
     String description, 
+    String title, 
+    String isPrivate,
     File? image
   ) 
   async {

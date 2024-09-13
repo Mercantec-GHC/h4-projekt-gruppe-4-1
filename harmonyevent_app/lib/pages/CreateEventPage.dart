@@ -55,6 +55,8 @@ class CreateEventState extends State<CreateEventPage> {
   final TextEditingController typeController = TextEditingController();
   final TextEditingController categoryController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
+  final TextEditingController titleController = TextEditingController();
+  final TextEditingController isPrivateController = TextEditingController();
 
   File? _image; // To store the selected image
   final picker = ImagePicker(); // Image picker instance
@@ -101,7 +103,9 @@ class CreateEventState extends State<CreateEventPage> {
       final String type = typeController.text;
       final String category = categoryController.text;
       final String description = descriptionController.text;
-    
+      final String title = titleController.text;
+      final String isPrivate = isPrivateController.text;
+
       try {
         // final EventDTO newEventDTO = await _createEventService.createEvent(
         //   place_id, 
@@ -117,7 +121,9 @@ class CreateEventState extends State<CreateEventPage> {
           type, 
           category, 
           description, 
-          _image
+          title, 
+          isPrivate,
+          _image,
         );
         showSuccessAlert(context);
           Navigator.pushReplacement(
@@ -246,6 +252,25 @@ class CreateEventState extends State<CreateEventPage> {
                       height: 150,
                     )
                   : Text('No image selected'),
+                           const SizedBox(height: 15),
+                   TextFormField(
+              style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
+              controller: titleController,
+              decoration: InputDecoration(
+                labelText: 'Title',
+                labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
+                                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+              ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please choose place';
+                }
+                return null;
+              },
+            ),
+            const SizedBox(height: 15),
             TextFormField(
               style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
               controller: place_idController,
@@ -266,7 +291,7 @@ class CreateEventState extends State<CreateEventPage> {
             const SizedBox(height: 15),
             TextFormField(
               style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
-              controller: typeController,
+              controller: isPrivateController,
               decoration: InputDecoration(
                 labelText: 'Type',
                 labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
