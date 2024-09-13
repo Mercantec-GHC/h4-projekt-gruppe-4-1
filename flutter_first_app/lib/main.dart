@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
                 seedColor: const Color.fromARGB(255, 92, 208, 77),
               ),
             ),
-            home: isLoggedIn ?  CreateEvent(): LoginPage(), 
+            home: isLoggedIn ?  SeeAllEvents(): LoginPage(), 
           );
         }
       },
