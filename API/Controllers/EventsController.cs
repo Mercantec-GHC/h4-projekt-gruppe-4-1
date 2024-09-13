@@ -46,6 +46,7 @@ namespace API.Controllers
                     ImageURL = events.EventPictureURL,
                     Description = events.Description,
                     Category = events.Category,
+                    Title = events.Title,
                     isprivate = events.isprivate,
                 })
                 .ToListAsync();
@@ -86,6 +87,7 @@ namespace API.Controllers
             existingEvent.EventPictureURL = updatedEvent.ImageURL;
             existingEvent.Description = updatedEvent.Description;
             existingEvent.Category = updatedEvent.Category;
+            existingEvent.Title = updatedEvent.Title;
             existingEvent.isprivate = updatedEvent.isprivate;
 
             try
@@ -126,7 +128,7 @@ namespace API.Controllers
                 Date = eventCreate.Date,
 
                 Place_id = eventCreate.Place_id,
-             
+                Title = eventCreate.Title,
                 isprivate = eventCreate.isprivate,
                 Description = eventCreate.Description,
 
