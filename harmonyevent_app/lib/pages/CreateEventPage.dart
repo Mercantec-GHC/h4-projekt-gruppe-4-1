@@ -5,7 +5,7 @@ import 'package:image_picker/image_picker.dart';
 
 import 'package:flutter_gradient_button/flutter_gradient_button.dart';
 
-import 'package:harmonyevent_app/models/event_model.dart';
+//import 'package:harmonyevent_app/models/event_model.dart';
 import 'package:harmonyevent_app/pages/EventPage.dart';
 import 'package:harmonyevent_app/services/createevent_service.dart';
 
@@ -99,16 +99,31 @@ class CreateEventState extends State<CreateEventPage> {
       final String description = descriptionController.text;
     
       try {
-        final EventDTO newEventDTO = await _createEventService.createEvent(
-          place_id, date, type, category, description, _image);
-          showSuccessAlert(context);
+        // final EventDTO newEventDTO = await _createEventService.createEvent(
+        //   place_id, 
+        //   date, 
+        //   type, 
+        //   category, 
+        //   description, 
+        //   _image
+        // );
+        await _createEventService.createEvent(
+          place_id, 
+          date, 
+          type, 
+          category, 
+          description, 
+          _image
+        );
+        showSuccessAlert(context);
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => EventPage()), // Replace with the correct page
           );
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text("Description ${newEventDTO.description} created successfully."),
+              // content: Text("Description ${newEventDTO.description} created successfully."),
+              content: Text("Event created successfully."),
             ),
           );
       } catch (e) {

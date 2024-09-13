@@ -7,7 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:flutter_gradient_button/flutter_gradient_button.dart';
 
 import 'package:harmonyevent_app/main.dart';
-import 'package:harmonyevent_app/models/user_model.dart'; 
+//import 'package:harmonyevent_app/models/user_model.dart'; 
 import 'package:harmonyevent_app/pages/LoginPage.dart';
 import 'package:harmonyevent_app/services/createuser_service.dart';
 
@@ -92,16 +92,26 @@ class _CreateUserPageState extends State<CreateUserPage> {
       final String postal = _postalController.text;
       final String city = _cityController.text;
       try {
-        final CreateUserDTO newUserDTO = await _createUserService.createUser(
-          firstName, 
-          lastName, 
-          email, 
-          username, 
-          password, 
-          address, 
-          postal, 
-          city, 
-          _image
+        // final CreateUserDTO newUserDTO = await _createUserService.createUser(
+        //   firstName, 
+        //   lastName, 
+        //   email, 
+        //   username, 
+        //   password, 
+        //   address, 
+        //   postal, 
+        //   city, 
+        //   _image
+        await _createUserService.createUser(
+        firstName,
+        lastName,
+        email,
+        username,
+        password,
+        address,
+        postal,
+        city,
+        _image,
         );
         showSuccessAlert(context);
         Navigator.pushReplacement(
@@ -110,7 +120,8 @@ class _CreateUserPageState extends State<CreateUserPage> {
         );  
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text("User ${newUserDTO.username} created successfully."),
+            // content: Text("User ${newUserDTO.username} created successfully."),
+             content: Text("User created successfully."),
           ),
         );
       } 
@@ -124,6 +135,20 @@ class _CreateUserPageState extends State<CreateUserPage> {
       } 
     }
   }
+//   @override
+//   void dispose() {
+//   _firstNameController.dispose();
+//   _lastNameController.dispose();
+//   _emailController.dispose();
+//   _confirmEmailController.dispose();
+//   _passwordController.dispose();
+//   _confirmPasswordController.dispose();
+//   _addressController.dispose();
+//   _postalController.dispose();
+//   _cityController.dispose();
+//   _userNameController.dispose();
+//   super.dispose();
+// }
 
   @override
   Widget build(BuildContext context) {
