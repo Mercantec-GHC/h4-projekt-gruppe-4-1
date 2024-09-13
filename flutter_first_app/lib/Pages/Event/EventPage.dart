@@ -1,8 +1,8 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_first_app/models/event.dart';
 import 'package:flutter_first_app/services/event_service.dart';
 import 'package:image_picker/image_picker.dart';
-import 'dart:io';
 
 class CreateEvent extends StatefulWidget {
   @override
@@ -12,34 +12,43 @@ class CreateEvent extends StatefulWidget {
 }
 
 class CreateEventState extends State<CreateEvent> {
-  
   final _formKey = GlobalKey<FormState>();
 
+  
   final TextEditingController dateController = TextEditingController();
-  final TextEditingController place_idController = TextEditingController();
-  final TextEditingController isprivateController = TextEditingController();
+  final TextEditingController placeIdController = TextEditingController();
+  final TextEditingController isPrivateController = TextEditingController();
+  final TextEditingController titleController = TextEditingController();
   final TextEditingController categoryController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
 
-  File? _image; // To store the selected image
-  final picker = ImagePicker(); // Image picker instance
-  final EventService _eventService = EventService(); // Instance of EventService
+  File? EventPicture; 
+  final picker = ImagePicker(); 
+  final EventService _eventService = EventService(); 
 
+  
   @override
   void dispose() {
+    dateController.dispose();
+    placeIdController.dispose();
+    isPrivateController.dispose();
+    categoryController.dispose();
+    titleController.dispose();
+    descriptionController.dispose();
     super.dispose();
   }
 
-  // Function to pick an image
+  // Function to pick an image from gallery
   Future<void> _pickImage() async {
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery); // or ImageSource.camera
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       setState(() {
-        _image = File(pickedFile.path); // Save the selected image
+        EventPicture= File(pickedFile.path); // Save the selected image
       });
     }
   }
 
+  // Function to select a date using DatePicker
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? selected = await showDatePicker(
       context: context,
@@ -50,48 +59,70 @@ class CreateEventState extends State<CreateEvent> {
 
     if (selected != null) {
       setState(() {
-        dateController.text = selected.toUtc().toString().split(' ')[0];
+        dateController.text = selected.toUtc().toString().split(' ')[0]; // Update date
       });
     }
   }
 
+  // Function to handle form submission
   Future<void> _submitData() async {
-    if (_formKey.currentState!.validate()) {
-      final String date = dateController.text;
-      final String placeId = place_idController.text;
-      final bool isprivate = isprivateController.text as bool;
-      final String category = categoryController.text;
-      final String description = descriptionController.text;
+  if (_formKey.currentState!.validate()) {
+    final String date = dateController.text;
+    final String placeId = placeIdController.text;
+    final String isPrivate = isPrivateController.text;
+    final String title = titleController.text;
+    final String category = categoryController.text;
+    final String description = descriptionController.text;
+    
+    File? eventPicture; // Declared as a nullable File
 
-      try {
-        // Call EventService to create the event
-        final CreateEventDTO newEventDTO = await _eventService.createEvent(
-          placeId,
-          date,
-          isprivate,
-          category,
-          description,
-          _image, // Pass the image file for upload
-        );
+    // Ensure that the user has picked an image
+    if (EventPicture != null) {
+      eventPicture = EventPicture; // Set the image from the file picker
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Please select an event picture."),
+        ),
+      );
+      return;
+    }
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text("Event ${newEventDTO.description} created successfully."),
-          ),
-        );
-      } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text("Failed to create Event: $e"),
-          ),
-        );
-      }
+    try {
+      // Call EventService to create the event
+      final CreateEventDTO newEventDTO = await _eventService.createEvent(
+        placeId,
+        date,
+        category,
+        isPrivate,
+        title,
+        description,
+        eventPicture, // Pass the image file for upload
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Event '${newEventDTO.title}' created successfully."),
+        ),
+      );
+
+      // Reset the form after successful submission
+      _formKey.currentState?.reset();
+      setState(() {
+        EventPicture = null; // Clear the selected image
+      });
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Failed to create event: $e"),
+        ),
+      );
     }
   }
+}
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       appBar: AppBar(
         title: Text('Create Event'),
@@ -100,87 +131,105 @@ class CreateEventState extends State<CreateEvent> {
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
-          child: Column(
-            children: [
-              TextFormField(
-                controller: dateController,
-                readOnly: true,
-                decoration: InputDecoration(
-                  labelText: 'Date',
-                  suffixIcon: IconButton(
-                    icon: Icon(Icons.calendar_today),
-                    onPressed: () => _selectDate(context),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                TextFormField(
+                  controller: dateController,
+                  readOnly: true,
+                  decoration: InputDecoration(
+                    labelText: 'Date',
+                    suffixIcon: IconButton(
+                      icon: Icon(Icons.calendar_today),
+                      onPressed: () => _selectDate(context),
+                    ),
                   ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please choose a date';
+                    }
+                    return null;
+                  },
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please choose a date';
-                  }
-                  return null;
+                TextFormField(
+                  controller: placeIdController,
+                  decoration: InputDecoration(labelText: 'Place ID'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please choose a place';
+                    }
+                    return null;
+                  },
+                ),
+                DropdownButtonFormField<String>(
+                value: isPrivateController.text.isNotEmpty ? isPrivateController.text : null, // Default value
+                decoration: InputDecoration(labelText: 'Private/Public'),
+                items: [
+                DropdownMenuItem(value: 'true', child: Text('Private')),
+                DropdownMenuItem(value: 'false', child: Text('Public')),
+                ],
+                onChanged: (value) {
+                setState(() {
+                isPrivateController.text = value!;  // Store the selected value in the controller
+                  });
                 },
-              ),
-              TextFormField(
-                controller: place_idController,
-                decoration: InputDecoration(labelText: 'Place'),
                 validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please choose a place';
-                  }
-                  return null;
+                if (value == null || value.isEmpty) {
+                return 'Please specify if the event is private or public';
+                }
+                return null;
                 },
-              ),
-              
-
-                         TextFormField(
-                controller: isprivateController,
-                decoration: InputDecoration(labelText: 'Type'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'What type of event is it?';
-                  }
-                  return null;
-                },
-              ), 
- 
-              TextFormField(
-                controller: categoryController,
-                decoration: InputDecoration(labelText: 'Category'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please specify a category';
-                  }                                                                                                                  
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: descriptionController,
-                decoration: InputDecoration(labelText: 'Description'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please describe the event';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 10),
-              ElevatedButton.icon(
-                onPressed: _pickImage,
-                icon: Icon(Icons.image),
-                label: Text('Pick Event Image'),
-              ),
-              SizedBox(height: 10),
-              _image != null
-                  ? Image.file(
-                      _image!,
-                      height: 150,
-                    )
-                  : Text('No image selected'),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _submitData,
-                child: Text('Submit'),
-              ),
-            ],
+                ),
+                TextFormField(
+                  controller: categoryController,
+                  decoration: InputDecoration(labelText: 'Category'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please specify a category';
+                    }
+                    return null;
+                  },
+                ),
+                TextFormField(
+                  controller: descriptionController,
+                  decoration: InputDecoration(labelText: 'Description'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please describe the event';
+                    } else if (value.length < 10) {
+                      return 'Description must be at least 10 characters long';
+                    }
+                    return null;
+                  },
+                ),
+                   TextFormField(
+                  controller: titleController,
+                  decoration: InputDecoration(labelText: 'title'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please title the event';
+                    } else if (value.length < 10) {
+                      return 'title must be at least 10 characters long';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 16),
+                  EventPicture == null
+                      ? Text('No image selected.')
+                      : Image.file(EventPicture!),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: _pickImage,
+                    child: const Text("Select Event Picture"),
+                  ),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                  onPressed: _submitData,
+                  child: Text('Submit'),
+                ),
+              ],
+            ),
           ),
         ),
       ),

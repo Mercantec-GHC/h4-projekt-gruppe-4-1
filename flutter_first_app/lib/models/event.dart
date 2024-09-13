@@ -4,7 +4,7 @@ class EventDTO {
   final String date;
   final String place_id;
   final String EventPicture;
-  final bool isprivate;
+  final String isprivate;
   final String category;
   final String description;
 
@@ -35,7 +35,7 @@ factory EventDTO.fromJson(Map<String, dynamic> json) {
     date: json['date'] ?? '',
     place_id: json['place_id'] ?? '',
     EventPicture: json['EventPicture'] ?? '',
-    isprivate: json['isprivate'] is bool ? json['isprivate'] : json['isprivate'].toString().toLowerCase() == 'true', 
+    isprivate: json['isprivate'] ??'', 
     category: json['category'] ?? '',
     description: json['description'] ?? '',
   );
@@ -46,16 +46,20 @@ class CreateEventDTO {
   final String place_id;
   final String EventPicture;
   final String isprivate;
+  final String title;
   final String category;
   final String description;
+  
 
   CreateEventDTO({
     required this.date,
     required this.place_id,
     required this.EventPicture,
     required this.isprivate,
+    required this.title,
     required this.category,
     required this.description,
+    
   });
 
   // Convert an EventDTO object into a JSON map.
@@ -65,6 +69,7 @@ class CreateEventDTO {
       'place_id': place_id,
       'EventPicture': EventPicture,
       'isprivate': isprivate,  
+      'title': title,  
       'category': category,
       'description': description,
     };
@@ -76,7 +81,8 @@ class CreateEventDTO {
       date: DateTime.parse(json['date'] ?? ''),
       place_id: json['place_id'] ?? '',
       EventPicture: json['EventPicture'] ?? '',
-      isprivate: json['isprivate'] ?? false,  
+      isprivate: json['isprivate'] ?? '',  
+      title: json['isprivate'] ?? '',  
       category: json['category'] ?? '',
       description: json['description'] ?? '',
     );
