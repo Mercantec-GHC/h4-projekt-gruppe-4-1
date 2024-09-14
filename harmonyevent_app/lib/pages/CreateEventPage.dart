@@ -99,7 +99,7 @@ class CreateEventState extends State<CreateEventPage> {
   }
 
   //  SwitchListTile standard selection
-  bool SwitchIsChecked = false;
+  bool SwitchIsChecked = false; 
 
   // Function to handle form submission
   Future<void> _submitData() async {
@@ -352,56 +352,56 @@ class CreateEventState extends State<CreateEventPage> {
             FormField(
               key: _isPrivateFieldKey,
               initialValue: false,
-              validator: (val) {
-                if (val == false) return 'Please select if event is private';
+              validator: (value) {
+                if (value == false) return 'Please select if event is private';
                 return null;
               },
               builder: (FormFieldState<bool> field) {
                 return InputDecorator(
                   decoration: InputDecoration(
-                   labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                ), // labelText: 'Subscribe to mailing list.',
+                    labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ), // labelText: 'Subscribe to mailing list.',
                   errorText: field.errorText,
                   ),
                   child: SwitchListTile(
                     hoverColor: const Color.fromARGB(255, 36, 51, 6),
-                  activeColor: Color.fromARGB(255, 234, 208, 225),
-                  inactiveThumbColor: Color.fromARGB(255, 234, 208, 225),
-                  activeTrackColor: const Color.fromARGB(255, 183, 211, 83),
-                  inactiveTrackColor: const Color.fromARGB(255, 234, 208, 225),
-                  title: const Text(
-                    "Private",
+                    activeColor: Color.fromARGB(255, 234, 208, 225),
+                    inactiveThumbColor: Color.fromARGB(255, 234, 208, 225),
+                    activeTrackColor: const Color.fromARGB(255, 183, 211, 83),
+                    inactiveTrackColor: const Color.fromARGB(255, 234, 208, 225),
+                    title: const Text(
+                      "Private",
                     style: TextStyle(
-                     color: const Color.fromARGB(255, 183, 211, 83)
+                      color: const Color.fromARGB(255, 183, 211, 83)
                     ),
                     selectionColor: const Color.fromARGB(255, 183, 211, 83),
-                  ),
-                  secondary: const SizedBox(
-                    child: Icon(
-                      Icons.lock,
-                      color: const Color.fromARGB(255, 183, 211, 83),
-                      size: 22,
                     ),
-                  ),
-                  value: SwitchIsChecked,         
-                  onChanged: (value) {
-                    setState(() {
-                      SwitchIsChecked = value;
-                      _isPrivateController.text = value.toString();
-                      print(value);
-                    });            
-                  },
+                    secondary: const SizedBox(
+                      child: Icon(
+                        Icons.lock,
+                        color: const Color.fromARGB(255, 183, 211, 83),
+                        size: 25,
+                      ),
+                    ),
+                    value: SwitchIsChecked,         
+                    onChanged: (value) {
+                      setState(() {
+                        SwitchIsChecked = value;
+                        _isPrivateController.text = value.toString();
+                        print(value);
+                      });            
+                    },
                   ),
                 );
               },
             ),
             const SizedBox(height: 25),       
 
-            //CREATE EVENT BUTTON
-            SizedBox(height: 20),
-            _isLoading ? Center(child: CircularProgressIndicator()) : GradientButton(
+              //CREATE EVENT BUTTON
+              SizedBox(height: 20),
+              _isLoading ? Center(child: CircularProgressIndicator()) : GradientButton(
               colors: [const Color.fromARGB(255, 183, 211, 54), const Color.fromARGB(255, 109, 190, 66)],
               height: 40,
               width: 350,
