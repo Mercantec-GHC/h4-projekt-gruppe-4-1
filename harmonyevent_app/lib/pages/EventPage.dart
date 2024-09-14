@@ -218,14 +218,18 @@ class _EventPageState extends State<EventPage> {
                     ),
                     
                     //EVENT IMAGE
-                    Text(
-                      "ImageURL: ${event.eventPicture}",
-                      style: const TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                        color: Color.fromARGB(255, 234, 208, 225),
+                    Container(
+                      width: 300,
+                      //flex: 10,
+                      child: Image.network(
+                        event.eventPicture, // Display event image from the URL
+                        fit: BoxFit.cover, // Ensure the image fits properly
+                        errorBuilder: (context, error, stackTrace) {
+                          return const Icon(Icons.broken_image, size: 100); // Handle broken images
+                        },
                       ),
                     ),
+                    const SizedBox(height: 10),
                    
                     //EVENT DATE AND TIME
                     Text(
