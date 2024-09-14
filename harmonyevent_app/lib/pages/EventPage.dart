@@ -37,17 +37,17 @@ class _EventPageState extends State<EventPage> {
 
     if (response.statusCode == 200) {
       // Print the raw response body
-      print('Response Body: ${response.body}');
+      //print('Response Body: ${response.body}');
 
       final List body = json.decode(response.body);
 
       // Print the parsed body
-      print('Parsed Body: $body');
+      //print('Parsed Body: $body');
 
       // Print each event DTO before returning
       final events = body.map((e) => EventDTO.fromJson(e)).toList();
 
-      events.sort((a, b) => a.date.compareTo(b.date));
+      //events.sort((a, b) => a.date.compareTo(b.date));
      
       // print('Events: $events');
       //  for (var events in events) {
@@ -161,7 +161,7 @@ class _EventPageState extends State<EventPage> {
         child: FutureBuilder<List<EventDTO>>(
           future: eventsFuture,
           builder: (context, snapshot) {
-            print('snapshot: $snapshot');
+            //print('snapshot: $snapshot');
             if (snapshot.connectionState == ConnectionState.waiting) {
               // Loading indicator while fetching data
               return const CircularProgressIndicator();
@@ -171,7 +171,7 @@ class _EventPageState extends State<EventPage> {
             } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
               // If data is available, build the event list
               final events = snapshot.data!;
-              print('Test: $events');
+              //print('Test: $events');
               return buildEvents(events);
             } else {
               // Display message if no data is available
@@ -190,8 +190,9 @@ class _EventPageState extends State<EventPage> {
       scrollDirection: Axis.horizontal,
       itemCount: events.length,
       physics: PageScrollPhysics(),
-      itemBuilder: (context, date) {
-        final event = events[date];
+      itemBuilder: (context, index) {
+        final event = events[index];
+
         events.sort((a, b) => a.date.compareTo(b.date));
 
         return Container(
@@ -206,6 +207,16 @@ class _EventPageState extends State<EventPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
 
+                    // //EVENT ID
+                    // Text(
+                    //   "Event ID: ${event.id}",
+                    //   style: const TextStyle(
+                    //     fontSize: 12,
+                    //     fontWeight: FontWeight.bold,
+                    //     color: Color.fromARGB(255, 234, 208, 225),
+                    //   ),
+                    // ),
+                    
                     //EVENT IMAGE
                     Text(
                       "ImageURL: ${event.EventPicture}",
