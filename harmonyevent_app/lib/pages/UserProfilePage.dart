@@ -154,7 +154,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
               // If data is available, build the event list
               final users = snapshot.data!;
               print('Test: $users');
-              return buildEvents(users);
+              return buildUsers(users);
             } 
             else {
               // Display message if no data is available
@@ -166,7 +166,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
     );
   }
   // Build the event list UI
-  Widget buildEvents(List<UserDTO> users) {
+  Widget buildUsers(List<UserDTO> users) {
     var screenSize = MediaQuery.of(context).size;
     return ListView.builder(
       //scrollDirection: Axis.horizontal,

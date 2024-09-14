@@ -24,10 +24,10 @@ class UserDTO{
   
   factory UserDTO.fromJson(Map<String, dynamic> json) {
     return UserDTO(
-    Id: json['id'],
-    Email: json['email'] as String,
-    Username:json['username'],
-    ProfilePicture: json['ProfilePicture'] as String,
+    Id: json['id'] ?? '',
+    Email: json['email'] ?? '',
+    Username:json['username'] ?? '',
+    ProfilePicture: json['ProfilePicture'] ?? '',
     );
   }
 }
