@@ -1,33 +1,33 @@
 
 // model for visning af bruger
 class UserDTO{
-  final String Id;
-  final String Email;
-  final String Username;
-  final String ProfilePicture;
+  final String id;
+  final String email;
+  final String username;
+  final String profilePicture;
   
   UserDTO({
-    required this.Id,
-    required this.Email,
-    required this.Username,
-    required this.ProfilePicture
+    required this.id,
+    required this.email,
+    required this.username,
+    required this.profilePicture
   });
    
   Map<String, dynamic> toJson() {
     return {
-      'id':Id,
-      'email': Email,
-      'username': Username,
-      'ProfilePicture': ProfilePicture,
+      'id': id,
+      'email': email,
+      'username': username,
+      'profilePicture': profilePicture,
     };
   }
   
   factory UserDTO.fromJson(Map<String, dynamic> json) {
     return UserDTO(
-    Id: json['id'] ?? '',
-    Email: json['email'] ?? '',
-    Username:json['username'] ?? '',
-    ProfilePicture: json['ProfilePicture'] ?? '',
+    id: json['id'] ?? '',
+    email: json['email'] ?? '',
+    username: json['username'] ?? '',
+    profilePicture: json['profilePicture'] ?? '',
     );
   }
 }

@@ -169,7 +169,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
   Widget buildUsers(List<UserDTO> users) {
     var screenSize = MediaQuery.of(context).size;
     return ListView.builder(
-      //scrollDirection: Axis.horizontal,
+      scrollDirection: Axis.horizontal,
       itemCount: users.length,
       //physics: PageScrollPhysics(),
       itemBuilder: (context, index) {
@@ -189,7 +189,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
 
                     //USER ID
                     Text(
-                      "User ID: ${user.Id}",
+                      "User ID: ${user.id}",
                       style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
@@ -204,7 +204,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                       child: Column(
                         children: [
                           Text(
-                            "User: ${user.Username}",
+                            "Username: ${user.username}",
                             style: const TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.bold,
@@ -212,7 +212,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                             ),
                           ),
                           Container(
-                            width: 50,
+                            width: 150,
                             child: CircleAvatar(
                               backgroundColor: const Color.fromARGB(255, 183, 211, 83),
                               radius: 40,
@@ -221,7 +221,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                                 padding: const EdgeInsets.all(3),
                                 child: ClipOval (
                                   child: Image.network(
-                                    user.ProfilePicture,                             
+                                    user.profilePicture,                             
                                     errorBuilder: (context, error, stackTrace) {
                                       return const Icon(Icons.broken_image, size: 300); // Handle broken images
                                     },
