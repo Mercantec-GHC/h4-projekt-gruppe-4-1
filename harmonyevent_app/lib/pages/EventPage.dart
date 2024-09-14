@@ -4,6 +4,7 @@ import 'package:harmonyevent_app/config/api_config.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_gradient_button/flutter_gradient_button.dart';
+//import 'package:flutter_icon_shadow/flutter_icon_shadow.dart';
 
 import 'package:harmonyevent_app/models/event_model.dart';
 import 'package:harmonyevent_app/pages/CreateEventPage.dart';
@@ -57,10 +58,44 @@ class _EventPageState extends State<EventPage> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         actions: <Widget>[
+          //SEARCH EVENTS
+          IconButton(
+            icon: const Icon(
+              Icons.search, 
+              color: Color.fromARGB(255, 183, 211, 54),
+                         size: 26,
+              ),
+            tooltip: "Search Events",
+            onPressed: () {
+              print("Hmm");
+            }
+          ),
+          //ALL EVENTS
           IconButton(
             icon: Icon(
-              Icons.add_circle_outline, 
-              color: const Color.fromARGB(255, 183, 211, 54)
+              Icons.event, 
+              color: const Color.fromARGB(255, 234, 208, 225),
+              // shadows: <Shadow>[
+              //   Shadow(
+              //     color: const Color.fromARGB(155, 182, 211, 54), 
+              //     blurRadius: 2.0,  offset: const Offset(3, 3),
+              //     )
+              //   ],
+              //size: 28,
+            ),
+            tooltip: "All Events",
+            onPressed: () {
+              Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => EventPage()), // Replace with the correct page
+              );
+            }
+          ),
+          //CREATE EVENT
+          IconButton(
+            icon: Icon(
+              Icons.library_add_outlined, 
+              color: const Color.fromARGB(255, 183, 211, 54),
             ),
             tooltip: "Create Event",
             onPressed: () {
@@ -70,40 +105,36 @@ class _EventPageState extends State<EventPage> {
               );
             }
           ),
+          //PLANNED EVENTS
           IconButton(
             icon: const Icon(
-              Icons.auto_awesome, 
+              Icons.event_available, 
               color: Color.fromARGB(255, 183, 211, 54)
               ),
-            tooltip: "My Events",
+            tooltip: "Planned Events",
             onPressed: () {
               print("Hmm");
             }
           ),
+          // IconButton(
+          //   icon: const Icon(
+          //     Icons.favorite, 
+          //     color: Color.fromARGB(255, 183, 211, 54)
+          //     ),
+          //   tooltip: "Favorite Events",
+          //   onPressed: () {
+          //     print("Hmm");
+          //   }
+          // ),
+
+
+
+          //USER PROFILE
           IconButton(
             icon: const Icon(
-              Icons.favorite, 
-              color: Color.fromARGB(255, 183, 211, 54)
-              ),
-            tooltip: "Favorite Events",
-            onPressed: () {
-              print("Hmm");
-            }
-          ),
-          IconButton(
-            icon: const Icon(
-              Icons.search, 
-              color: Color.fromARGB(255, 183, 211, 54)
-              ),
-            tooltip: "Search Events",
-            onPressed: () {
-              print("Hmm");
-            }
-          ),
-          IconButton(
-            icon: const Icon(
-              Icons.account_circle, 
-              color: Color.fromARGB(255, 183, 211, 54)
+              Icons.manage_accounts_sharp, 
+              color: Color.fromARGB(255, 183, 211, 54),
+              size: 26
             ),
             tooltip: "Your account",
             onPressed: () {
@@ -183,7 +214,6 @@ class _EventPageState extends State<EventPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-
                     //EVENT ID
                     Text(
                       "Event ID: ${event.id}",

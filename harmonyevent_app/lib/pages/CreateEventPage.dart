@@ -6,8 +6,12 @@ import 'package:image_picker/image_picker.dart';
 import 'package:flutter_gradient_button/flutter_gradient_button.dart';
 //import 'package:dropdown_textfield/dropdown_textfield.dart';
 //import 'package:harmonyevent_app/models/event_model.dart';
-import 'package:harmonyevent_app/pages/EventPage.dart';
+
 import 'package:harmonyevent_app/services/createevent_service.dart';
+
+import 'package:harmonyevent_app/pages/EventPage.dart';
+//import 'package:harmonyevent_app/pages/UserProfilePage.dart';
+
 
 class CreateEventPage extends StatefulWidget {
   @override
@@ -397,6 +401,7 @@ class CreateEventState extends State<CreateEventPage> {
                   );
                 },
               ),
+
 
               //ORGANIZED
               TextFormField(

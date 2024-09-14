@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 //import 'package:flutter_gradient_button/flutter_gradient_button.dart';
 
 import 'package:harmonyevent_app/pages/CreateEventPage.dart';
+import 'package:harmonyevent_app/pages/EventPage.dart';
 import 'package:harmonyevent_app/models/user_model.dart';
 
 class UserProfilePage extends StatefulWidget {
@@ -62,11 +63,45 @@ class _UserProfilePageState extends State<UserProfilePage> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        actions: <Widget>[
+                actions: <Widget>[
+          //SEARCH EVENTS
+          IconButton(
+            icon: const Icon(
+              Icons.search, 
+              color: Color.fromARGB(255, 183, 211, 54),
+                         size: 26,
+              ),
+            tooltip: "Search Events",
+            onPressed: () {
+              print("Hmm");
+            }
+          ),
+          //ALL EVENTS
           IconButton(
             icon: Icon(
-              Icons.add_circle_outline, 
-              color: const Color.fromARGB(255, 183, 211, 54)
+              Icons.event, 
+              color: Color.fromARGB(255, 183, 211, 54),
+              // shadows: <Shadow>[
+              //   Shadow(
+              //     color: const Color.fromARGB(155, 182, 211, 54), 
+              //     blurRadius: 2.0,  offset: const Offset(3, 3),
+              //     )
+              //   ],
+              //size: 26,
+            ),
+            tooltip: "All Events",
+            onPressed: () {
+              Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => EventPage()), // Replace with the correct page
+              );
+            }
+          ),
+          //CREATE EVENT
+          IconButton(
+            icon: Icon(
+              Icons.library_add_outlined, 
+              color: const Color.fromARGB(255, 183, 211, 54),
             ),
             tooltip: "Create Event",
             onPressed: () {
@@ -76,43 +111,41 @@ class _UserProfilePageState extends State<UserProfilePage> {
               );
             }
           ),
+          //PLANNED EVENTS
           IconButton(
             icon: const Icon(
-              Icons.auto_awesome, 
+              Icons.event_available, 
               color: Color.fromARGB(255, 183, 211, 54)
               ),
-            tooltip: "My Events",
+            tooltip: "Planned Events",
             onPressed: () {
               print("Hmm");
             }
           ),
+          // IconButton(
+          //   icon: const Icon(
+          //     Icons.favorite, 
+          //     color: Color.fromARGB(255, 183, 211, 54)
+          //     ),
+          //   tooltip: "Favorite Events",
+          //   onPressed: () {
+          //     print("Hmm");
+          //   }
+          // ),
+
+          //USER PROFILE
           IconButton(
             icon: const Icon(
-              Icons.favorite, 
-              color: Color.fromARGB(255, 183, 211, 54)
-              ),
-            tooltip: "Favorite Events",
-            onPressed: () {
-              print("Hmm");
-            }
-          ),
-          IconButton(
-            icon: const Icon(
-              Icons.search, 
-              color: Color.fromARGB(255, 183, 211, 54)
-              ),
-            tooltip: "Search Events",
-            onPressed: () {
-              print("Hmm");
-            }
-          ),
-          IconButton(
-            icon: const Icon(
-              Icons.account_circle, 
-              color: Color.fromARGB(255, 183, 211, 54)
+              Icons.manage_accounts_sharp, 
+              size: 26,
+              color: const Color.fromARGB(255, 234, 208, 225)
             ),
             tooltip: "Your account",
-            onPressed: () {            
+            onPressed: () {
+              Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => UserProfilePage()), // Replace with the correct page
+              );
             }
           ),
         ],
@@ -171,7 +204,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
     return ListView.builder(
       scrollDirection: Axis.horizontal,
       itemCount: users.length,
-      //physics: PageScrollPhysics(),
+      physics: PageScrollPhysics(),
       itemBuilder: (context, index) {
         final user = users[index];
 
@@ -197,7 +230,14 @@ class _UserProfilePageState extends State<UserProfilePage> {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    
+                    Text(
+                      "Email: ${user.email}",
+                      style: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromARGB(255, 234, 208, 225),
+                      ),
+                    ),
                     //USER PROFILE
                     Container(
                       //width: 150,
