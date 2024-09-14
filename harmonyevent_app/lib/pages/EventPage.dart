@@ -8,8 +8,6 @@ import 'package:flutter_gradient_button/flutter_gradient_button.dart';
 import 'package:harmonyevent_app/models/event_model.dart';
 import 'package:harmonyevent_app/pages/CreateEventPage.dart';
 
-//import 'dart:core';
-
 class EventPage extends StatefulWidget {
   const EventPage({super.key});
 
@@ -31,7 +29,7 @@ class _EventPageState extends State<EventPage> {
     const String baseUrl = ApiConfig.apiUrl;
     final url = Uri.parse('$baseUrl/api/Event');
 
-     try {
+    try {
     final response = await http.get(url, headers: {"Content-Type": "application/json"});
 
     // Print the status code
@@ -51,10 +49,10 @@ class _EventPageState extends State<EventPage> {
 
       events.sort((a, b) => a.date.compareTo(b.date));
      
-      print('Events: $events');
-       for (var events in events) {
-        print(events);
-      }
+      // print('Events: $events');
+      //  for (var events in events) {
+      //   print(events);
+      // }
       return events;
     } else {
       // Handle non-200 responses
@@ -134,8 +132,7 @@ class _EventPageState extends State<EventPage> {
               color: Color.fromARGB(255, 183, 211, 54)
             ),
             tooltip: "Your account",
-            onPressed: () {
-             
+            onPressed: () {            
             }
           ),
         ],
@@ -149,18 +146,18 @@ class _EventPageState extends State<EventPage> {
             ),        
             Container(          
               child: 
-                Text(
-                  "Harmony Event",
-                  style: TextStyle(
-                    color: const Color.fromARGB(255, 234, 208, 225),
-                    fontWeight: FontWeight.bold,
-                    ),
-                  ),  
+              Text(
+                "Harmony Event",
+                style: TextStyle(
+                  color: const Color.fromARGB(255, 234, 208, 225),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),  
             ), 
           ],
         ),
       ),
-      body: Container(
+      body: Center(
         child: FutureBuilder<List<EventDTO>>(
           future: eventsFuture,
           builder: (context, snapshot) {
@@ -188,7 +185,6 @@ class _EventPageState extends State<EventPage> {
 
   // Build the event list UI
   Widget buildEvents(List<EventDTO> events) {
-    
     var screenSize = MediaQuery.of(context).size;
     return ListView.builder(
       scrollDirection: Axis.horizontal,
@@ -199,76 +195,29 @@ class _EventPageState extends State<EventPage> {
         events.sort((a, b) => a.date.compareTo(b.date));
 
         return Container(
-          //width: MediaQuery.of(context).size.width,
           width: screenSize.width,
           height: screenSize.height,
-          //width: 500,
-
           margin: const EdgeInsets.symmetric(vertical: 30, horizontal: 0),
           padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-          // decoration: BoxDecoration(
-          //   border: Border.all(
-          //     color: const Color.fromARGB(255, 29, 41, 4), 
-          //     width: 4,
-          //   ),
-          //   borderRadius: BorderRadius.circular(8.0),
-          // ),
           child: Row(
             children: [
-              // Expanded(
-              //   flex: 1,
-              //   child: Image.network(
-              //     event.ImageURL,
-              //     fit: BoxFit.cover, // Ensure the image fits properly
-              //   ),
-              // ),
-              const SizedBox(width: 20),
               Expanded(
-                flex: 3,
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Expanded(
-                flex: 1,
-                
-                child: Image.network( 
-                  '${event.EventPicture}', // Display event image from the URL
-                  fit: BoxFit.cover, // Ensure the image fits properly
-                  errorBuilder: (context, error, stackTrace) {
-                    return const Icon(Icons.broken_image, size: 50); // Handle broken images
-                  },
-                ),
-              ),
-                    // Text(
-                    //              "Title: ${event.title}",
-                    //   style: const TextStyle(
-                    //     fontSize: 16,
-                    //     fontWeight: FontWeight.bold,
-                    //     color: Color.fromARGB(255, 162, 235, 14),
-                    //   ),
-                    // ),
-                    const SizedBox(height: 5),
+
+                    //EVENT IMAGE
                     Text(
-                      event.description,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Color.fromARGB(255, 162, 235, 14),
-                      ),
-                    ),
-                    const SizedBox(height: 5),
-                    Text(
-                      "Type: ${event.isprivate}",
+                      "ImageURL: ${event.EventPicture}",
                       style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
                         color: Color.fromARGB(255, 234, 208, 225),
                       ),
                     ),
-                    const SizedBox(height: 10),
+                   
+                    //EVENT DATE AND TIME
                     Text(
-                      //"Date:" + " " + DateUtils.dateOnly(event.date).toString(),
-                      // "Occurs:" + " " + event.date.day.toString() + "/" + event.date.month.toString() + " " + event.date.year.toString() + " " + "at 11 am",
                       "Occurs: ${event.date}",
                       style: const TextStyle(
                         fontSize: 12,
@@ -276,7 +225,18 @@ class _EventPageState extends State<EventPage> {
                         color: Color.fromARGB(255, 234, 208, 225),
                       ),
                     ),
-                    const SizedBox(height: 5),
+
+                    //EVENT TITLE
+                    // Text(
+                    //   "Title: ${event.title}",
+                    //   style: const TextStyle(
+                    //     fontSize: 12,
+                    //     fontWeight: FontWeight.bold,
+                    //     color: Color.fromARGB(255, 234, 208, 225),
+                    //   ),
+                    // ),
+
+                    //EVENT CATEGORY
                     Text(
                       "Category: ${event.category}",
                       style: const TextStyle(
@@ -286,7 +246,7 @@ class _EventPageState extends State<EventPage> {
                       ),
                     ),
 
-                    const SizedBox(height: 25),
+                    //EVENT DESCRIPTION
                     Text(
                       "Decription: ${event.description}",
                       style: const TextStyle(
@@ -295,58 +255,30 @@ class _EventPageState extends State<EventPage> {
                         color: Color.fromARGB(255, 234, 208, 225),
                       ),
                     ),
-                      const SizedBox(height: 25),
+
+                    //EVENTTYPE (PRIVATE/PUBLIC)
                     Text(
-                      "Organized by:",
+                      "Type: ${event.isprivate}",
                       style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
                         color: Color.fromARGB(255, 234, 208, 225),
                       ),
                     ),
-                    const SizedBox(height: 45),
+                    const SizedBox(height: 10),
 
-                    //Text('Place_id: ${event.place_id}'),
-                    Text('PlaceID: ${event.place_id}'),
-                    //Text('type: ${event.type}'),
-                    //Text('category: ${event.category}'),
-                    //Text('description: ${event.description}'),
-                    Column(
-                      children: [
-                          Align(
-                          alignment: Alignment.bottomRight,
-                          child: IconButton(
-                            //alignment: Alignment.bottomRight,
-                            icon: const Icon(
-                              Icons.favorite_border, 
-                              color: Color.fromARGB(255, 183, 211, 54),
-                              
-                              size: 30,
-                            ),  
-                            tooltip: "Add to favorite events",
-                            onPressed: () {
-                              setState((){
-            
-                              });                    
-                            }
-                          ),
-                        ), 
-                        const SizedBox(height: 25),
-                        GradientButton(
-                          colors: [const Color.fromARGB(255, 183, 211, 54), const Color.fromARGB(255, 109, 190, 66)],
-                          height: 40,
-                          width: 350,
-                          radius: 20,
-                          gradientDirection: GradientDirection.leftToRight,
-                          textStyle: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
-                          text: "Attend Event",
-                          onPressed: () {
-                            print("Hmm");
-                          },
-                        ),
-                        //const SizedBox(width: 100),
-     
-                      ],
+                    //CREATE EVENT BUTTOM
+                    GradientButton(
+                      colors: [const Color.fromARGB(255, 183, 211, 54), const Color.fromARGB(255, 109, 190, 66)],
+                      height: 40,
+                      width: 350,
+                      radius: 20,
+                      gradientDirection: GradientDirection.leftToRight,
+                      textStyle: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
+                      text: "Attend Event",
+                      onPressed: () {
+                        print("Hmm");
+                      },
                     ),
                   ],   
                 ),     

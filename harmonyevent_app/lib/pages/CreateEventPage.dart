@@ -4,6 +4,7 @@ import 'package:harmonyevent_app/models/event_model.dart';
 import 'package:status_alert/status_alert.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_gradient_button/flutter_gradient_button.dart';
+//import 'package:dropdown_textfield/dropdown_textfield.dart';
 //import 'package:harmonyevent_app/models/event_model.dart';
 import 'package:harmonyevent_app/pages/EventPage.dart';
 import 'package:harmonyevent_app/services/createevent_service.dart';
@@ -47,30 +48,26 @@ void showErrorAlert(BuildContext context) {
 
 class CreateEventState extends State<CreateEventPage> {
   final _formKey = GlobalKey<FormState>();
+  File? EventPicture; // To store the selected image
+  final picker = ImagePicker(); // Image picker instance
   final TextEditingController _dateController = TextEditingController();
-  // final TextEditingController _userIdController = TextEditingController();
-  final TextEditingController _placeIdController = TextEditingController();
+  final TextEditingController _locationController = TextEditingController();
+  final TextEditingController _titleController = TextEditingController();
   final TextEditingController _categoryController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
-  final TextEditingController _titleController = TextEditingController();
   final TextEditingController _isPrivateController = TextEditingController();
-
-  
-  File? EventPicture; // To store the selected image
-  
-  final picker = ImagePicker(); // Image picker instance
   bool _isLoading = false;
 
   final CreateEventService _eventService = CreateEventService(); 
 
-    @override
-    void dispose() {
+  @override
+  void dispose() {
     _dateController.dispose();
-    _placeIdController.dispose();
-    _isPrivateController.dispose();
-    _categoryController.dispose();
+    _locationController.dispose();
     _titleController.dispose();
+    _categoryController.dispose();
     _descriptionController.dispose();
+    _isPrivateController.dispose();
     super.dispose();
   }
 
@@ -79,7 +76,7 @@ class CreateEventState extends State<CreateEventPage> {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       setState(() {
-        EventPicture= File(pickedFile.path); // Save the selected image
+        EventPicture = File(pickedFile.path); // Save the selected image
       });
     }
   }
@@ -89,7 +86,7 @@ class CreateEventState extends State<CreateEventPage> {
     final DateTime? selected = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
+      firstDate: DateTime.now(),
       lastDate: DateTime(2050),
     );
 
@@ -100,18 +97,17 @@ class CreateEventState extends State<CreateEventPage> {
     }
   }
 
+  //  SwitchListTile standard selection
+  bool SwitchisChecked = false;
+
   // Function to handle form submission
   Future<void> _submitData() async {
   if (_formKey.currentState!.validate()) {
-    final String date = _dateController.text;
-    final String placeId = _placeIdController.text;
-    final String isPrivate = _isPrivateController.text;
-    final String title = _titleController.text;
-    final String category = _categoryController.text;
-    final String description = _descriptionController.text;
-    
-    File? eventPicture; // Declared as a nullable File
+    setState(() {
+      _isLoading = true;      
+    });
 
+    File? eventPicture; // Declared as a nullable File
     // Ensure that the user has picked an image
     if (EventPicture != null) {
       eventPicture = EventPicture; // Set the image from the file picker
@@ -124,44 +120,54 @@ class CreateEventState extends State<CreateEventPage> {
       return;
     }
 
+    final String date = _dateController.text;
+    final String location = _locationController.text;
+    final String title = _titleController.text;
+    final String category = _categoryController.text;
+    final String description = _descriptionController.text;
+    final String isPrivate = _isPrivateController.text;
+    
     try {
       // Call EventService to create the event
       final CreateEventDTO newEventDTO = await _eventService.createEvent(
-        placeId,
+        eventPicture, 
         date,
+        location,
         category,
-        isPrivate,
         title,
         description,
-        eventPicture, // Pass the image file for upload
+        isPrivate,
       );
       showSuccessAlert(context);
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => EventPage()), // Replace with the correct page
         );  
-
         ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text("Event '${newEventDTO.title}' created successfully."),
         ),
       );
-
       // Reset the form after successful submission
       _formKey.currentState?.reset();
       setState(() {
         EventPicture = null; // Clear the selected image
       });
-    } catch (e) {
+    } 
+    catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text("Failed to create event: $e"),
         ),
       );
     }
+    finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 }
-
 
   @override
   Widget build(BuildContext context) {
@@ -169,12 +175,13 @@ class CreateEventState extends State<CreateEventPage> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         leading: IconButton(
-        icon: Icon(Icons.arrow_back_ios),
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Color.fromARGB(255, 234, 208, 225)),
         onPressed: () {
-            // Navigate back to the previous screen by popping the current route
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => EventPage()), // Replace with the correct page
+              MaterialPageRoute(builder: (context) => EventPage()),
             );
           },
         ),
@@ -199,48 +206,86 @@ class CreateEventState extends State<CreateEventPage> {
           ],
         ),
       ),
+
+      //FORM FIELD
       body: Padding(
       padding: const EdgeInsets.all(16.0),
       child: Form(
         key: _formKey,
+        
         child: Column(
+
+          //FORM FIELD CHIRLDEREN
           children: [
+
+            //SELECT IMAGE
+            ElevatedButton.icon(
+              onPressed: _pickImage,
+              icon: Icon(
+                Icons.image,
+                color: const Color.fromARGB(255, 183, 211, 83),),
+                label: Text('Choose Event Image'),              
+            ),
+            SizedBox(height: 10),
+            EventPicture != null ? Image.file(
+              EventPicture!,
+              height: 100,
+            )
+            : Text(
+              'No image selected',
+              style: TextStyle(
+                 color: const Color.fromARGB(255, 183, 211, 83)
+                ),),
+            SizedBox(height: 15),
+
+            //SELECT DATE AND TIME
             TextFormField(
               style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
               controller: _dateController,
               readOnly: true, 
               decoration: InputDecoration(
-                labelText: 'Date',
+                labelText: 'Occurs',
                 labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 suffixIcon: IconButton(
-                  icon: Icon(Icons.calendar_today),
+                  icon: Icon(
+                    Icons.calendar_today,
+                        color: const Color.fromARGB(255, 183, 211, 83),
+                    ),
                   onPressed: () => _selectDate(context),
                 ),
               ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please choose a date';
+                  return 'Please choose date and time';
                 }
                 return null;
               },
             ),
-            //const SizedBox(height: 15),
-            ElevatedButton.icon(
-                onPressed: _pickImage,
-                icon: Icon(Icons.image),
-                label: Text('Pick Event Image'),
+            
+            //SELECT LOCATION
+            TextFormField(
+              style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
+              controller: _locationController,
+              decoration: InputDecoration(
+                labelText: 'Location',
+                labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
               ),
-              SizedBox(height: 10),
-              EventPicture != null
-                  ? Image.file(
-                      EventPicture!,
-                      height: 150,
-                    )
-                  : Text('No image selected'),
-              //const SizedBox(height: 15),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please choose location';
+                }
+                return null;
+              },
+            ),
+            const SizedBox(height: 25),
+
+            //SELECT TITLE 
             TextFormField(
               style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
               controller: _titleController,
@@ -253,48 +298,14 @@ class CreateEventState extends State<CreateEventPage> {
               ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please choose place';
+                  return 'Please choose title';
                 }
                 return null;
               },
             ),
             //const SizedBox(height: 15),
-            TextFormField(
-              style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
-              controller: _placeIdController,
-              decoration: InputDecoration(
-                labelText: 'Location (PlaceId)',
-                labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please choose place';
-                }
-                return null;
-              },
-            ),
-            //const SizedBox(height: 15),
-            TextFormField(
-              style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
-              controller: _isPrivateController,
-              decoration: InputDecoration(
-                labelText: 'Type (IsPrivate)',
-                labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'What type';
-                }
-                return null;
-              },
-            ),
-            //const SizedBox(height: 15),
+
+            // SELECT CATEGORY
             TextFormField(
               style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
               controller: _categoryController,
@@ -307,16 +318,18 @@ class CreateEventState extends State<CreateEventPage> {
               ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'What category';
+                  return 'Please choose category';
                 }
                 return null;
               },
             ),
-             //const SizedBox(height: 15),
+            //const SizedBox(height: 15),
+
+            // WRITE DESCRIPTION
             TextFormField(
               style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
-              maxLines: 1,
-              minLines: 1,
+              maxLines: 3,
+              minLines: 3,
               controller: _descriptionController,
               decoration: InputDecoration(
                 alignLabelWithHint: true,
@@ -328,37 +341,46 @@ class CreateEventState extends State<CreateEventPage> {
               ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Describe event';
+                  return 'Please describe event';
                 }
                 return null;
               },
             ),
-            //SizedBox(height: 15),
-            // TextFormField(         
-            //   style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
-            //   controller: _userIdController,
-            //   decoration: InputDecoration(    
-            //     labelText: 'Organized by (UserID)',
-            //     labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
-            //     border: OutlineInputBorder(
-            //       borderRadius: BorderRadius.circular(8.0),
-            //     ),
-            //   ),
-            //   validator: (value) {
-            //     if (value == null || value.isEmpty) {
-            //       return 'Please choose him';
-            //     }
-            //     return null;
-            //   },
-            // ),
-            Text(
-              "Organized by: ${AutofillHints.username}",
-              style: const TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.bold,
-                color: Color.fromARGB(255, 234, 208, 225),
+              
+            //SELECT TYPE (PRIVATE/PUBLIC)
+            SwitchListTile(
+              hoverColor: const Color.fromARGB(255, 36, 51, 6),
+              activeColor: Color.fromARGB(255, 234, 208, 225),
+              inactiveThumbColor: Color.fromARGB(255, 234, 208, 225),
+              activeTrackColor: const Color.fromARGB(255, 183, 211, 83),
+              inactiveTrackColor: const Color.fromARGB(255, 234, 208, 225),
+              title: const Text(
+                "Private",
+                style: TextStyle(
+                 color: const Color.fromARGB(255, 183, 211, 83)
+                ),
+                selectionColor: const Color.fromARGB(255, 183, 211, 83),
               ),
+              secondary: const SizedBox(
+                child: Icon(
+                  Icons.lock,
+                  color: const Color.fromARGB(255, 183, 211, 83),
+                  size: 22,
+                ),
+              ),
+              value: SwitchisChecked,         
+              onChanged: (value) {
+                setState(() {
+                  SwitchisChecked = value;
+                  _isPrivateController.text = value.toString();
+                  print(value);
+                  
+                });            
+              },
             ),
+            const SizedBox(height: 25),       
+
+            //CREATE EVENT BUTTON
             SizedBox(height: 20),
             _isLoading ? Center(child: CircularProgressIndicator()) : GradientButton(
               colors: [const Color.fromARGB(255, 183, 211, 54), const Color.fromARGB(255, 109, 190, 66)],

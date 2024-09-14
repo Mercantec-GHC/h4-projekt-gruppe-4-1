@@ -18,14 +18,16 @@ class CreateEventService {
 
   final String _baseUrl = ApiConfig.apiUrl;
   // Method to create event with image upload
-Future<CreateEventDTO> createEvent(
-      String placeId,
-      String date,
-      String isprivate,
-      String category,
-      String title,
-      String description,
-      File? EventPicture) async {
+  Future<CreateEventDTO> createEvent(
+    File? EventPicture,
+    String date,
+    String location,
+    String title,
+    String category,
+    String description,
+    String isprivate,
+  ) 
+  async {
     var request = http.MultipartRequest('POST', Uri.parse('$_baseUrl/api/event/create'));
 
     /*VIRKER IKKE PÅ MACOS - UNDERSØGER LØSNINGSMULIGHEDER:
@@ -37,14 +39,6 @@ Future<CreateEventDTO> createEvent(
     // }
     // request.headers['Authorization'] = 'Bearer $token';*/
 
-    request.fields['place_id'] = placeId;
-    request.fields['date'] = date;
-    request.fields['isprivate'] = isprivate;
-    request.fields['category'] = category;
-    request.fields['title'] = title;
-    request.fields['description'] = description;
-
-    
     if (EventPicture != null) {
       var imageStream = http.ByteStream(EventPicture.openRead());
       var imageLength = await EventPicture.length();
@@ -57,6 +51,12 @@ Future<CreateEventDTO> createEvent(
         ),
       );
     }
+    request.fields['date'] = date;
+    request.fields['location'] = location;
+    request.fields['title'] = title;
+    request.fields['category'] = category;
+    request.fields['description'] = description;
+    request.fields['isprivate'] = isprivate;
 
     try {
       var response = await request.send();
