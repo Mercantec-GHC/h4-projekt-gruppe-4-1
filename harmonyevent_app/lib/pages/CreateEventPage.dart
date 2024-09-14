@@ -57,6 +57,7 @@ class CreateEventState extends State<CreateEventPage> {
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _isPrivateController = TextEditingController();
   bool _isLoading = false;
+  final GlobalKey<FormFieldState> _isPrivateFieldKey = GlobalKey();
 
   final CreateEventService _eventService = CreateEventService(); 
 
@@ -98,7 +99,7 @@ class CreateEventState extends State<CreateEventPage> {
   }
 
   //  SwitchListTile standard selection
-  bool SwitchisChecked = false;
+  bool SwitchIsChecked = false;
 
   // Function to handle form submission
   Future<void> _submitData() async {
@@ -106,6 +107,7 @@ class CreateEventState extends State<CreateEventPage> {
     setState(() {
       _isLoading = true;      
     });
+
 
     File? eventPicture; // Declared as a nullable File
     // Ensure that the user has picked an image
@@ -119,7 +121,6 @@ class CreateEventState extends State<CreateEventPage> {
       );
       return;
     }
-
     final String date = _dateController.text;
     final String location = _locationController.text;
     final String title = _titleController.text;
@@ -328,8 +329,8 @@ class CreateEventState extends State<CreateEventPage> {
             // WRITE DESCRIPTION
             TextFormField(
               style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
-              maxLines: 3,
-              minLines: 3,
+              maxLines: 1,
+              minLines: 1,
               controller: _descriptionController,
               decoration: InputDecoration(
                 alignLabelWithHint: true,
@@ -341,41 +342,59 @@ class CreateEventState extends State<CreateEventPage> {
               ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please describe event';
+                  return 'Please make decription';
                 }
                 return null;
               },
             ),
               
-            //SELECT TYPE (PRIVATE/PUBLIC)
-            SwitchListTile(
-              hoverColor: const Color.fromARGB(255, 36, 51, 6),
-              activeColor: Color.fromARGB(255, 234, 208, 225),
-              inactiveThumbColor: Color.fromARGB(255, 234, 208, 225),
-              activeTrackColor: const Color.fromARGB(255, 183, 211, 83),
-              inactiveTrackColor: const Color.fromARGB(255, 234, 208, 225),
-              title: const Text(
-                "Private",
-                style: TextStyle(
-                 color: const Color.fromARGB(255, 183, 211, 83)
-                ),
-                selectionColor: const Color.fromARGB(255, 183, 211, 83),
-              ),
-              secondary: const SizedBox(
-                child: Icon(
-                  Icons.lock,
-                  color: const Color.fromARGB(255, 183, 211, 83),
-                  size: 22,
-                ),
-              ),
-              value: SwitchisChecked,         
-              onChanged: (value) {
-                setState(() {
-                  SwitchisChecked = value;
-                  _isPrivateController.text = value.toString();
-                  print(value);
-                  
-                });            
+            //EVENT IS PRIVATE BOOL
+            FormField(
+              key: _isPrivateFieldKey,
+              initialValue: false,
+              validator: (val) {
+                if (val == false) return 'Please select if event is private';
+                return null;
+              },
+              builder: (FormFieldState<bool> field) {
+                return InputDecorator(
+                  decoration: InputDecoration(
+                   labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ), // labelText: 'Subscribe to mailing list.',
+                  errorText: field.errorText,
+                  ),
+                  child: SwitchListTile(
+                    hoverColor: const Color.fromARGB(255, 36, 51, 6),
+                  activeColor: Color.fromARGB(255, 234, 208, 225),
+                  inactiveThumbColor: Color.fromARGB(255, 234, 208, 225),
+                  activeTrackColor: const Color.fromARGB(255, 183, 211, 83),
+                  inactiveTrackColor: const Color.fromARGB(255, 234, 208, 225),
+                  title: const Text(
+                    "Private",
+                    style: TextStyle(
+                     color: const Color.fromARGB(255, 183, 211, 83)
+                    ),
+                    selectionColor: const Color.fromARGB(255, 183, 211, 83),
+                  ),
+                  secondary: const SizedBox(
+                    child: Icon(
+                      Icons.lock,
+                      color: const Color.fromARGB(255, 183, 211, 83),
+                      size: 22,
+                    ),
+                  ),
+                  value: SwitchIsChecked,         
+                  onChanged: (value) {
+                    setState(() {
+                      SwitchIsChecked = value;
+                      _isPrivateController.text = value.toString();
+                      print(value);
+                    });            
+                  },
+                  ),
+                );
               },
             ),
             const SizedBox(height: 25),       

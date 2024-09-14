@@ -239,7 +239,7 @@ class _EventPageState extends State<EventPage> {
 
                     //EVENT TITLE
                     Text(
-                      "Title: ${event.title}",
+                      "Category: ${event.title}",
                       style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
@@ -249,7 +249,7 @@ class _EventPageState extends State<EventPage> {
 
                     //EVENT CATEGORY
                     Text(
-                      "Category: ${event.category}",
+                      "Title: ${event.category}",
                       style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
