@@ -1,4 +1,5 @@
-import 'dart:core';
+//import 'dart:core';
+
 class EventDTO {
   final String id;
   final String eventPicture;

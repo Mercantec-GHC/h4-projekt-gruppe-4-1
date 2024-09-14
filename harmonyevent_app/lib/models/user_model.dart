@@ -5,16 +5,23 @@ class UserDTO{
   final String Email;
   final String Username;
   final String ProfilePicture;
- UserDTO({required this.Id,required this.Email,required this.Username,required this.ProfilePicture});
+  
+  UserDTO({
+    required this.Id,
+    required this.Email,
+    required this.Username,
+    required this.ProfilePicture
+  });
    
   Map<String, dynamic> toJson() {
     return {
       'id':Id,
       'email': Email,
-      'username':Username,
+      'username': Username,
       'ProfilePicture': ProfilePicture,
     };
   }
+
 
   factory UserDTO.fromJson(Map<String, dynamic> json) {
     return UserDTO(
