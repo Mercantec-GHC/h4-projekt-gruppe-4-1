@@ -225,7 +225,7 @@ class CreateEventState extends State<CreateEventPage> {
               icon: Icon(
                 Icons.image,
                 color: const Color.fromARGB(255, 183, 211, 83),),
-                label: Text('Choose Event Image'),              
+                label: Text('Choose image'),              
             ),
             SizedBox(height: 10),
             EventPicture != null ? Image.file(
@@ -233,7 +233,7 @@ class CreateEventState extends State<CreateEventPage> {
               height: 100,
             )
             : Text(
-              'No image selected',
+              'Prefered size 500x281 pixels',
               style: TextStyle(
                  color: const Color.fromARGB(255, 183, 211, 83)
                 ),),

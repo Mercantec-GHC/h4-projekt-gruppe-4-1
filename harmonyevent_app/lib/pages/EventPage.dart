@@ -219,14 +219,25 @@ class _EventPageState extends State<EventPage> {
                     
                     //EVENT IMAGE
                     Container(
-                      width: 300,
-                      //flex: 10,
-                      child: Image.network(
-                        event.eventPicture, // Display event image from the URL
-                        fit: BoxFit.cover, // Ensure the image fits properly
-                        errorBuilder: (context, error, stackTrace) {
-                          return const Icon(Icons.broken_image, size: 100); // Handle broken images
-                        },
+                      width: 500,
+                      height: 281,
+                      padding: EdgeInsets.all(2), // Border width
+                      decoration: BoxDecoration(
+                        color: const Color.fromARGB(255, 89, 99, 44), 
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: SizedBox.fromSize(
+                          size: Size.fromRadius(48), // Image radius
+                          child: Image.network(
+                            event.eventPicture, 
+                            fit: BoxFit.cover, 
+                            errorBuilder: (context, error, stackTrace) {
+                              return const Icon(Icons.broken_image, size: 300); // Handle broken images
+                            },
+                          ),
+                        ),
                       ),
                     ),
                     const SizedBox(height: 10),
@@ -243,7 +254,7 @@ class _EventPageState extends State<EventPage> {
 
                     //EVENT TITLE
                     Text(
-                      "Category: ${event.title}",
+                      "Title: ${event.title}",
                       style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
@@ -253,7 +264,7 @@ class _EventPageState extends State<EventPage> {
 
                     //EVENT CATEGORY
                     Text(
-                      "Title: ${event.category}",
+                      "Category: ${event.category}",
                       style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
