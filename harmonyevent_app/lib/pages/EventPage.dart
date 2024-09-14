@@ -24,7 +24,6 @@ class _EventPageState extends State<EventPage> {
     super.initState();
     eventsFuture = fetchEvents(); // Fetch events in initState
   }
-
   // Fetch events from API
   Future<List<EventDTO>> fetchEvents() async {
     const String baseUrl = ApiConfig.apiUrl;
@@ -44,12 +43,13 @@ class _EventPageState extends State<EventPage> {
       print('Failed to load events: ${response.statusCode}');
       throw Exception('Failed to load events: ${response.statusCode}');
     }
-  } catch (e) {
+  } 
+  catch (e) {
     // Handle any errors that occur during the request
     print('Error fetching events: $e');
     return []; // Return an empty list or handle the error as needed
+    }
   }
-}
 
   @override
   Widget build(BuildContext context) {   

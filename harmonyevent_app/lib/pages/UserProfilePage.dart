@@ -30,11 +30,10 @@ class _UserProfilePageState extends State<UserProfilePage> {
     final response = await http.get(url, headers: {"Content-Type": "application/json"});
     print('Response Status Code: ${response.statusCode}');
     if (response.statusCode == 200) {
-      //print('Response Body: ${response.body}');
+      print('Response Body: ${response.body}');
       final List body = json.decode(response.body);
       // Print each event DTO before returning
       final users = body.map((e) => UserDTO.fromJson(e)).toList();
-
       return users;
     } else {
       // Handle non-200 responses
@@ -142,19 +141,22 @@ class _UserProfilePageState extends State<UserProfilePage> {
         child: FutureBuilder<List<UserDTO>>(
           future: usersFuture,
           builder: (context, snapshot) {
-            //print('snapshot: $snapshot');
+            print('snapshot: $snapshot');
             if (snapshot.connectionState == ConnectionState.waiting) {
               // Loading indicator while fetching data
               return const CircularProgressIndicator();
-            } else if (snapshot.hasError) {
+            } 
+            else if (snapshot.hasError) {
               // Display error message if the Future failed
               return const Text("Failed to load users.");
-            } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+            } 
+            else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
               // If data is available, build the event list
               final users = snapshot.data!;
-              //print('Test: $events');
+              print('Test: $users');
               return buildEvents(users);
-            } else {
+            } 
+            else {
               // Display message if no data is available
               return const Text("No users available.");
             }
