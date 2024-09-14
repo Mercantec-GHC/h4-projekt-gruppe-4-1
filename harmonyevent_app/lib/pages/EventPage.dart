@@ -207,19 +207,19 @@ class _EventPageState extends State<EventPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
 
-                    // //EVENT ID
-                    // Text(
-                    //   "Event ID: ${event.id}",
-                    //   style: const TextStyle(
-                    //     fontSize: 12,
-                    //     fontWeight: FontWeight.bold,
-                    //     color: Color.fromARGB(255, 234, 208, 225),
-                    //   ),
-                    // ),
+                    //EVENT ID
+                    Text(
+                      "Event ID: ${event.id}",
+                      style: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromARGB(255, 234, 208, 225),
+                      ),
+                    ),
                     
                     //EVENT IMAGE
                     Text(
-                      "ImageURL: ${event.EventPicture}",
+                      "ImageURL: ${event.eventPicture}",
                       style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
@@ -238,14 +238,14 @@ class _EventPageState extends State<EventPage> {
                     ),
 
                     //EVENT TITLE
-                    // Text(
-                    //   "Title: ${event.title}",
-                    //   style: const TextStyle(
-                    //     fontSize: 12,
-                    //     fontWeight: FontWeight.bold,
-                    //     color: Color.fromARGB(255, 234, 208, 225),
-                    //   ),
-                    // ),
+                    Text(
+                      "Title: ${event.title}",
+                      style: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromARGB(255, 234, 208, 225),
+                      ),
+                    ),
 
                     //EVENT CATEGORY
                     Text(
