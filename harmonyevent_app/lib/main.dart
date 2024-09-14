@@ -13,7 +13,6 @@ void main() {
     MyApp(
   ));
 }
-
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -46,27 +45,6 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-// class MyApp extends StatelessWidget {
-//   const MyApp({super.key});
-//   @override
-//   Widget build(BuildContext context) {
-//     return ChangeNotifierProvider(    
-//       create: (context) => MyAppState(),
-//       child: MaterialApp(
-//         title: 'Harmony Event',
-//         theme: ThemeData(
-          // useMaterial3: false,
-          // colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 183, 211, 83)),
-          // scaffoldBackgroundColor: const Color.fromARGB(255, 36, 51, 6),
-          // fontFamily: 'Purisa', 
-          
-//         ),
-//         home: HomeScreen(),
-//       ),
-//     );
-//   }
-// }
-
 class MyAppState extends ChangeNotifier {
 
 }
@@ -131,12 +109,10 @@ class StandardPadding extends StatelessWidget {
     );
   }
 }
-
 class ButtonStyling extends StatelessWidget {
   const ButtonStyling({
     super.key,
   });
-
   final txt = "Login";
 
   @override
@@ -160,7 +136,6 @@ class ButtonStyling extends StatelessWidget {
     );
   }
 }
-
 class LogoText extends StatelessWidget {
   const LogoText({
     super.key,

@@ -18,5 +18,6 @@ class LoginDTO {
     password: json['password'] as String,
     );
   }
-  get username => null;
+  // get username => null;
+  // get profilePicture => null;
 }
