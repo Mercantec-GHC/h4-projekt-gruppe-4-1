@@ -252,13 +252,23 @@ class _EventPageState extends State<EventPage> {
                       ),
                     ),
 
+                    //EVENT LOCATION
+                    Text(
+                      "Location: ${event.place_id}",
+                      style: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: const Color.fromARGB(255, 234, 208, 225),
+                      ),
+                    ),
+
                     //EVENT TITLE
                     Text(
                       "Title: ${event.title}",
                       style: const TextStyle(
-                        fontSize: 12,
+                        fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: Color.fromARGB(255, 234, 208, 225),
+                        color: const Color.fromARGB(255, 183, 211, 83),
                       ),
                     ),
 
@@ -291,7 +301,31 @@ class _EventPageState extends State<EventPage> {
                         color: Color.fromARGB(255, 234, 208, 225),
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    
+                    //ORGANIZED BY
+                    //EVENT IMAGE
+                    Container(
+                      width: 50,
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            radius: 56,
+                            child: Padding(
+                              padding: const EdgeInsets.all(1),
+                              child: ClipOval (
+                                child: Image.network(
+                                  event.eventPicture,                             
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return const Icon(Icons.broken_image, size: 300); // Handle broken images
+                                  },
+                                ), 
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    //const SizedBox(height: 20),
 
                     //CREATE EVENT BUTTOM
                     GradientButton(

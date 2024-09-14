@@ -52,7 +52,7 @@ class CreateEventService {
       );
     }
     request.fields['date'] = date;
-    request.fields['location'] = location;
+    request.fields['place_id'] = location;
     request.fields['title'] = title;
     request.fields['category'] = category;
     request.fields['description'] = description;

@@ -353,7 +353,7 @@ class CreateEventState extends State<CreateEventPage> {
               key: _isPrivateFieldKey,
               initialValue: false,
               validator: (value) {
-                if (value == false) return 'Please select if event is private';
+                if (value == null) return 'Please select if event is private';
                 return null;
               },
               builder: (FormFieldState<bool> field) {
@@ -391,13 +391,32 @@ class CreateEventState extends State<CreateEventPage> {
                         SwitchIsChecked = value;
                         _isPrivateController.text = value.toString();
                         print(value);
-                      });            
-                    },
+                        });            
+                      },
+                    ),
+                  );
+                },
+              ),
+
+              //ORGANIZED
+              TextFormField(
+                style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
+                //controller: _titleController,
+                decoration: InputDecoration(
+                  labelText: 'Organized by',
+                  labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
+                    border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
                   ),
-                );
-              },
-            ),
-            const SizedBox(height: 25),       
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please choose title';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 25),       
 
               //CREATE EVENT BUTTON
               SizedBox(height: 20),
