@@ -14,21 +14,18 @@ class UserProfilePage extends StatefulWidget {
   @override
   State<UserProfilePage> createState() => _UserProfilePageState();
 }
-
 class _UserProfilePageState extends State<UserProfilePage> {
   late Future<List<UserDTO>> usersFuture;
 
   @override
   void initState() {
     super.initState();
-    usersFuture = fetchUsers(); // Fetch events in initState
+    usersFuture = fetchUsers(); // Fetch users in initState
   }
-
-  // Fetch events from API
+  // Fetch users from API
   Future<List<UserDTO>> fetchUsers() async {
     const String baseUrl = ApiConfig.apiUrl;
     final url = Uri.parse('$baseUrl/api/user');
-
     try {
     final response = await http.get(url, headers: {"Content-Type": "application/json"});
     print('Response Status Code: ${response.statusCode}');
@@ -37,15 +34,16 @@ class _UserProfilePageState extends State<UserProfilePage> {
       final List body = json.decode(response.body);
       // Print each event DTO before returning
       final users = body.map((e) => UserDTO.fromJson(e)).toList();
+
       return users;
     } else {
       // Handle non-200 responses
-      print('Failed to load events: ${response.statusCode}');
-      throw Exception('Failed to load events: ${response.statusCode}');
+      print('Failed to load users: ${response.statusCode}');
+      throw Exception('Failed to load users: ${response.statusCode}');
     }
   } catch (e) {
     // Handle any errors that occur during the request
-    print('Error fetching events: $e');
+    print('Error fetching users: $e');
     return []; // Return an empty list or handle the error as needed
   }
 }
@@ -171,7 +169,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
     return ListView.builder(
       //scrollDirection: Axis.horizontal,
       itemCount: users.length,
-      physics: PageScrollPhysics(),
+      //physics: PageScrollPhysics(),
       itemBuilder: (context, index) {
         final user = users[index];
 
@@ -195,7 +193,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                         fontWeight: FontWeight.bold,
                         color: Color.fromARGB(255, 234, 208, 225),
                       ),
-                    ),                   
+                    ),
                     const SizedBox(height: 20),
                     
                     //USER PROFILE

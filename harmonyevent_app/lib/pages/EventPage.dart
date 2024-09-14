@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:harmonyevent_app/pages/UserProfilePage.dart';
 import 'package:http/http.dart' as http;
 import 'package:harmonyevent_app/config/api_config.dart';
 
@@ -8,6 +7,7 @@ import 'package:flutter_gradient_button/flutter_gradient_button.dart';
 
 import 'package:harmonyevent_app/models/event_model.dart';
 import 'package:harmonyevent_app/pages/CreateEventPage.dart';
+import 'package:harmonyevent_app/pages/UserProfilePage.dart';
 
 class EventPage extends StatefulWidget {
   const EventPage({super.key});
@@ -50,16 +50,6 @@ class _EventPageState extends State<EventPage> {
     return []; // Return an empty list or handle the error as needed
   }
 }
-// Logout function
-  // Future<void> logout() async {
-  //   await _secureStorage.delete(key: 'token'); // Remove the stored token
-
-  //   // Navigate to the login page after logging out
-  //   Navigator.pushReplacement(
-  //     context,
-  //     MaterialPageRoute(builder: (context) => LoginPage()), // Fixed missing closing
-  //   );
-  // }
 
   @override
   Widget build(BuildContext context) {   

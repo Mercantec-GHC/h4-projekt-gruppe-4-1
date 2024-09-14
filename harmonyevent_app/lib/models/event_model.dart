@@ -55,7 +55,7 @@ class CreateEventDTO {
   final String place_id;
 
   final String category;
-    final String title;
+  final String title;
   final String description;
   final String isprivate;
   
