@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 
-import 'package:status_alert/status_alert.dart';
 import 'package:flutter_gradient_button/flutter_gradient_button.dart';
 //import 'package:dropdown_textfield/dropdown_textfield.dart';
 
 import 'package:harmonyevent_app/components/custom_limitedappbar.dart';
+import 'package:harmonyevent_app/components/custom_alerts.dart';
 
 import 'package:harmonyevent_app/models/event_model.dart';
 import 'package:harmonyevent_app/services/createevent_service.dart';
@@ -22,36 +22,6 @@ class CreateEventPage extends StatefulWidget {
     return CreateEventState();
   }
 }
-
-void showSuccessAlert(BuildContext context) {     
-  StatusAlert.show( 
-    context, 
-    duration: Duration(seconds: 2), 
-    title: 'Success',
-    subtitle: 'Event created successfully!', 
-    configuration: IconConfiguration(
-      icon: Icons.check,
-      color: const Color.fromARGB(255, 162, 235, 14),
-              size: 180.0,
-      ), 
-    backgroundColor: Colors.transparent,
-    // borderRadius: BorderRadius.circular(10),
-  ); 
-} 
-void showErrorAlert(BuildContext context) { 
-  StatusAlert.show( 
-    context, 
-    duration: Duration(seconds: 2), 
-    title: 'Something went wrong', 
-    subtitle: 'Please try again!', 
-    configuration: IconConfiguration(
-      icon: Icons.block_rounded,
-      color: const Color.fromARGB(255, 162, 235, 14),
-      size: 180.0,
-      ), 
-    backgroundColor: const Color.fromARGB(255, 36, 51, 6),
-  ); 
-} 
 
 class CreateEventState extends State<CreateEventPage> {
   final _formKey = GlobalKey<FormState>();
@@ -146,7 +116,7 @@ class CreateEventState extends State<CreateEventPage> {
         description,
         isPrivate,
       );
-      showSuccessAlert(context);
+      showSuccessAlertCreateEvent(context);
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => EventPage()), // Replace with the correct page
@@ -163,6 +133,7 @@ class CreateEventState extends State<CreateEventPage> {
       });
     } 
     catch (e) {
+      showErrorAlertCreateEvent(context);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text("Failed to create event: $e"),
@@ -374,8 +345,7 @@ class CreateEventState extends State<CreateEventPage> {
                 },
               ),
 
-
-              //ORGANIZED
+              //ORGANIZED BY
               TextFormField(
                 style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
                 //controller: _titleController,

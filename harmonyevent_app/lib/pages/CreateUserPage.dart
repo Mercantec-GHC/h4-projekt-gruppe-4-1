@@ -1,12 +1,12 @@
 
-
 import 'package:flutter/material.dart';
 
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 
-import 'package:status_alert/status_alert.dart';
+//import 'package:status_alert/status_alert.dart';
 import 'package:flutter_gradient_button/flutter_gradient_button.dart';
+import 'package:harmonyevent_app/components/custom_alerts.dart';
 
 import 'package:harmonyevent_app/main.dart';
 import 'package:harmonyevent_app/pages/LoginPage.dart';
@@ -16,36 +16,6 @@ class CreateUserPage extends StatefulWidget {
   @override
   _CreateUserPageState createState() => _CreateUserPageState();
 }
-
-void showSuccessAlert(BuildContext context) {     
-  StatusAlert.show( 
-    context, 
-    duration: Duration(seconds: 4), 
-    title: 'Success',
-    subtitle: 'User created successfully!', 
-    configuration: IconConfiguration(
-      icon: Icons.check,
-      color: const Color.fromARGB(255, 162, 235, 14),
-              size: 180.0,
-      ), 
-    backgroundColor: const Color.fromARGB(255, 36, 51, 6),
-    // borderRadius: BorderRadius.circular(10),
-  ); 
-} 
-void showErrorAlert(BuildContext context) { 
-  StatusAlert.show( 
-    context, 
-    duration: Duration(seconds: 2), 
-    title: 'Failed to create user!', 
-    subtitle: 'Please try again.', 
-    configuration: IconConfiguration(
-      icon: Icons.block_rounded,
-      color: const Color.fromARGB(255, 162, 235, 14),
-      size: 180.0,
-      ), 
-    backgroundColor: const Color.fromARGB(0, 0, 0, 0),
-  ); 
-} 
 
 class _CreateUserPageState extends State<CreateUserPage> {
   final _formKey = GlobalKey<FormState>(); 
@@ -104,7 +74,7 @@ class _CreateUserPageState extends State<CreateUserPage> {
         city,
         _image,
         );
-        showSuccessAlert(context);
+        showSuccessAlertCreateUser(context);
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => LoginPage()), // Replace with the correct page
@@ -117,7 +87,7 @@ class _CreateUserPageState extends State<CreateUserPage> {
         );
       } 
       catch (e) {
-        showErrorAlert(context);
+        showErrorAlertCreateUser(context);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text("Failed to create user: $e"),
@@ -173,13 +143,13 @@ class _CreateUserPageState extends State<CreateUserPage> {
             Container(          
               child: 
               Text(
-                  "Harmony Event",
-                  style: TextStyle(
-                    color: const Color.fromARGB(255, 234, 208, 225),
-                    fontWeight: FontWeight.bold,
-                    ),
-                  ),  
-                ),  
+                "Harmony Event",
+                style: TextStyle(
+                  color: const Color.fromARGB(255, 234, 208, 225),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),  
+            ),  
           ],
         ),
       ),
@@ -187,7 +157,6 @@ class _CreateUserPageState extends State<CreateUserPage> {
         children: [
           Center(
             child: SafeArea(
-              //padding: EdgeInsets.all(16.0),
               child: ConstrainedBox(
                 constraints: BoxConstraints(maxWidth: 500),
                 child: SingleChildScrollView(
