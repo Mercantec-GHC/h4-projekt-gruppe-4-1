@@ -56,20 +56,20 @@ class CreateUserDTO {
     required this.profilePicture,
   });
 
-  // Convert an UserDTO object into a JSON map.
-  // Map<String, dynamic> toJson() {
-  //   return {
-  //     'firstname': firstname,
-  //     'lastname': lastname,
-  //     'email': email,
-  //     'username': username,
-  //     'password': password,
-  //     'address': address,
-  //     'postal': postal,
-  //     'city': city,
-  //     'profilePicture': profilePicture,
-  //   };
-  // }
+  //Convert an UserDTO object into a JSON map.
+  Map<String, dynamic> toJson() {
+    return {
+      'firstname': firstname,
+      'lastname': lastname,
+      'email': email,
+      'username': username,
+      'password': password,
+      'address': address,
+      'postal': postal,
+      'city': city,
+      'profilePicture': profilePicture,
+    };
+  }
 
   factory CreateUserDTO.fromJson(Map<String, dynamic> json) {
     return CreateUserDTO(

@@ -1,10 +1,7 @@
 
 import 'dart:io';
-//import 'dart:convert';
 import 'package:http/http.dart' as http;
-//import 'package:http_parser/http_parser.dart'; 
 import 'package:harmonyevent_app/config/api_config.dart';
-//import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 //import 'package:harmonyevent_app/models/user_model.dart';
 

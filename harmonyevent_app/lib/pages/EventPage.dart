@@ -1,12 +1,11 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'package:harmonyevent_app/config/api_config.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_gradient_button/flutter_gradient_button.dart';
 //import 'package:flutter_icon_shadow/flutter_icon_shadow.dart';
 
 import 'package:harmonyevent_app/models/event_model.dart';
+import 'package:harmonyevent_app/services/fetch_service.dart';
+
 import 'package:harmonyevent_app/pages/CreateEventPage.dart';
 import 'package:harmonyevent_app/pages/UserProfilePage.dart';
 
@@ -16,40 +15,14 @@ class EventPage extends StatefulWidget {
   @override
   State<EventPage> createState() => _EventPageState();
 }
-
 class _EventPageState extends State<EventPage> {
   late Future<List<EventDTO>> eventsFuture;
 
+  //Inits fetchEvents from fetchevents_service.dart
   @override
   void initState() {
     super.initState();
     eventsFuture = fetchEvents(); // Fetch events in initState
-  }
-  // Fetch events from API
-  Future<List<EventDTO>> fetchEvents() async {
-    const String baseUrl = ApiConfig.apiUrl;
-    final url = Uri.parse('$baseUrl/api/Event');
-
-    try {
-    final response = await http.get(url, headers: {"Content-Type": "application/json"});
-    print('Response Status Code: ${response.statusCode}');
-    if (response.statusCode == 200) {
-      //print('Response Body: ${response.body}');
-      final List body = json.decode(response.body);
-      // Print each event DTO before returning
-      final events = body.map((e) => EventDTO.fromJson(e)).toList();
-      return events;
-    } else {
-      // Handle non-200 responses
-      print('Failed to load events: ${response.statusCode}');
-      throw Exception('Failed to load events: ${response.statusCode}');
-    }
-  } 
-  catch (e) {
-    // Handle any errors that occur during the request
-    print('Error fetching events: $e');
-    return []; // Return an empty list or handle the error as needed
-    }
   }
 
   @override
@@ -58,6 +31,7 @@ class _EventPageState extends State<EventPage> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         actions: <Widget>[
+
           //SEARCH EVENTS
           IconButton(
             icon: const Icon(
@@ -75,13 +49,6 @@ class _EventPageState extends State<EventPage> {
             icon: Icon(
               Icons.event, 
               color: const Color.fromARGB(255, 234, 208, 225),
-              // shadows: <Shadow>[
-              //   Shadow(
-              //     color: const Color.fromARGB(155, 182, 211, 54), 
-              //     blurRadius: 2.0,  offset: const Offset(3, 3),
-              //     )
-              //   ],
-              //size: 28,
             ),
             tooltip: "All Events",
             onPressed: () {
@@ -116,18 +83,6 @@ class _EventPageState extends State<EventPage> {
               print("Hmm");
             }
           ),
-          // IconButton(
-          //   icon: const Icon(
-          //     Icons.favorite, 
-          //     color: Color.fromARGB(255, 183, 211, 54)
-          //     ),
-          //   tooltip: "Favorite Events",
-          //   onPressed: () {
-          //     print("Hmm");
-          //   }
-          // ),
-
-
 
           //USER PROFILE
           IconButton(
@@ -195,6 +150,7 @@ class _EventPageState extends State<EventPage> {
   Widget buildEvents(List<EventDTO> events) {
     var screenSize = MediaQuery.of(context).size;
     return ListView.builder(
+      
       scrollDirection: Axis.horizontal,
       itemCount: events.length,
       physics: PageScrollPhysics(),
@@ -356,14 +312,14 @@ class _EventPageState extends State<EventPage> {
                       textStyle: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
                       text: "Attend Event",
                       onPressed: () {
-                        print("Hmm");
+
                       },
                     ),
                   ],   
-                ),     
+                ),
               ),
             ],
-          ),        
+          ),
         );
       },
     );

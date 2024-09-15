@@ -53,9 +53,8 @@ class CreateEventDTO {
   final String eventPicture;
   final DateTime date;
   final String place_id;
-
-  final String category;
   final String title;
+  final String category;
   final String description;
   final String isprivate;
   

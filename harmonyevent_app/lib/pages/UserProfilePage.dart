@@ -1,13 +1,13 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'package:harmonyevent_app/config/api_config.dart';
 
 import 'package:flutter/material.dart';
 //import 'package:flutter_gradient_button/flutter_gradient_button.dart';
 
+import 'package:harmonyevent_app/models/user_model.dart';
+import 'package:harmonyevent_app/services/fetch_service.dart';
+
 import 'package:harmonyevent_app/pages/CreateEventPage.dart';
 import 'package:harmonyevent_app/pages/EventPage.dart';
-import 'package:harmonyevent_app/models/user_model.dart';
+
 
 class UserProfilePage extends StatefulWidget {
   const UserProfilePage({super.key});
@@ -23,30 +23,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
     super.initState();
     usersFuture = fetchUsers(); // Fetch users in initState
   }
-  // Fetch users from API
-  Future<List<UserDTO>> fetchUsers() async {
-    const String baseUrl = ApiConfig.apiUrl;
-    final url = Uri.parse('$baseUrl/api/user');
-    try {
-    final response = await http.get(url, headers: {"Content-Type": "application/json"});
-    print('Response Status Code: ${response.statusCode}');
-    if (response.statusCode == 200) {
-      print('Response Body: ${response.body}');
-      final List body = json.decode(response.body);
-      // Print each event DTO before returning
-      final users = body.map((e) => UserDTO.fromJson(e)).toList();
-      return users;
-    } else {
-      // Handle non-200 responses
-      print('Failed to load users: ${response.statusCode}');
-      throw Exception('Failed to load users: ${response.statusCode}');
-    }
-  } catch (e) {
-    // Handle any errors that occur during the request
-    print('Error fetching users: $e');
-    return []; // Return an empty list or handle the error as needed
-  }
-}
+
 // Logout function
   // Future<void> logout() async {
   //   await _secureStorage.delete(key: 'token'); // Remove the stored token
@@ -81,13 +58,6 @@ class _UserProfilePageState extends State<UserProfilePage> {
             icon: Icon(
               Icons.event, 
               color: Color.fromARGB(255, 183, 211, 54),
-              // shadows: <Shadow>[
-              //   Shadow(
-              //     color: const Color.fromARGB(155, 182, 211, 54), 
-              //     blurRadius: 2.0,  offset: const Offset(3, 3),
-              //     )
-              //   ],
-              //size: 26,
             ),
             tooltip: "All Events",
             onPressed: () {
@@ -122,16 +92,6 @@ class _UserProfilePageState extends State<UserProfilePage> {
               print("Hmm");
             }
           ),
-          // IconButton(
-          //   icon: const Icon(
-          //     Icons.favorite, 
-          //     color: Color.fromARGB(255, 183, 211, 54)
-          //     ),
-          //   tooltip: "Favorite Events",
-          //   onPressed: () {
-          //     print("Hmm");
-          //   }
-          // ),
 
           //USER PROFILE
           IconButton(

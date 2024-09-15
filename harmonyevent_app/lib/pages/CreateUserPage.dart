@@ -7,7 +7,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:flutter_gradient_button/flutter_gradient_button.dart';
 
 import 'package:harmonyevent_app/main.dart';
-//import 'package:harmonyevent_app/models/user_model.dart'; 
 import 'package:harmonyevent_app/pages/LoginPage.dart';
 import 'package:harmonyevent_app/services/createuser_service.dart';
 
