@@ -2,12 +2,10 @@
 import 'dart:io';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
- 
-import 'package:harmonyevent_app/config/api_config.dart';
-
 /*VIRKER IKKE PÅ MACOS - UNDERSØGER LØSNINGSMULIGHEDER:
 //import 'package:flutter_secure_storage/flutter_secure_storage.dart';*/
-
+ 
+import 'package:harmonyevent_app/config/api_config.dart';
 import 'package:harmonyevent_app/models/event_model.dart';
 
 class CreateEventService {

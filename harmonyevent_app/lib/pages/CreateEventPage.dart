@@ -61,7 +61,6 @@ class CreateEventState extends State<CreateEventPage> {
       firstDate: DateTime.now(),
       lastDate: DateTime(2050),
     );
-
     if (selected != null) {
       setState(() {
         _dateController.text = selected.toUtc().toString().split(' ')[0]; // Update date
@@ -78,7 +77,6 @@ class CreateEventState extends State<CreateEventPage> {
     setState(() {
       _isLoading = true;      
     });
-
 
     File? eventPicture; // Declared as a nullable File
     // Ensure that the user has picked an image
@@ -157,7 +155,7 @@ class CreateEventState extends State<CreateEventPage> {
         
         child: Column(
 
-          //FORM FIELD CHIRLDEREN
+          //FORM FIELD CHIRLDREN
           children: [
 
             //SELECT IMAGE

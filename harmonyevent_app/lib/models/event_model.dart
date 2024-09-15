@@ -1,4 +1,3 @@
-//import 'dart:core';
 
 class EventDTO {
   final String id;
