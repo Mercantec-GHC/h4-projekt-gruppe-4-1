@@ -5,8 +5,8 @@ import 'package:harmonyevent_app/pages/CreateEventPage.dart';
 import 'package:harmonyevent_app/pages/UserProfilePage.dart';
 import 'package:harmonyevent_app/pages/EventPage.dart';
 
-class customAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const customAppBar({
+class CustomMainAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const CustomMainAppBar({
     super.key,
   });
 
@@ -111,5 +111,5 @@ class customAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
   
   @override
-  Size get preferredSize => Size.fromHeight(80.0);
+  Size get preferredSize => Size.fromHeight(60.0);
 }

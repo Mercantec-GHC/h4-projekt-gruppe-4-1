@@ -8,9 +8,13 @@ import 'package:status_alert/status_alert.dart';
 import 'package:flutter_gradient_button/flutter_gradient_button.dart';
 //import 'package:dropdown_textfield/dropdown_textfield.dart';
 
+import 'package:harmonyevent_app/components/custom_limitedappbar.dart';
+
 import 'package:harmonyevent_app/models/event_model.dart';
 import 'package:harmonyevent_app/services/createevent_service.dart';
+
 import 'package:harmonyevent_app/pages/EventPage.dart';
+
 
 class CreateEventPage extends StatefulWidget {
   @override
@@ -176,40 +180,9 @@ class CreateEventState extends State<CreateEventPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios,
-            color: Color.fromARGB(255, 234, 208, 225)),
-        onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => EventPage()),
-            );
-          },
-        ),
-        title: Row(
-          children: [
-            Container(
-              child: Image(image: AssetImage('assets/images/HE_Logo.png'),
-              width: 50,
-              fit: BoxFit.cover     
-              ),  
-            ),        
-            Container(          
-              child: 
-              Text(
-                "Harmony Event",
-                style: TextStyle(
-                  color: const Color.fromARGB(255, 234, 208, 225),
-                  fontWeight: FontWeight.bold,
-                ),
-              ),  
-            ), 
-          ],
-        ),
-      ),
+
+      //GET CUSTOM LIMITED APPBAR FROM /components/custom_limitedappbar.dart
+      appBar: CustomLimitedAppBar(),
 
       //FORM FIELD
       body: Padding(
@@ -441,3 +414,6 @@ class CreateEventState extends State<CreateEventPage> {
     );
   }
 }
+
+
+

@@ -46,7 +46,6 @@ class MyApp extends StatelessWidget {
   }
 }
 class MyAppState extends ChangeNotifier {
-
 }
 class HomeScreen extends StatelessWidget {
   @override
