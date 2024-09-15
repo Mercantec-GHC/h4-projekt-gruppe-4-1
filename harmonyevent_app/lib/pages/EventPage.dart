@@ -60,8 +60,7 @@ class _EventPageState extends State<EventPage> {
   // Build the event list UI
   Widget buildEvents(List<EventDTO> events) {
     var screenSize = MediaQuery.of(context).size;
-    return ListView.builder(
-      
+    return ListView.builder(   
       scrollDirection: Axis.horizontal,
       itemCount: events.length,
       physics: PageScrollPhysics(),
@@ -213,7 +212,7 @@ class _EventPageState extends State<EventPage> {
                       ),
                     ),
 
-                    //CREATE EVENT BUTTOM
+                    //CREATE EVENT BUTTON
                     GradientButton(
                       colors: [const Color.fromARGB(255, 183, 211, 54), const Color.fromARGB(255, 109, 190, 66)],
                       height: 40,

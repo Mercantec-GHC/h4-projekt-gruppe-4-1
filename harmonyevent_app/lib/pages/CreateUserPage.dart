@@ -1,4 +1,5 @@
 
+
 import 'package:flutter/material.dart';
 
 import 'dart:io';
@@ -6,8 +7,6 @@ import 'package:image_picker/image_picker.dart';
 
 import 'package:status_alert/status_alert.dart';
 import 'package:flutter_gradient_button/flutter_gradient_button.dart';
-
-import 'package:harmonyevent_app/components/custom_limitedappbar.dart';
 
 import 'package:harmonyevent_app/main.dart';
 import 'package:harmonyevent_app/pages/LoginPage.dart';
@@ -150,10 +149,40 @@ class _CreateUserPageState extends State<CreateUserPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
-      //GET CUSTOM LIMITED APPBAR FROM /components/custom_limitedappbar.dart
-      appBar: CustomLimitedAppBar(),
-
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        leading: IconButton(
+        icon: Icon(Icons.arrow_back_ios),
+        color: const Color.fromARGB(255, 234, 208, 225),
+        
+        onPressed: () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => HomeScreen()), // Replace with the correct page
+            );
+          },
+        ),
+        title: Row(
+          children: [
+            Container(
+              child: Image(image: AssetImage('assets/images/HE_Logo.png'),
+                width: 50,
+                fit: BoxFit.cover     
+              ),  
+            ),        
+            Container(          
+              child: 
+              Text(
+                  "Harmony Event",
+                  style: TextStyle(
+                    color: const Color.fromARGB(255, 234, 208, 225),
+                    fontWeight: FontWeight.bold,
+                    ),
+                  ),  
+                ),  
+          ],
+        ),
+      ),
       body: Stack(
         children: [
           Center(

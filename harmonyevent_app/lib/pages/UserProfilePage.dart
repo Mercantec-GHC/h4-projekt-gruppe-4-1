@@ -107,6 +107,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                         color: Color.fromARGB(255, 234, 208, 225),
                       ),
                     ),
+                    
                     //USER PROFILE
                     Container(
                       //width: 150,
