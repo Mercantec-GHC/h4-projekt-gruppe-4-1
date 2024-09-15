@@ -1,13 +1,10 @@
 
 import 'package:flutter/material.dart';
-
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
-
-//import 'package:status_alert/status_alert.dart';
 import 'package:flutter_gradient_button/flutter_gradient_button.dart';
-import 'package:harmonyevent_app/components/custom_alerts.dart';
 
+import 'package:harmonyevent_app/components/custom_alerts.dart';
 import 'package:harmonyevent_app/main.dart';
 import 'package:harmonyevent_app/pages/LoginPage.dart';
 import 'package:harmonyevent_app/services/createuser_service.dart';

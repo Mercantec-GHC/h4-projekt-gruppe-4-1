@@ -1,13 +1,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_gradient_button/flutter_gradient_button.dart';
-//import 'package:flutter_icon_shadow/flutter_icon_shadow.dart';
 
 import 'package:harmonyevent_app/components/custom_mainappbar.dart';
-
 import 'package:harmonyevent_app/models/event_model.dart';
 import 'package:harmonyevent_app/services/fetch_service.dart';
-
 
 class EventPage extends StatefulWidget {
   const EventPage({super.key});

@@ -1,20 +1,14 @@
 
 import 'package:flutter/material.dart';
-
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
-
 import 'package:flutter_gradient_button/flutter_gradient_button.dart';
-//import 'package:dropdown_textfield/dropdown_textfield.dart';
 
 import 'package:harmonyevent_app/components/custom_limitedappbar.dart';
 import 'package:harmonyevent_app/components/custom_alerts.dart';
-
 import 'package:harmonyevent_app/models/event_model.dart';
 import 'package:harmonyevent_app/services/createevent_service.dart';
-
 import 'package:harmonyevent_app/pages/EventPage.dart';
-
 
 class CreateEventPage extends StatefulWidget {
   @override

@@ -1,48 +1,16 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
 import 'package:flutter_gradient_button/flutter_gradient_button.dart';
-import 'package:status_alert/status_alert.dart';
 
+import 'package:harmonyevent_app/components/custom_alerts.dart';
 import 'package:harmonyevent_app/models/login_model.dart';
 import 'package:harmonyevent_app/services/login_service.dart';
-
 import 'package:harmonyevent_app/pages/EventPage.dart';
 
 void main() {
   runApp(MyApp());
 }
-
-void showSuccessAlert(BuildContext context) {     
-  StatusAlert.show( 
-    context, 
-    duration: Duration(seconds: 2), 
-    title: 'Success',
-    subtitle: 'Login completed successfully!', 
-    configuration: IconConfiguration(
-      icon: Icons.check,
-      color: const Color.fromARGB(255, 162, 235, 14),
-              size: 180.0,
-      ), 
-    backgroundColor: Colors.transparent,
-    // borderRadius: BorderRadius.circular(10),
-  ); 
-} 
-void showErrorAlert(BuildContext context) { 
-  StatusAlert.show( 
-    context, 
-    duration: Duration(seconds: 2), 
-    title: 'Invalid username or password!', 
-    subtitle: 'Please try again.', 
-    configuration: IconConfiguration(
-      icon: Icons.block_rounded,
-      color: const Color.fromARGB(255, 162, 235, 14),
-      size: 180.0,
-      ), 
-    backgroundColor: const Color.fromARGB(255, 36, 51, 6),
-  ); 
-} 
 
 class MyApp extends StatelessWidget {
   @override
