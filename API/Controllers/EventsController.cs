@@ -90,11 +90,43 @@ namespace API.Controllers
             return NoContent();
         }
 
-        
+        // Get events by EventCreator_id
+        [HttpGet("creator/{eventCreatorId}")]
+        public async Task<ActionResult<IEnumerable<Event>>> GetEventsByEventCreatorId(string eventCreatorId)
+        {
+            var events = await _dbContext.Events
+                                         .Where(e => e.EventCreator_id == eventCreatorId)
+                                         .ToListAsync();
+
+            if (events == null || events.Count == 0)
+            {
+                return NotFound(new { message = "No events found for the specified Event Creator." });
+            }
+
+            return Ok(events);
+        }
+
+        // Delete event by EventCreator_id and Event ID
+        [HttpDelete("creator/{eventCreatorId}/event/{eventId}")]
+        public async Task<IActionResult> DeleteEventByEventCreatorId(string eventCreatorId, string eventId)
+        {
+            var events = await _dbContext.Events
+                                         .FirstOrDefaultAsync(e => e.EventCreator_id == eventCreatorId && e.id == eventId);
+
+            if (events == null)
+            {
+                return NotFound(new { message = "Event not found for the specified Event Creator." });
+            }
+
+            _dbContext.Events.Remove(events);
+            await _dbContext.SaveChangesAsync();
+
+            return NoContent();
+        }
 
 
 
-    private bool EventExists(string id)
+        private bool EventExists(string id)
         {
             return _dbContext.Events.Any(e => e.id == id);
         }
