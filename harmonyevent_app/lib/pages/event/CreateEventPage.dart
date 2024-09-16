@@ -304,9 +304,20 @@ class CreateEventState extends State<CreateEventPage> {
                   items: [
                     DropdownMenuItem(value: 'Birthday', child: Text('Birthday')),
                     DropdownMenuItem(value: 'Concert', child: Text('Concert')),
+                    DropdownMenuItem(value: 'Corporate', child: Text('Corporate')),
+                    DropdownMenuItem(value: 'Convention', child: Text('Convention')),
+                    DropdownMenuItem(value: 'Exhibition', child: Text('Exhibition')),
+                    DropdownMenuItem(value: 'Festival', child: Text('Festival')),
                     DropdownMenuItem(value: 'Lecture', child: Text('Lecture')),
+                    DropdownMenuItem(value: 'Networking', child: Text('Networking')),
+                    DropdownMenuItem(value: 'Party', child: Text('Party')),
+                    DropdownMenuItem(value: 'Reception', child: Text('Reception')),
+                    DropdownMenuItem(value: 'Sports', child: Text('Sports')),
+                    DropdownMenuItem(value: 'Seminar', child: Text('Seminar')),
+                    DropdownMenuItem(value: 'Team builing', child: Text('Team builing')),
                     DropdownMenuItem(value: 'Wedding', child: Text('Wedding')),
-                    DropdownMenuItem(value: 'Other', child: Text('Others')),
+                    DropdownMenuItem(value: 'Workshop', child: Text('Workshop')),
+                    DropdownMenuItem(value: 'Others', child: Text('Others')),
                   ],
                   onChanged: (value) {
                     setState(() {

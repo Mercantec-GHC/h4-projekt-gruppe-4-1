@@ -50,7 +50,6 @@ class _UserProfilePageState extends State<UserProfilePage> {
                               backgroundColor: const Color.fromARGB(255, 183, 211, 83),
                               radius: 40,
                               child: Padding(
-             
                                 padding: const EdgeInsets.all(3),
                                 child: ClipOval (
                                   child: Image.network(

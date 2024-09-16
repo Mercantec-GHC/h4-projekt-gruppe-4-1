@@ -26,6 +26,7 @@ class _DeleteEventPageState extends State<DeleteEventPage> {
 
     try { 
       //String? token = await _secureStorage.read(key: 'token');
+      //MACOS TEMPORARY WORKAROUND
       String? token = mytoken;
       if (token == null) {
         throw Exception("Authentication token not found");
