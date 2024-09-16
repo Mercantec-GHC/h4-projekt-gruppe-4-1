@@ -12,6 +12,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.Extensions.Configuration;
 using API.Service;
+using Microsoft.Extensions.Logging;
 
 
 namespace API.Controllers
@@ -35,7 +36,7 @@ namespace API.Controllers
         }
         // get all
         [HttpGet]
-        
+
         public async Task<ActionResult<IEnumerable<EventDTO>>> GetEvents()
         {
             var events = await _dbContext.Events
@@ -44,7 +45,7 @@ namespace API.Controllers
                     Id = events.id,
                     Date = events.Date,
                     Place_id = events.Place_id,
-                    ImageURL = events.EventPictureURL,
+                    EventPicture = events.EventPictureURL,
                     Description = events.Description,
                     Category = events.Category,
                     Title = events.Title,
@@ -88,47 +89,12 @@ namespace API.Controllers
 
             return NoContent();
         }
-        // update by id
-        [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateEvent(string id, [FromBody] EventDTO updatedEvent)
-        {
-            
-            var existingEvent = await _dbContext.Events.FindAsync(id);
-            if (existingEvent == null)
-            {
-                return NotFound();
-            }
 
-            
-            existingEvent.Date = updatedEvent.Date;
-            existingEvent.Place_id = updatedEvent.Place_id;
-            existingEvent.EventPictureURL = updatedEvent.ImageURL;
-            existingEvent.Description = updatedEvent.Description;
-            existingEvent.Category = updatedEvent.Category;
-            existingEvent.Title = updatedEvent.Title;
-            existingEvent.isprivate = updatedEvent.isprivate;
+        
 
-            try
-            {
-                // Save the updated event to the database
-                await _dbContext.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!EventExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
 
-            return NoContent(); // Return 204 No Content when successful
-        }
 
-        private bool EventExists(string id)
+    private bool EventExists(string id)
         {
             return _dbContext.Events.Any(e => e.id == id);
         }
@@ -172,7 +138,45 @@ namespace API.Controllers
 
             return Ok("You are now attending the event");
         }
+        // Update event by id
+        [HttpPost("Update/{id}")]
+        public async Task<IActionResult> UpdateEventById(string id, [FromForm] EventDTO eventUpdate)
+        {
+            var existingEvent = await _dbContext.Events.FindAsync(id);
+            if (existingEvent == null)
+            {
+                return NotFound(new { message = "Event not found" });
+            }
 
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (existingEvent.EventCreator_id != userId)
+            {
+                return StatusCode(403, new { message = "You are not authorized to update this event." });
+            }
+
+            // Update event properties
+            existingEvent.Date = eventUpdate.Date;
+            existingEvent.Place_id = eventUpdate.Place_id;
+            existingEvent.Title = eventUpdate.Title;
+            existingEvent.isprivate = eventUpdate.isprivate;
+            existingEvent.Description = eventUpdate.Description;
+            existingEvent.Category = eventUpdate.Category;
+
+            _dbContext.Events.Add(existingEvent);
+            try
+            {
+
+                await _dbContext.SaveChangesAsync();
+            }
+            catch (DbUpdateException ex)
+            {
+
+                return StatusCode(500, new { message = "An error occurred while saving the event.", details = ex.Message });
+            }
+
+
+            return CreatedAtAction(nameof(GetEventById), new { id = existingEvent.id }, existingEvent);
+        }
         // create event
         [HttpPost("Create")]
         

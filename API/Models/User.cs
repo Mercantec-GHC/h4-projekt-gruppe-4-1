@@ -49,6 +49,7 @@ namespace API.Models
         public String Password { get; set; }
     }
 
+
     public class SignUpDTO
     {
         public String FirstName { get; set; }

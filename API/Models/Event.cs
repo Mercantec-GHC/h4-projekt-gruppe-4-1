@@ -33,7 +33,7 @@ namespace API.Models
         public string Place_id { get; set; }
         public string Description { get; set; }
         public string Title { get; set; }
-        public IFormFile ImageURL { get; set; }
+        public String EventPicture { get; set; }
         public string Category { get; set; }
         public string isprivate { get; set; }
         public List<Participant>? Participants { get; set; }
@@ -45,7 +45,7 @@ namespace API.Models
         public String Date { get; set; }
         
         public string? Place_id { get; set; }
-        public IFormFile EventPicture { get; set; }
+        public IFormFile? EventPicture { get; set; }
         public string isprivate { get; set; }
         public string Title { get; set; }
         public string? Category { get; set; }
