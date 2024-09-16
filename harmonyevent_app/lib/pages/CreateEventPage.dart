@@ -22,6 +22,7 @@ class CreateEventState extends State<CreateEventPage> {
   File? EventPicture; // To store the selected image
   final picker = ImagePicker(); // Image picker instance
   final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _timeController = TextEditingController(); 
   final TextEditingController _locationController = TextEditingController();
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _categoryController = TextEditingController();
@@ -35,6 +36,7 @@ class CreateEventState extends State<CreateEventPage> {
   @override
   void dispose() {
     _dateController.dispose();
+    _timeController.dispose();
     _locationController.dispose();
     _titleController.dispose();
     _categoryController.dispose();
@@ -67,6 +69,18 @@ class CreateEventState extends State<CreateEventPage> {
       });
     }
   }
+  Future<void> _selectTime(BuildContext context) async {
+  final TimeOfDay? selected = await showTimePicker(
+    context: context,
+    initialTime: TimeOfDay.now(),
+  );
+  if (selected != null) {
+    setState(() {
+      _timeController.text = selected.format(context); 
+      });
+    }
+  }
+
 
   //  SwitchListTile standard selection
   bool SwitchIsChecked = false; 
@@ -91,6 +105,7 @@ class CreateEventState extends State<CreateEventPage> {
       return;
     }
     final String date = _dateController.text;
+    final String time = _timeController.text;
     final String location = _locationController.text;
     final String title = _titleController.text;
     final String category = _categoryController.text;
@@ -101,7 +116,7 @@ class CreateEventState extends State<CreateEventPage> {
       // Call EventService to create the event
       final CreateEventDTO newEventDTO = await _eventService.createEvent(
         eventPicture, 
-        date,
+        "$date $time", 
         location,
         category,
         title,
@@ -202,6 +217,24 @@ class CreateEventState extends State<CreateEventPage> {
                 return null;
               },
             ),
+            // Time field
+                TextFormField(
+                  controller: _timeController,
+                  readOnly: true,
+                  decoration: InputDecoration(
+                    labelText: 'Time',
+                    suffixIcon: IconButton(
+                      icon: Icon(Icons.access_time),
+                      onPressed: () => _selectTime(context),
+                    ),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please choose a time';
+                    }
+                    return null;
+                  },
+                ),
             
             //SELECT LOCATION
             TextFormField(
@@ -284,75 +317,79 @@ class CreateEventState extends State<CreateEventPage> {
                 return null;
               },
             ),
+
+            // Private/Public dropdown
+                DropdownButtonFormField<String>(
+                  value: _isPrivateController.text.isNotEmpty ? _isPrivateController.text : null,
+                  decoration: InputDecoration(labelText: 'Private/Public'),
+                  items: [
+                    DropdownMenuItem(value: 'true', child: Text('Private')),
+                    DropdownMenuItem(value: 'false', child: Text('Public')),
+                  ],
+                  onChanged: (value) {
+                    setState(() {
+                      _isPrivateController.text = value!;  
+                    });
+                  },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please specify if the event is private or public';
+                    }
+                    return null;
+                  },
+                ),
               
             //EVENT IS PRIVATE BOOL
-            FormField(
-              key: _isPrivateFieldKey,
-              initialValue: false,
-              validator: (value) {
-                if (value == null) return 'Please select if event is private';
-                return null;
-              },
-              builder: (FormFieldState<bool> field) {
-                return InputDecorator(
-                  decoration: InputDecoration(
-                    labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                    ), // labelText: 'Subscribe to mailing list.',
-                  errorText: field.errorText,
-                  ),
-                  child: SwitchListTile(
-                    hoverColor: const Color.fromARGB(255, 36, 51, 6),
-                    activeColor: Color.fromARGB(255, 234, 208, 225),
-                    inactiveThumbColor: Color.fromARGB(255, 234, 208, 225),
-                    activeTrackColor: const Color.fromARGB(255, 183, 211, 83),
-                    inactiveTrackColor: const Color.fromARGB(255, 234, 208, 225),
-                    title: const Text(
-                      "Private",
-                    style: TextStyle(
-                      color: const Color.fromARGB(255, 183, 211, 83)
-                    ),
-                    selectionColor: const Color.fromARGB(255, 183, 211, 83),
-                    ),
-                    secondary: const SizedBox(
-                      child: Icon(
-                        Icons.lock,
-                        color: const Color.fromARGB(255, 183, 211, 83),
-                        size: 25,
-                      ),
-                    ),
-                    value: SwitchIsChecked,         
-                    onChanged: (value) {
-                      setState(() {
-                        SwitchIsChecked = value;
-                        _isPrivateController.text = value.toString();
-                        print(value);
-                        });            
-                      },
-                    ),
-                  );
-                },
-              ),
+            // FormField(
+            //   key: _isPrivateFieldKey,
+            //   initialValue: false,
+            //   validator: (value) {
+            //     if (value == null) return 'Please select if event is private';
+            //     return null;
+            //   },
+            //   builder: (FormFieldState<bool> field) {
+            //     return InputDecorator(
+            //       decoration: InputDecoration(
+            //         labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
+            //         border: OutlineInputBorder(
+            //           borderRadius: BorderRadius.circular(8.0),
+            //         ), // labelText: 'Subscribe to mailing list.',
+            //       errorText: field.errorText,
+            //       ),
+            //       child: SwitchListTile(
+            //         hoverColor: const Color.fromARGB(255, 36, 51, 6),
+            //         activeColor: Color.fromARGB(255, 234, 208, 225),
+            //         inactiveThumbColor: Color.fromARGB(255, 234, 208, 225),
+            //         activeTrackColor: const Color.fromARGB(255, 183, 211, 83),
+            //         inactiveTrackColor: const Color.fromARGB(255, 234, 208, 225),
+            //         title: const Text(
+            //           "Private",
+            //         style: TextStyle(
+            //           color: const Color.fromARGB(255, 183, 211, 83)
+            //         ),
+            //         selectionColor: const Color.fromARGB(255, 183, 211, 83),
+            //         ),
+            //         secondary: const SizedBox(
+            //           child: Icon(
+            //             Icons.lock,
+            //             color: const Color.fromARGB(255, 183, 211, 83),
+            //             size: 25,
+            //           ),
+            //         ),
+            //         value: SwitchIsChecked,         
+            //         onChanged: (value) {
+            //           setState(() {
+            //             SwitchIsChecked = value;
+            //             _isPrivateController.text = value.toString();
+            //             print(value);
+            //             });            
+            //           },
+            //         ),
+            //       );
+            //     },
+            //   ),
 
               //ORGANIZED BY
-              TextFormField(
-                style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
-                //controller: _titleController,
-                decoration: InputDecoration(
-                  labelText: 'Organized by',
-                  labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
-                    border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please choose title';
-                  }
-                  return null;
-                },
-              ),
               const SizedBox(height: 25),       
 
               //CREATE EVENT BUTTON
