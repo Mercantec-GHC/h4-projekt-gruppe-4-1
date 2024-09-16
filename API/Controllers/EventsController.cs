@@ -175,7 +175,7 @@ namespace API.Controllers
 
         // create event
         [HttpPost("Create")]
-        [Authorize]
+        
         public async Task<IActionResult> PostUser([FromForm] CreateEventDTO eventCreate)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
