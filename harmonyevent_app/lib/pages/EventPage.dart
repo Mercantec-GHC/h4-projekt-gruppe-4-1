@@ -125,7 +125,7 @@ class _EventPageState extends State<EventPage> {
 
                     //EVENT LOCATION
                     Text(
-                      "Location: ${event.place_id}",
+                      "Location: ${event.location}",
                       style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
@@ -180,7 +180,7 @@ class _EventPageState extends State<EventPage> {
                       child: Column(
                         children: [
                           Text(
-                            "Organized by: ${event.title}",
+                            "Organized by: NOT MADE YET",
                             style: const TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.bold,

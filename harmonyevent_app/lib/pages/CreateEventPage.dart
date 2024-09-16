@@ -29,7 +29,7 @@ class CreateEventState extends State<CreateEventPage> {
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _isPrivateController = TextEditingController();
   bool _isLoading = false;
-  final GlobalKey<FormFieldState> _isPrivateFieldKey = GlobalKey();
+  //final GlobalKey<FormFieldState> _isPrivateFieldKey = GlobalKey();
 
   final CreateEventService _eventService = CreateEventService(); 
 
@@ -179,10 +179,10 @@ class CreateEventState extends State<CreateEventPage> {
                 color: const Color.fromARGB(255, 183, 211, 83),),
                 label: Text('Choose image'),              
             ),
-            SizedBox(height: 10),
+            //SizedBox(height: 10),
             EventPicture != null ? Image.file(
               EventPicture!,
-              height: 100,
+              height: 50,
             )
             : Text(
               'Prefered size 500x281 pixels',
@@ -276,7 +276,29 @@ class CreateEventState extends State<CreateEventPage> {
             ),
             //const SizedBox(height: 15),
 
-            // SELECT CATEGORY
+            //SELECT CATEGORY
+            // DropdownButtonFormField<String>(
+            //       value: _categoryController.text.isNotEmpty ? _categoryController.text : null,
+            //       decoration: InputDecoration(labelText: 'Category'),
+            //       items: [
+            //         DropdownMenuItem(child: Text('Gaming')),
+            //         DropdownMenuItem(value: 'true', child: Text('Lecture')),
+            //         DropdownMenuItem(value: 'true', child: Text('Birthday')),
+            //         DropdownMenuItem(value: 'true', child: Text('Wedding')),
+            //         DropdownMenuItem(value: 'true', child: Text('Gokarting')),
+            //       ],
+            //       onChanged: (value) {
+            //         setState(() {
+            //           _categoryController.text = value!;  
+            //         });
+            //       },
+            //       validator: (value) {
+            //         if (value == null || value.isEmpty) {
+            //           return 'Please chose category';
+            //         }
+            //         return null;
+            //       },
+            //     ),
             TextFormField(
               style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
               controller: _categoryController,
@@ -294,7 +316,7 @@ class CreateEventState extends State<CreateEventPage> {
                 return null;
               },
             ),
-            //const SizedBox(height: 15),
+            const SizedBox(height: 15),
 
             // WRITE DESCRIPTION
             TextFormField(
@@ -389,7 +411,6 @@ class CreateEventState extends State<CreateEventPage> {
             //     },
             //   ),
 
-              //ORGANIZED BY
               const SizedBox(height: 25),       
 
               //CREATE EVENT BUTTON

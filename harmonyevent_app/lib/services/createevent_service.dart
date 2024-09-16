@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 //import 'package:flutter_secure_storage/flutter_secure_storage.dart';*/
  
 import 'package:harmonyevent_app/config/api_config.dart';
+import 'package:harmonyevent_app/config/token.dart';
 import 'package:harmonyevent_app/models/event_model.dart';
 
 class CreateEventService {
@@ -28,14 +29,15 @@ class CreateEventService {
   async {
     var request = http.MultipartRequest('POST', Uri.parse('$_baseUrl/api/event/create'));
 
-    /*VIRKER IKKE PÅ MACOS - UNDERSØGER LØSNINGSMULIGHEDER:
-    // Retrieve the token securely
-    // final String? token = await storage.read(key: 'jwt');
-    // print(token);
-    // if (token == null) {
-    //   throw Exception('Authentication token not found. Please log in');
-    // }
-    // request.headers['Authorization'] = 'Bearer $token';*/
+    //VIRKER IKKE PÅ MACOS - UNDERSØGER LØSNINGSMULIGHEDER:
+    //Retrieve the token securely
+    //final String? token = await storage.read(key: 'jwt');
+    final String? token = mytoken;
+    print(token);
+    if (token == null) {
+      throw Exception('Authentication token not found. Please log in');
+    }
+    request.headers['Authorization'] = 'Bearer $token';
 
     if (EventPicture != null) {
       var imageStream = http.ByteStream(EventPicture.openRead());

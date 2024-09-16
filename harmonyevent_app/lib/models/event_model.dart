@@ -3,7 +3,7 @@ class EventDTO {
   final String id;
   final String eventPicture;
   final String date;
-  final String place_id;
+  final String location;
   final String title;
   final String category;
   final String description;
@@ -13,7 +13,7 @@ class EventDTO {
     required this.id,
     required this.eventPicture,
     required this.date,
-    required this.place_id,
+    required this.location,
     required this.title,
     required this.category,
     required this.description,
@@ -26,7 +26,7 @@ class EventDTO {
       'id': id,  
       'eventPicture': eventPicture,
       'date': date,  
-      'place_id': place_id,
+      'location': location,
       'title': title,
       'category': category,
       'description': description,
@@ -40,7 +40,7 @@ factory EventDTO.fromJson(Map<String, dynamic> json) {
     id: json['id'] ?? '',
     eventPicture: json['imageURL'] ?? '',
     date: json['date'] ?? '',
-    place_id: json['place_id'] ?? '',
+    location: json['location'] ?? '',
     title: json['title'] ?? '',
     category: json['category'] ?? '',
     description: json['description'] ?? '',
@@ -50,8 +50,8 @@ factory EventDTO.fromJson(Map<String, dynamic> json) {
 
 class CreateEventDTO {
   final String eventPicture;
-  final DateTime date;
-  final String place_id;
+  final String date;
+  final String location;
   final String title;
   final String category;
   final String description;
@@ -60,7 +60,7 @@ class CreateEventDTO {
   CreateEventDTO({
     required this.eventPicture,
     required this.date,
-    required this.place_id,
+    required this.location,
     required this.title,
     required this.category,
     required this.description,
@@ -71,8 +71,8 @@ class CreateEventDTO {
   Map<String, dynamic> toJson() {
     return {
       'eventPicture': eventPicture,
-      'date': date.toIso8601String(),  
-      'place_id': place_id,
+      'date': date,  
+      'location': location,
       'title': title,  
       'category': category,
       'description': description,
@@ -84,8 +84,8 @@ class CreateEventDTO {
   factory CreateEventDTO.fromJson(Map<String, dynamic> json) {
     return CreateEventDTO(
       eventPicture: json['imageURL'] ?? '',
-      date: DateTime.parse(json['date'] ?? ''),
-      place_id: json['place_id'] ?? '', 
+      date: json['date'] ?? '',
+      location: json['location'] ?? '', 
       title: json['title'] ?? '',  
       category: json['category'] ?? '',
       description: json['description'] ?? '',
