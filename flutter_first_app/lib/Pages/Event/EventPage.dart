@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_first_app/models/event.dart';
 import 'package:flutter_first_app/services/event_service.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter_first_app/Pages/Event/SeeAllEvents.dart'; 
 
 class CreateEvent extends StatefulWidget {
   @override
@@ -43,7 +44,7 @@ class CreateEventState extends State<CreateEvent> {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       setState(() {
-        EventPicture= File(pickedFile.path); // Save the selected image
+        EventPicture = File(pickedFile.path); // Save the selected image
       });
     }
   }
@@ -64,7 +65,7 @@ class CreateEventState extends State<CreateEvent> {
     }
   }
 
-  
+  // Function to select time using TimePicker
   Future<void> _selectTime(BuildContext context) async {
     final TimeOfDay? selected = await showTimePicker(
       context: context,
@@ -78,7 +79,7 @@ class CreateEventState extends State<CreateEvent> {
     }
   }
 
-  
+  // Function to submit form data
   Future<void> _submitData() async {
     if (_formKey.currentState!.validate()) {
       final String date = dateController.text;
@@ -91,7 +92,6 @@ class CreateEventState extends State<CreateEvent> {
       
       File? eventPicture; 
 
-      
       if (EventPicture != null) {
         eventPicture = EventPicture; 
       } else {
@@ -104,8 +104,8 @@ class CreateEventState extends State<CreateEvent> {
       }
 
       try {
-        
         final CreateEventDTO newEventDTO = await _eventService.createEvent(
+          
           placeId,
           "$date $time", 
           category,
@@ -121,11 +121,18 @@ class CreateEventState extends State<CreateEvent> {
           ),
         );
 
-        
+        // Reset form and image after successful submission
         _formKey.currentState?.reset();
         setState(() {
           EventPicture = null; 
         });
+
+        // Navigate back to SeeAllEvents after creating an event
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => SeeAllEvents()),
+        );
+
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -141,6 +148,15 @@ class CreateEventState extends State<CreateEvent> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Create Event'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back), // Back arrow icon
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => SeeAllEvents()), // Navigate back to SeeAllEvents
+            );
+          },
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

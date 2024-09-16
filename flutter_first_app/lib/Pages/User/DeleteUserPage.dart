@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_first_app/config/api_config.dart';
 import 'package:flutter_first_app/Pages/User/LoginPage.dart';
+import 'package:flutter_first_app/Pages/Event/SeeAllEvents.dart'; // Import SeeAllEvents page
 
 class DeleteUserPage extends StatefulWidget {
   @override
@@ -111,6 +112,15 @@ class _DeleteUserPageState extends State<DeleteUserPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Delete Account'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back), // Back arrow icon
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => SeeAllEvents()), // Navigate to SeeAllEvents
+            );
+          },
+        ),
       ),
       body: Center(
         child: Padding(
@@ -130,7 +140,6 @@ class _DeleteUserPageState extends State<DeleteUserPage> {
                       onPressed: _confirmDelete,
                       style: ElevatedButton.styleFrom(
                         padding: EdgeInsets.symmetric(vertical: 16.0),
-                        
                       ),
                       child: Text(
                         'Delete Account',

@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';  // Import the secure storage package
 import 'dart:async';
 import 'dart:convert'; // To decode the JSON response
+import 'package:flutter_first_app/Pages/Event/SeeAllEvents.dart'; // Import SeeAllEvents page
 
 // Create an instance of FlutterSecureStorage
 final FlutterSecureStorage secureStorage = FlutterSecureStorage();
@@ -47,10 +48,9 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
       return;
     }
 
-    
     final String baseUrl = ApiConfig.apiUrl; 
     final response = await http.get(
-      Uri.parse('$baseUrl/api/User/$userId'),
+      Uri.parse('$baseUrl/api/user/update/$userId'),
       headers: {
         HttpHeaders.authorizationHeader: 'Bearer $token',
       },
@@ -144,7 +144,18 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Update User")),
+      appBar: AppBar(
+        title: Text("Update User"),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back), // Back arrow icon
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => SeeAllEvents()), // Navigate to SeeAllEvents
+            );
+          },
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
