@@ -99,7 +99,7 @@ namespace API.Controllers
             {
                 return NotFound();
             }
-
+            user.id = id;
             // Update the properties of the user with the new data from updatedUser
             user.FirstName = updatedUser.FirstName;
             user.LastName = updatedUser.LastName;
@@ -109,6 +109,7 @@ namespace API.Controllers
             user.Address = updatedUser.Address;
             user.Postal = updatedUser.Postal;
             user.City = updatedUser.City;
+
 
             
             // Add other properties you want to update
