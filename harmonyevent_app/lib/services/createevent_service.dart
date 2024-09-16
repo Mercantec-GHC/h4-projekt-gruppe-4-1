@@ -31,7 +31,8 @@ class CreateEventService {
 
     //VIRKER IKKE PÅ MACOS - UNDERSØGER LØSNINGSMULIGHEDER:
     //Retrieve the token securely
-    final String? token = await storage.read(key: 'jwt');
+    //final String? token = await storage.read(key: 'jwt');
+    final String? token = mytoken;
     //final String? token = mytoken;
     print(token);
     if (token == null) {

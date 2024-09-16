@@ -164,7 +164,7 @@ class CreateEventState extends State<CreateEventPage> {
 
       //FORM FIELD
       body: Padding(
-      padding: const EdgeInsets.all(66.0),
+      padding: const EdgeInsets.only(left: 66.0, right: 66.0, top: 10),
       child: Form(
         key: _formKey,       
         child: Column(
@@ -189,7 +189,7 @@ class CreateEventState extends State<CreateEventPage> {
               style: TextStyle(
                  color: const Color.fromARGB(255, 183, 211, 83)
                 ),),
-            SizedBox(height: 15),
+            SizedBox(height: 10),
 
             //SELECT DATE AND TIME
             TextFormField(
@@ -262,7 +262,7 @@ class CreateEventState extends State<CreateEventPage> {
                 return null;
               },
             ),
-            const SizedBox(height: 25),
+            //const SizedBox(height: 15),
 
             //SELECT TITLE 
             TextFormField(
@@ -286,19 +286,27 @@ class CreateEventState extends State<CreateEventPage> {
 
             //SELECT CATEGORY
             DropdownButtonFormField<String>(
+                  dropdownColor: const Color.fromARGB(255, 81, 76, 76),
+                  borderRadius: BorderRadius.circular(8.0),
+                    style: TextStyle(
+                      color: Color.fromARGB(255, 234, 208, 225),
+                      fontFamily: "Purisa",
+                    ),
                   value: _categoryController.text.isNotEmpty ? _categoryController.text : null,
                   decoration: InputDecoration(
+                    //hoverColor: const Color.fromARGB(255, 36, 51, 6),
                     labelText: 'Category',
-                    labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
+                    labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83)),
                     border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.0),
                     ),
                   ),
                   items: [
-                    DropdownMenuItem(value: 'Lecture', child: Text('Lecture')),
                     DropdownMenuItem(value: 'Birthday', child: Text('Birthday')),
+                    DropdownMenuItem(value: 'Concert', child: Text('Concert')),
+                    DropdownMenuItem(value: 'Lecture', child: Text('Lecture')),
                     DropdownMenuItem(value: 'Wedding', child: Text('Wedding')),
-                    DropdownMenuItem(value: 'Other', child: Text('Other')),
+                    DropdownMenuItem(value: 'Other', child: Text('Others')),
                   ],
                   onChanged: (value) {
                     setState(() {
@@ -312,30 +320,11 @@ class CreateEventState extends State<CreateEventPage> {
                     return null;
                   },
                 ),
-            // TextFormField(
-            //   style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
-            //   controller: _categoryController,
-            //   decoration: InputDecoration(
-            //     labelText: 'Category',
-            //     labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
-            //     border: OutlineInputBorder(
-            //       borderRadius: BorderRadius.circular(8.0),
-            //     ),
-            //   ),
-            //   validator: (value) {
-            //     if (value == null || value.isEmpty) {
-            //       return 'Please choose category';
-            //     }
-            //     return null;
-            //   },
-            // ),
-            const SizedBox(height: 15),
-
             // WRITE DESCRIPTION
             TextFormField(
               style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
-              maxLines: 1,
-              minLines: 1,
+              maxLines: 3,
+              minLines: 3,
               controller: _descriptionController,
               decoration: InputDecoration(
                 alignLabelWithHint: true,
@@ -355,12 +344,18 @@ class CreateEventState extends State<CreateEventPage> {
 
                 // Private/Public dropdown
                 DropdownButtonFormField<String>(
+                  borderRadius: BorderRadius.circular(8.0),
+                  dropdownColor: const Color.fromARGB(255, 81, 76, 76),
+                  style: TextStyle(
+                    color: Color.fromARGB(255, 234, 208, 225),
+                    fontFamily: "Purisa",
+                  ),
                   value: _isPrivateController.text.isNotEmpty ? _isPrivateController.text : null,
                   decoration: InputDecoration(
                     labelText: 'Private/Public',
                     labelStyle: TextStyle(
                       color: const Color.fromARGB(255, 183, 211, 83), 
-                      fontSize: 14.0
+                      //fontSize: 14.0
                     ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8.0),
@@ -382,7 +377,7 @@ class CreateEventState extends State<CreateEventPage> {
                     return null;
                   },
                 ),
-              const SizedBox(height: 25),       
+              const SizedBox(height: 15),       
 
               //CREATE EVENT BUTTON
               SizedBox(height: 20),

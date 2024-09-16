@@ -19,14 +19,12 @@ class _DeleteEventPageState extends State<DeleteEventPage> {
   final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
   bool _isLoading = false;
 
-  
   Future<void> _deleteEvent() async {
     setState(() {
       _isLoading = true; 
     });
 
-    try {
-      
+    try { 
       //String? token = await _secureStorage.read(key: 'token');
       String? token = mytoken;
       if (token == null) {

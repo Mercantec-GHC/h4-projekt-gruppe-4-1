@@ -36,6 +36,11 @@ class MyApp extends StatelessWidget {
               colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 183, 211, 83)),
               scaffoldBackgroundColor: const Color.fromARGB(255, 36, 51, 6),
               fontFamily: 'Purisa', 
+              textTheme: Theme.of(context).textTheme.apply(
+                fontSizeFactor: 1,
+                fontSizeDelta: 0.5,
+                fontFamily: 'Purisa', 
+              ),
             ),
           home: isLoggedIn ? EventPage() : HomeScreen(), 
           );

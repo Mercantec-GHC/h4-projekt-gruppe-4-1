@@ -39,7 +39,7 @@ class _MyEventsPageState extends State<MyEventsPage> {
       }
 
       // Make the GET request to fetch the user's events
-      final url = Uri.parse('${ApiConfig.apiUrl}/api/Event/MyEvents');
+      final url = Uri.parse('${ApiConfig.apiUrl}/api/Event');
       final response = await http.get(
         url,
         headers: {
