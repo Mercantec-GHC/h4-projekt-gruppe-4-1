@@ -70,6 +70,22 @@ namespace API.Controllers
 
             return Ok(events);
         }
+        // delete from id
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteEventById(string id)
+        {
+            var events = await _dbContext.Events.FindAsync(id);
+
+            if (events == null)
+            {
+                return NotFound();
+            }
+
+            _dbContext.Events.Remove(events);
+            await _dbContext.SaveChangesAsync();
+
+            return NoContent();
+        }
         // update by id
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateEvent(string id, [FromBody] EventDTO updatedEvent)
@@ -121,7 +137,7 @@ namespace API.Controllers
     [HttpPost("Create")]
         public async Task<IActionResult> PostUser([FromForm] CreateEventDTO eventCreate)
         {
-
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var events = new Event
             {
                 id = Guid.NewGuid().ToString("N"),
@@ -133,6 +149,7 @@ namespace API.Controllers
                 Description = eventCreate.Description,
 
                 Category = eventCreate.Category,
+                EventCreator_id = userId
 
 
 

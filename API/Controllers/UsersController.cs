@@ -12,6 +12,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.Extensions.Configuration;
 using API.Service;
+using Microsoft.Extensions.Logging;
 
 
 
@@ -35,7 +36,7 @@ namespace API.Controllers
             _secretKey = config.SecretKey;
             _r2Service = new R2Service(_accessKey, _secretKey);
         }
-
+        // get all 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserDTO>>> GetUsers()
         {
@@ -52,7 +53,7 @@ namespace API.Controllers
 
             return Ok(users);
         }
-
+        // get by id
         [HttpGet("{id}")]
         public async Task<ActionResult<UserDTO>> GetUserById(string id)
         {
@@ -74,9 +75,24 @@ namespace API.Controllers
 
             return Ok(user);
         }
+        // delete by id
+        [HttpDelete]
+        public async Task<ActionResult<UserDTO>> DeleteUserById(string id)
+        {
+            var user = await _dbContext.Users.FindAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
 
+            _dbContext.Users.Remove(user);
+            await _dbContext.SaveChangesAsync();
 
-        [HttpPost("SignUp")]
+            return NoContent();
+        }
+
+            // create user
+            [HttpPost("SignUp")]
         public async Task<IActionResult> PostUser([FromForm] SignUpDTO userSignUp)
         {
             // Check if address is null or empty
@@ -127,8 +143,9 @@ namespace API.Controllers
             return Ok(new { user.id, user.Username ,user.Address, user.FirstName,user.Email, user.LastName,user.City,user.Postal,user.ProfilePicture
             });
         }
-
+        // login
         [HttpPost("login")]
+        
         public async Task<IActionResult> Login(LoginDTO login)
         {
             var user = await _dbContext.Users.SingleOrDefaultAsync(u => u.Email == login.Email);

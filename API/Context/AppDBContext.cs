@@ -23,7 +23,14 @@ namespace API.Context
             modelBuilder.Entity<User>()
                 .Property(u => u.id)
                 .ValueGeneratedOnAdd(); // Ensure EF Core knows the ID is auto-generated
+            modelBuilder.Entity<Event>()
+            .HasOne(e => e.EventCreator)       // One event has one creator
+            .WithMany(u => u.CreatedEvents)    // One user can create many events
+            .HasForeignKey(e => e.EventCreator_id) // Use EventCreator_id as the FK
+            .OnDelete(DeleteBehavior.Restrict);    // Prevent cascade delete
+            base.OnModelCreating(modelBuilder);
         }
+
 
     }
 }
