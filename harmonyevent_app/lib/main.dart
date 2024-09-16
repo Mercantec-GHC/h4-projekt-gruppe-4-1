@@ -5,7 +5,7 @@ import 'package:flutter_gradient_button/flutter_gradient_button.dart';
 import 'package:harmonyevent_app/services/login_service.dart';
 import 'package:harmonyevent_app/pages/LoginPage.dart';   
 import 'package:harmonyevent_app/pages/CreateUserPage.dart';  
-import 'package:harmonyevent_app/pages/EventPage.dart'; 
+import 'package:harmonyevent_app/pages/event/EventPage.dart'; 
 
 void main() {
   runApp(

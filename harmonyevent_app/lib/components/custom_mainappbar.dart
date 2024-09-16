@@ -1,9 +1,10 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:harmonyevent_app/pages/CreateEventPage.dart';
+import 'package:harmonyevent_app/pages/event/CreateEventPage.dart';
 import 'package:harmonyevent_app/pages/UserProfilePage.dart';
-import 'package:harmonyevent_app/pages/EventPage.dart';
+import 'package:harmonyevent_app/pages/event/EventPage.dart';
+import 'package:harmonyevent_app/pages/event/MyEventPage.dart';
 
 class CustomMainAppBar extends StatelessWidget implements PreferredSizeWidget {
   final dynamic actions;
@@ -69,9 +70,12 @@ class CustomMainAppBar extends StatelessWidget implements PreferredSizeWidget {
             Icons.event_available, 
             color: Color.fromARGB(255, 183, 211, 54)
             ),
-          tooltip: "Planned Events",
+          tooltip: "My Events",
           onPressed: () {
-            print("Hmm");
+             Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => MyEventsPage()), // Replace with the correct page
+            );
           }
         ),
     

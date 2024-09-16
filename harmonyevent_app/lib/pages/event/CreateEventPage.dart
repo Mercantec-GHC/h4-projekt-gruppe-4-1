@@ -8,7 +8,7 @@ import 'package:harmonyevent_app/components/custom_limitedappbar.dart';
 import 'package:harmonyevent_app/components/custom_alerts.dart';
 import 'package:harmonyevent_app/models/event_model.dart';
 import 'package:harmonyevent_app/services/createevent_service.dart';
-import 'package:harmonyevent_app/pages/EventPage.dart';
+import 'package:harmonyevent_app/pages/event/EventPage.dart';
 
 class CreateEventPage extends StatefulWidget {
   @override

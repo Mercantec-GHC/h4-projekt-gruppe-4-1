@@ -2,8 +2,8 @@
 import 'dart:io';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-/*VIRKER IKKE PÅ MACOS - UNDERSØGER LØSNINGSMULIGHEDER:
-//import 'package:flutter_secure_storage/flutter_secure_storage.dart';*/
+//VIRKER IKKE PÅ MACOS - UNDERSØGER LØSNINGSMULIGHEDER:
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
  
 import 'package:harmonyevent_app/config/api_config.dart';
 import 'package:harmonyevent_app/config/token.dart';
@@ -12,8 +12,8 @@ import 'package:harmonyevent_app/models/event_model.dart';
 class CreateEventService {
   
   // Initialize secure storage
-  /*VIRKER IKKE PÅ MACOS - UNDERSØGER LØSNINGSMULIGHEDER:
-  //final FlutterSecureStorage storage = FlutterSecureStorage();*/
+  //VIRKER IKKE PÅ MACOS - UNDERSØGER LØSNINGSMULIGHEDER:
+  final FlutterSecureStorage storage = FlutterSecureStorage();
 
   final String _baseUrl = ApiConfig.apiUrl;
   // Method to create event with image upload
@@ -31,8 +31,8 @@ class CreateEventService {
 
     //VIRKER IKKE PÅ MACOS - UNDERSØGER LØSNINGSMULIGHEDER:
     //Retrieve the token securely
-    //final String? token = await storage.read(key: 'jwt');
-    final String? token = mytoken;
+    final String? token = await storage.read(key: 'jwt');
+    //final String? token = mytoken;
     print(token);
     if (token == null) {
       throw Exception('Authentication token not found. Please log in');

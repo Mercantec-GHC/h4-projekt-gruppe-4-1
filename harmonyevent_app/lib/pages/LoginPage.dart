@@ -6,7 +6,7 @@ import 'package:flutter_gradient_button/flutter_gradient_button.dart';
 import 'package:harmonyevent_app/components/custom_alerts.dart';
 import 'package:harmonyevent_app/models/login_model.dart';
 import 'package:harmonyevent_app/services/login_service.dart';
-import 'package:harmonyevent_app/pages/EventPage.dart';
+import 'package:harmonyevent_app/pages/event/EventPage.dart';
 
 void main() {
   runApp(MyApp());

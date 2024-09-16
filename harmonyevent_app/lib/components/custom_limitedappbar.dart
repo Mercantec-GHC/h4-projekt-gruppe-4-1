@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:harmonyevent_app/pages/EventPage.dart';
+import 'package:harmonyevent_app/pages/event/EventPage.dart';
 
 class CustomLimitedAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomLimitedAppBar({

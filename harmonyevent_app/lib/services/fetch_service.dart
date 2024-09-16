@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:harmonyevent_app/config/token.dart';
 import 'package:http/http.dart' as http;
 import 'package:harmonyevent_app/config/api_config.dart';
 import 'package:harmonyevent_app/models/event_model.dart';
@@ -9,6 +10,12 @@ import 'package:harmonyevent_app/models/user_model.dart';
     const String baseUrl = ApiConfig.apiUrl;
     final url = Uri.parse('$baseUrl/api/Event');
     try {
+      // Get JWT token from secure storage
+      //String? token = await _secureStorage.read(key: 'token');
+      String? token = mytoken;
+      if (token == null) {
+        throw Exception("Authentication token not found");
+      }
     final response = await http.get(url, headers: {"Content-Type": "application/json"});
     print('Response Status Code: ${response.statusCode}');
     if (response.statusCode == 200) {
@@ -35,6 +42,12 @@ import 'package:harmonyevent_app/models/user_model.dart';
     const String baseUrl = ApiConfig.apiUrl;
     final url = Uri.parse('$baseUrl/api/user');
     try {
+      // Get JWT token from secure storage
+      //String? token = await _secureStorage.read(key: 'token');
+      String? token = mytoken;
+      if (token == null) {
+        throw Exception("Authentication token not found");
+      }
     final response = await http.get(url, headers: {"Content-Type": "application/json"});
     print('Response Status Code: ${response.statusCode}');
     if (response.statusCode == 200) {
