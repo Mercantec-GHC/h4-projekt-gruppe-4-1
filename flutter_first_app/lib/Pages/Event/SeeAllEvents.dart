@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_first_app/Http/User/loginuser.dart';
 import 'package:flutter_first_app/Pages/Event/MyEventsPage.dart';
 import 'package:flutter_first_app/Pages/User/DeleteUserPage.dart';
 import 'package:flutter_first_app/Pages/User/UpdateUserPage.dart';
@@ -11,6 +12,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_first_app/Pages/Event/EventDetailsScreen.dart'; // Import EventDetailsScreen
 
+
 class SeeAllEvents extends StatefulWidget {
   const SeeAllEvents({super.key});
 
@@ -21,6 +23,7 @@ class SeeAllEvents extends StatefulWidget {
 class _SeeAllEventsState extends State<SeeAllEvents> {
   late Future<List<EventDTO>> eventsFuture;
   final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
+  final AuthService _authService = AuthService(); // Create an instance of AuthService
   var selectedIndex = 4; // Keep default as SeeAllEvents
 
   @override
@@ -59,6 +62,44 @@ class _SeeAllEventsState extends State<SeeAllEvents> {
       (Route<dynamic> route) => false, // Remove all previous routes
     );
   }
+
+  // Navigation logic based on selected index
+  void _navigateToPage(int index) {
+    switch (index) {
+      case 0:
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => DeleteUserPage()));
+      case 1:
+        _navigateToUpdateUserPage(context);
+      case 2:
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => CreateEvent())); // Fixed import
+      case 3:
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => MyEventsPage()));
+      case 4:
+        setState(() {}); // Do nothing, stay on SeeAllEvents
+      default:
+        throw UnimplementedError('No widget for $selectedIndex');
+    }
+  }
+
+  // Navigate to UpdateUserPage with token validation
+   void _navigateToUpdateUserPage(BuildContext context) async {
+  final token = await _authService.getToken();
+  print('Token retrieved: $token'); // Debugging statement
+
+  if (token != null && !_authService.isTokenExpired(token)) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => UpdateUserPage()),
+    );
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('User not logged in or token expired')),
+    );
+  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -123,33 +164,6 @@ class _SeeAllEventsState extends State<SeeAllEvents> {
         ),
       );
     });
-  }
-
-  // Navigation logic based on selected index
-  void _navigateToPage(int index) {
-    switch (index) {
-      case 0:
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => DeleteUserPage()));
-        break;
-      case 1:
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => UpdateUserPage()));
-        break;
-      case 2:
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => CreateEvent())); // Fixed import
-        break;
-      case 3:
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => MyEventsPage()));
-        break;
-      case 4:
-        setState(() {}); // Do nothing, stay on SeeAllEvents
-        break;
-      default:
-        throw UnimplementedError('No widget for $selectedIndex');
-    }
   }
 
   // Build the SeeAllEvents page content

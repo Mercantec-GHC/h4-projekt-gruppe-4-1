@@ -19,45 +19,52 @@ class _LoginPageState extends State<LoginPage> {
   bool _isLoading = false;
 
   // Handle login logic
-  void _login() async {
-    if (_formKey.currentState!.validate()) {
-      setState(() {
-        _isLoading = true; // Show loading indicator
-      });
+void _login() async {
+  if (_formKey.currentState!.validate()) {
+    setState(() {
+      _isLoading = true; // Show loading indicator
+    });
 
-      final loginDTO = LoginDTO(
-        email: _emailController.text,
-        password: _passwordController.text,
+    final loginDTO = LoginDTO(
+      email: _emailController.text,
+      password: _passwordController.text,
+    );
+
+    try {
+      // Perform login and get the token and userId
+      final loginResponse = await _authService.login(loginDTO);
+      final String token = loginResponse['token']!;
+      final String userId = loginResponse['userId']!;
+
+      // Log the token and userId for debugging
+      print('Token: $token');
+      print('UserId: $userId');
+
+      // Store the token and userId securely in FlutterSecureStorage
+      await _secureStorage.write(key: 'jwt', value: token); // Use 'jwt' to match AuthService
+      await _secureStorage.write(key: 'userId', value: userId); // Store userId
+
+      // Show success message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Login Successful!")),
       );
 
-      try {
-        // Perform login and get the token
-        final String token = await _authService.login(loginDTO); // Correctly call the method
-
-        // Store the token securely in FlutterSecureStorage
-        await _secureStorage.write(key: 'token', value: token);
-
-        // Show success message
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Login Successful!")),
-        );
-
-        // Navigate to SeeAllEvents page after successful login
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => SeeAllEvents()),
-        );
-      } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Login failed: ${e.toString()}")),
-        );
-      } finally {
-        setState(() {
-          _isLoading = false; // Hide loading indicator
-        });
-      }
+      // Navigate to SeeAllEvents page after successful login
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => SeeAllEvents()),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Login failed: ${e.toString()}")),
+      );
+    } finally {
+      setState(() {
+        _isLoading = false; // Hide loading indicator
+      });
     }
   }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -80,98 +87,87 @@ class _LoginPageState extends State<LoginPage> {
               padding: EdgeInsets.all(16.0),
               child: ConstrainedBox(
                 constraints: BoxConstraints(maxWidth: 400),
-                child: SingleChildScrollView(
-                  child: Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    elevation: 10,
-                    child: Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: Form(
-                        key: _formKey,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Text(
-                              'Velkommen',
-                              style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  elevation: 10,
+                  child: Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          TextFormField(
+                            controller: _emailController,
+                            decoration: InputDecoration(
+                              labelText: 'Email',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8.0),
                               ),
-                              textAlign: TextAlign.center,
                             ),
-                            SizedBox(height: 20),
-                            TextFormField(
-                              controller: _emailController,
-                              decoration: InputDecoration(
-                                labelText: 'Email',
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8.0),
-                                ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your email';
+                              } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                                return 'Please enter a valid email';
+                              }
+                              return null;
+                            },
+                          ),
+                          SizedBox(height: 20),
+                          TextFormField(
+                            controller: _passwordController,
+                            decoration: InputDecoration(
+                              labelText: 'Password',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8.0),
                               ),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter your email';
-                                } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
-                                  return 'Please enter a valid email';
-                                }
-                                return null;
-                              },
                             ),
-                            SizedBox(height: 20),
-                            TextFormField(
-                              controller: _passwordController,
-                              decoration: InputDecoration(
-                                labelText: 'Password',
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8.0),
-                                ),
-                              ),
-                              obscureText: true,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter your password';
-                                } else if (value.length < 6) {
-                                  return 'Password must be at least 6 characters long';
-                                }
-                                return null;
-                              },
-                            ),
-                            SizedBox(height: 20),
-                            _isLoading
-                                ? Center(child: CircularProgressIndicator())
-                                : ElevatedButton(
-                                    onPressed: _login,
-                                    style: ElevatedButton.styleFrom(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(8.0),
-                                      ),
-                                      padding: EdgeInsets.symmetric(vertical: 16.0),
+                            obscureText: true,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your password';
+                              } else if (value.length < 6) {
+                                return 'Password must be at least 6 characters long';
+                              }
+                              return null;
+                            },
+                          ),
+                          SizedBox(height: 20),
+                          _isLoading
+                              ? Center(child: CircularProgressIndicator())
+                              : ElevatedButton(
+                                  onPressed: _login,
+                                  style: ElevatedButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8.0),
                                     ),
-                                    child: Text(
-                                      'Login',
-                                      style: TextStyle(fontSize: 16),
-                                    ),
+                                    padding: EdgeInsets.symmetric(vertical: 16.0),
                                   ),
-                            SizedBox(height: 20),
-                            TextButton(
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => CreateUserPage()),
-                                );
-                              },
-                              child: Text(
-                                'Mangler du en konto? Opret en her',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Theme.of(context).primaryColor,
+                                  child: Text(
+                                    'Login',
+                                    style: TextStyle(fontSize: 16),
+                                  ),
                                 ),
+                          SizedBox(height: 20),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => CreateUserPage()),
+                              );
+                            },
+                            child: Text(
+                              'Mangler du en konto? Opret en her',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Theme.of(context).primaryColor,
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   ),

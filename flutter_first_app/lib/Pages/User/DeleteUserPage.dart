@@ -24,15 +24,9 @@ class _DeleteUserPageState extends State<DeleteUserPage> {
     try {
       // Fetch the token from secure storage
       String? token = await _secureStorage.read(key: 'token');
-      if (token == null) {
-        throw Exception('Authentication token not found');
-      }
 
       // Fetch the userId from secure storage if necessary
       String? userId = await _secureStorage.read(key: 'userId');
-      if (userId == null) {
-        throw Exception('User ID not found');
-      }
 
       // Make the DELETE request to the server
       final url = Uri.parse('${ApiConfig.apiUrl}/api/User/Delete/$userId');

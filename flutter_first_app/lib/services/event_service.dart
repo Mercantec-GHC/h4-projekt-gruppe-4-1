@@ -1,22 +1,21 @@
 import 'dart:io';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:flutter_first_app/models/event.dart';
 import 'package:flutter_first_app/config/api_config.dart';
+import 'package:flutter_first_app/models/event.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class EventService {
   final String _baseUrl = ApiConfig.apiUrl;
   final FlutterSecureStorage _storage = FlutterSecureStorage();
 
-  // Method to create an event with image upload
   Future<CreateEventDTO> createEvent(
-     String placeId,
-     String date,
-     String isprivate,
-     String category,
-     String title,
-     String description,
+    String placeId,
+    String date,
+    String isprivate,
+    String category,
+    String title,
+    String description,
     File? eventPicture,
   ) async {
     var request = http.MultipartRequest('POST', Uri.parse('$_baseUrl/api/event/create'));
@@ -59,10 +58,10 @@ class EventService {
     } catch (e) {
       throw Exception('Error occurred while creating event: $e');
     }
-  }         
+  }
 
   Future<void> attendEvent(String eventId) async {
-    final String? token = await _storage.read(key: 'jwt');
+    final token = await _storage.read(key: 'jwt');
     final url = Uri.parse('$_baseUrl/api/Event/$eventId/Attend');
 
     final response = await http.post(
@@ -77,6 +76,4 @@ class EventService {
       throw Exception('Failed to attend event: ${response.statusCode}');
     }
   }
-
-  
 }

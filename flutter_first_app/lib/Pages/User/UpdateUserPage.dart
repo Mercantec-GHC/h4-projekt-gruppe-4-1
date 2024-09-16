@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_first_app/config/api_config.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';  // Import the secure storage package
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:async';
-import 'dart:convert'; // To decode the JSON response
-import 'package:flutter_first_app/Pages/Event/SeeAllEvents.dart'; // Import SeeAllEvents page
+import 'dart:convert';
+import 'package:flutter_first_app/Http/User/loginuser.dart';
 
 // Create an instance of FlutterSecureStorage
 final FlutterSecureStorage secureStorage = FlutterSecureStorage();
@@ -19,6 +19,7 @@ class UpdateUserPage extends StatefulWidget {
 class _UpdateUserPageState extends State<UpdateUserPage> {
   final _formKey = GlobalKey<FormState>();
   final ImagePicker _picker = ImagePicker();
+  final AuthService _authService = AuthService(); // Create an instance of AuthService
 
   // User information variables
   String? userId;
@@ -37,124 +38,109 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
     _loadUserData(); // Load user data when the page is initialized
   }
 
-  Future<void> _loadUserData() async {
-    // Retrieve userId and token from secure storage
-    userId = await secureStorage.read(key: 'userId');  // Retrieve userId
-    String? token = await secureStorage.read(key: 'token');  // Retrieve token
+Future<void> _loadUserData() async {
+  userId = await secureStorage.read(key: 'userId');
+  String? token = await secureStorage.read(key: 'jwt'); // Use 'jwt' key
+  print('User ID retrieved: $userId'); // Debugging statement
+  print('Token retrieved in UpdateUserPage: $token'); // Debugging statement
 
-    if (userId == null || token == null) {
-      // Handle the case where no userId or token is stored
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('User not logged in')));
-      return;
-    }
-
-    final String baseUrl = ApiConfig.apiUrl; 
-    final response = await http.get(
-      Uri.parse('$baseUrl/api/user/update/$userId'),
-      headers: {
-        HttpHeaders.authorizationHeader: 'Bearer $token',
-      },
-    );
-
-    if (response.statusCode == 200) {
-      // Parse the user data from the response
-      final userData = jsonDecode(response.body);
-      
-      setState(() {
-        firstName = userData['firstName'] ?? '';
-        lastName = userData['lastName'] ?? '';
-        email = userData['email'] ?? '';
-        username = userData['username'] ?? '';
-        address = userData['address'] ?? '';
-        postal = userData['postal'] ?? '';
-        city = userData['city'] ?? '';
-      });
-    } else {
-      throw Exception('Failed to load user data');
-    }
+  if (userId == null) {
+    print('User ID or token is null');
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('User not logged in or token expired')));
+    Navigator.pop(context); // Navigate back if user is not logged in or token is expired
+    return;
   }
 
-  Future<void> updateUser(
-    String userId,
-    String firstName,
-    String lastName,
-    String email,
-    String username,
-    String address,
-    String postal,
-    String city,
-    File? image,
-  ) async {
-    final String baseUrl = ApiConfig.apiUrl; 
-    final request = http.MultipartRequest('PUT', Uri.parse('$baseUrl/api/User/Update/$userId'));
-
-    // Add fields
-    request.fields['firstname'] = firstName;
-    request.fields['lastname'] = lastName;
-    request.fields['email'] = email;
-    request.fields['username'] = username;
-    request.fields['address'] = address;
-    request.fields['postal'] = postal;
-    request.fields['city'] = city;
-
-    // Attach the image if it exists
-    if (image != null) {
-      request.files.add(
-        http.MultipartFile.fromBytes(
-          'profilePicture',
-          await image.readAsBytes(),
-          filename: image.path.split('/').last,
-        ),
-      );
-    }
-
-    // Get the token from secure storage and attach it
-    final String? token = await secureStorage.read(key: 'token');
-    if (token != null) {
-      request.headers[HttpHeaders.authorizationHeader] = 'Bearer $token';
-    }
-
-    try {
-      final response = await request.send();
-
-      if (response.statusCode == 200) {
-        final responseBody = await response.stream.bytesToString();
-        print("User updated successfully: $responseBody");
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('User updated successfully')));
-      } else {
-        final responseBody = await response.stream.bytesToString();
-        throw Exception('Failed to update user. Status code: ${response.statusCode}, Response: $responseBody');
-      }
-    } catch (e) {
-      print("Error: $e");
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e')));
-    }
+  if (_authService.isTokenExpired(token!)) {
+    print('Token is expired');
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('User not logged in or token expired')));
+    Navigator.pop(context); // Navigate back if user is not logged in or token is expired
+    return;
   }
 
-  // Image picker function
-  Future<void> pickImage() async {
+  const String baseUrl = ApiConfig.apiUrl;
+  final response = await http.get(
+    Uri.parse('$baseUrl/api/User/$userId'), // Correct endpoint to fetch user data
+    headers: {
+      HttpHeaders.authorizationHeader: 'Bearer $token',
+    },
+  );
+
+  if (response.statusCode == 200) {
+    // Parse the user data from the response
+    final userData = jsonDecode(response.body);
+    setState(() {
+      firstName = userData['firstName'] ?? '';
+      lastName = userData['lastName'] ?? '';
+      email = userData['email'] ?? '';
+      username = userData['username'] ?? '';
+      address = userData['address'] ?? '';
+      postal = userData['postal'] ?? '';
+      city = userData['city'] ?? '';
+    });
+  } else {
+    throw Exception('Failed to load user data');
+  }
+}
+
+Future<void> updateUser(
+  String userId,
+  String firstName,
+  String lastName,
+  String email,
+  String username,
+  String address,
+  String postal,
+  String city,
+  File? profileImage,
+) async {
+  const String baseUrl = ApiConfig.apiUrl;
+  final url = Uri.parse('$baseUrl/api/User/update/$userId');
+
+  final Map<String, dynamic> userData = {
+    'id': userId,
+    'firstName': firstName,
+    'lastName': lastName,
+    'email': email,
+    'username': username,
+    'address': address,
+    'postal': postal,
+    'city': city,
+    'ProfilePicture': profileImage != null ? base64Encode(await profileImage.readAsBytes()) : '', // Ensure 'ProfilePicture' field is included
+  };
+
+  final String? token = await secureStorage.read(key: 'jwt');
+  final response = await http.put(
+    url,
+    headers: {
+      HttpHeaders.authorizationHeader: 'Bearer $token',
+      'Content-Type': 'application/json',
+    },
+    body: jsonEncode(userData),
+  );
+
+  if (response.statusCode == 200) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('User updated successfully')));
+    Navigator.pop(context); // Navigate back after successful update
+  } else {
+    throw Exception('Failed to update user. Status code: ${response.statusCode}, Response: ${response.body}');
+  }
+}
+
+Future<void> pickImage() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      setState(() {
+    setState(() {
+      if (pickedFile != null) {
         profileImage = File(pickedFile.path);
-      });
-    }
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Update User"),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back), // Back arrow icon
-          onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => SeeAllEvents()), // Navigate to SeeAllEvents
-            );
-          },
-        ),
+        title: Text('Update User'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -265,7 +251,6 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
-                    // Call the update user function
                     if (userId != null) {
                       updateUser(
                         userId!,

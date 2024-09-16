@@ -26,9 +26,6 @@ class _DeleteEventPageState extends State<DeleteEventPage> {
     try {
       
       String? token = await _secureStorage.read(key: 'token');
-      if (token == null) {
-        throw Exception("Authentication token not found");
-      }
 
       
       final url = Uri.parse('${ApiConfig.apiUrl}/api/Event/${widget.eventId}');

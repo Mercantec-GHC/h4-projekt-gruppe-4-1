@@ -30,9 +30,6 @@ class _UpdateEventPageState extends State<UpdateEventPage> {
       try {
         // Get JWT token from secure storage
         String? token = await _secureStorage.read(key: 'token');
-        if (token == null) {
-          throw Exception("Authentication token not found");
-        }
 
         // Prepare the request body
         final body = jsonEncode({

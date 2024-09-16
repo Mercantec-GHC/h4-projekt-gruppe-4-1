@@ -34,9 +34,6 @@ class _MyEventsPageState extends State<MyEventsPage> {
     try {
       // Get JWT token from secure storage
       String? token = await _secureStorage.read(key: 'token');
-      if (token == null) {
-        throw Exception("Authentication token not found");
-      }
 
       // Make the GET request to fetch the user's events
       final url = Uri.parse('${ApiConfig.apiUrl}/api/Event');

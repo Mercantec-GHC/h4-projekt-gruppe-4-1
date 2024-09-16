@@ -17,7 +17,7 @@ Future<void> createUser(
   String city,
   File? image,
 ) async {
-  final String baseUrl = ApiConfig.apiUrl;
+  const String baseUrl = ApiConfig.apiUrl;
   final request = http.MultipartRequest('POST', Uri.parse('$baseUrl/api/User/SignUp'));
 
   
@@ -74,7 +74,7 @@ Future<void> updateUser(
   String city,
   File? image,
 ) async {
-  final String baseUrl = ApiConfig.apiUrl;
+  const String baseUrl = ApiConfig.apiUrl;
   final request = http.MultipartRequest('PUT', Uri.parse('$baseUrl/api/User/Update/$userId'));
 
   
@@ -120,7 +120,7 @@ Future<void> updateUser(
 
 
 Future<void> deleteUser(String userId) async {
-  final String baseUrl = ApiConfig.apiUrl;
+  const String baseUrl = ApiConfig.apiUrl;
 
   
   final String? token = await secureStorage.read(key: 'token');

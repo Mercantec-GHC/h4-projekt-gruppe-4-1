@@ -17,22 +17,34 @@ void main() {
   ));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  late Future<bool> _isLoggedInFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _isLoggedInFuture = AuthService().isLoggedIn();
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<bool>(
-      future: AuthService().isLoggedIn(), // Check if the user is logged in on startup
+      future: _isLoggedInFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return MaterialApp(
             home: Scaffold(
               body: Center(
-                child: CircularProgressIndicator(), 
+                child: CircularProgressIndicator(),
               ),
             ),
           );
-        } else {
-          bool isLoggedIn = snapshot.data ?? false; 
+        } else if (snapshot.hasData && snapshot.data!) {
           return MaterialApp(
             title: 'Flutter Demo',
             theme: ThemeData(
@@ -41,7 +53,18 @@ class MyApp extends StatelessWidget {
                 seedColor: const Color.fromARGB(255, 92, 208, 77),
               ),
             ),
-            home: isLoggedIn ?  LoginPage(): SeeAllEvents(), 
+            home: LoginPage(), // Navigate to SeeAllEvents if logged in
+          );
+        } else {
+          return MaterialApp(
+            title: 'Flutter Demo',
+            theme: ThemeData(
+              useMaterial3: true,
+              colorScheme: ColorScheme.fromSeed(
+                seedColor: const Color.fromARGB(255, 92, 208, 77),
+              ),
+            ),
+            home: SeeAllEvents(), // Navigate to LoginPage if not logged in
           );
         }
       },
