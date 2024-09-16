@@ -105,7 +105,11 @@ namespace API.Controllers
             user.LastName = updatedUser.LastName;
             user.Email = updatedUser.Email;
             user.Username = updatedUser.Username;
-            user.ProfilePicture = updatedUser.ProfilePicture;
+            // Check if ProfilePicture is provided, and update only if not null
+            if (updatedUser.ProfilePicture != null)
+            {
+                user.ProfilePicture = updatedUser.ProfilePicture;
+            }
             user.Address = updatedUser.Address;
             user.Postal = updatedUser.Postal;
             user.City = updatedUser.City;
