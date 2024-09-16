@@ -26,6 +26,8 @@ namespace API.Models
 
         public String? ProfilePicture { get; set; }
         public List<Event> ? CreatedEvents { get; set; }
+        public List<Participant> Participants { get; set; }
+
         public ICollection<Participant> ParticipatedEvents { get; set; }
 
     }

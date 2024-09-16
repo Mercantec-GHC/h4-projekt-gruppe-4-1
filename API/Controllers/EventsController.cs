@@ -36,7 +36,6 @@ namespace API.Controllers
         }
         // get all
         [HttpGet]
-
         public async Task<ActionResult<IEnumerable<EventDTO>>> GetEvents()
         {
             var events = await _dbContext.Events
@@ -131,7 +130,24 @@ namespace API.Controllers
             return _dbContext.Events.Any(e => e.id == id);
         }
 
-        [HttpPost("{eventId}/attend")]
+        [HttpGet("{eventId}/isAttending")]
+        public async Task<IActionResult> IsAttendingEvent(string eventId)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized("User is not authenticated.");
+            }
+
+            var isAttending = await _dbContext.Participants
+                .AnyAsync(p => p.EventId == eventId && p.UserId == userId);
+
+            return Ok(new { isAttending });
+        }
+    
+
+    [HttpPost("{eventId}/attend")]
         [Authorize]  // Ensure user is authenticated
         public async Task<IActionResult> AttendEvent(String eventId)
         {
