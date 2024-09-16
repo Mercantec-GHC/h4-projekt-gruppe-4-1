@@ -219,12 +219,20 @@ class CreateEventState extends State<CreateEventPage> {
             ),
             // Time field
                 TextFormField(
+                  style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
                   controller: _timeController,
                   readOnly: true,
                   decoration: InputDecoration(
                     labelText: 'Time',
+                    labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
+                      border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
                     suffixIcon: IconButton(
-                      icon: Icon(Icons.access_time),
+                      icon: Icon(
+                        Icons.access_time,
+                        color: const Color.fromARGB(255, 183, 211, 83),
+                      ),
                       onPressed: () => _selectTime(context),
                     ),
                   ),
@@ -277,45 +285,50 @@ class CreateEventState extends State<CreateEventPage> {
             //const SizedBox(height: 15),
 
             //SELECT CATEGORY
-            // DropdownButtonFormField<String>(
-            //       value: _categoryController.text.isNotEmpty ? _categoryController.text : null,
-            //       decoration: InputDecoration(labelText: 'Category'),
-            //       items: [
-            //         DropdownMenuItem(child: Text('Gaming')),
-            //         DropdownMenuItem(value: 'true', child: Text('Lecture')),
-            //         DropdownMenuItem(value: 'true', child: Text('Birthday')),
-            //         DropdownMenuItem(value: 'true', child: Text('Wedding')),
-            //         DropdownMenuItem(value: 'true', child: Text('Gokarting')),
-            //       ],
-            //       onChanged: (value) {
-            //         setState(() {
-            //           _categoryController.text = value!;  
-            //         });
-            //       },
-            //       validator: (value) {
-            //         if (value == null || value.isEmpty) {
-            //           return 'Please chose category';
-            //         }
-            //         return null;
-            //       },
-            //     ),
-            TextFormField(
-              style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
-              controller: _categoryController,
-              decoration: InputDecoration(
-                labelText: 'Category',
-                labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
+            DropdownButtonFormField<String>(
+                  value: _categoryController.text.isNotEmpty ? _categoryController.text : null,
+                  decoration: InputDecoration(
+                    labelText: 'Category',
+                    labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
+                    border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    ),
+                  ),
+                  items: [
+                    DropdownMenuItem(value: 'Lecture', child: Text('Lecture')),
+                    DropdownMenuItem(value: 'Birthday', child: Text('Birthday')),
+                    DropdownMenuItem(value: 'Wedding', child: Text('Wedding')),
+                    DropdownMenuItem(value: 'Other', child: Text('Other')),
+                  ],
+                  onChanged: (value) {
+                    setState(() {
+                      _categoryController.text = value!;  
+                    });
+                  },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please chose category';
+                    }
+                    return null;
+                  },
                 ),
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please choose category';
-                }
-                return null;
-              },
-            ),
+            // TextFormField(
+            //   style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
+            //   controller: _categoryController,
+            //   decoration: InputDecoration(
+            //     labelText: 'Category',
+            //     labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
+            //     border: OutlineInputBorder(
+            //       borderRadius: BorderRadius.circular(8.0),
+            //     ),
+            //   ),
+            //   validator: (value) {
+            //     if (value == null || value.isEmpty) {
+            //       return 'Please choose category';
+            //     }
+            //     return null;
+            //   },
+            // ),
             const SizedBox(height: 15),
 
             // WRITE DESCRIPTION
@@ -340,10 +353,19 @@ class CreateEventState extends State<CreateEventPage> {
               },
             ),
 
-            // Private/Public dropdown
+                // Private/Public dropdown
                 DropdownButtonFormField<String>(
                   value: _isPrivateController.text.isNotEmpty ? _isPrivateController.text : null,
-                  decoration: InputDecoration(labelText: 'Private/Public'),
+                  decoration: InputDecoration(
+                    labelText: 'Private/Public',
+                    labelStyle: TextStyle(
+                      color: const Color.fromARGB(255, 183, 211, 83), 
+                      fontSize: 14.0
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                  ),
                   items: [
                     DropdownMenuItem(value: 'true', child: Text('Private')),
                     DropdownMenuItem(value: 'false', child: Text('Public')),
@@ -360,57 +382,6 @@ class CreateEventState extends State<CreateEventPage> {
                     return null;
                   },
                 ),
-              
-            //EVENT IS PRIVATE BOOL
-            // FormField(
-            //   key: _isPrivateFieldKey,
-            //   initialValue: false,
-            //   validator: (value) {
-            //     if (value == null) return 'Please select if event is private';
-            //     return null;
-            //   },
-            //   builder: (FormFieldState<bool> field) {
-            //     return InputDecorator(
-            //       decoration: InputDecoration(
-            //         labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
-            //         border: OutlineInputBorder(
-            //           borderRadius: BorderRadius.circular(8.0),
-            //         ), // labelText: 'Subscribe to mailing list.',
-            //       errorText: field.errorText,
-            //       ),
-            //       child: SwitchListTile(
-            //         hoverColor: const Color.fromARGB(255, 36, 51, 6),
-            //         activeColor: Color.fromARGB(255, 234, 208, 225),
-            //         inactiveThumbColor: Color.fromARGB(255, 234, 208, 225),
-            //         activeTrackColor: const Color.fromARGB(255, 183, 211, 83),
-            //         inactiveTrackColor: const Color.fromARGB(255, 234, 208, 225),
-            //         title: const Text(
-            //           "Private",
-            //         style: TextStyle(
-            //           color: const Color.fromARGB(255, 183, 211, 83)
-            //         ),
-            //         selectionColor: const Color.fromARGB(255, 183, 211, 83),
-            //         ),
-            //         secondary: const SizedBox(
-            //           child: Icon(
-            //             Icons.lock,
-            //             color: const Color.fromARGB(255, 183, 211, 83),
-            //             size: 25,
-            //           ),
-            //         ),
-            //         value: SwitchIsChecked,         
-            //         onChanged: (value) {
-            //           setState(() {
-            //             SwitchIsChecked = value;
-            //             _isPrivateController.text = value.toString();
-            //             print(value);
-            //             });            
-            //           },
-            //         ),
-            //       );
-            //     },
-            //   ),
-
               const SizedBox(height: 25),       
 
               //CREATE EVENT BUTTON
