@@ -28,7 +28,7 @@ class _EventPageState extends State<EventPage> {
 
       //GETs CUSTOM MAIN APPBAR FROM /components/custom_mainappbar.dart
       appBar: CustomMainAppBar(),
-
+  
       body: Center(
         child: FutureBuilder<List<EventDTO>>(
           future: eventsFuture,
@@ -77,6 +77,7 @@ class _EventPageState extends State<EventPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+
                     //EVENT ID
                     Text(
                       "Event ID: ${event.id}",

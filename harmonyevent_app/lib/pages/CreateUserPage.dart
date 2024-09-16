@@ -401,80 +401,79 @@ class _CreateUserPageState extends State<CreateUserPage> {
                                 ? Text('No image selected.')
                                 : Image.file(_image!),
                                 const SizedBox(height: 16),
-                                ElevatedButton(
-                                onPressed: _pickImage,
-                                child: const Text("Select Profile Picture"),
-                                ), 
-                            StandardPadding(),
-                            TextFormField(
-                              style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
-                              controller: _userNameController,
-                              decoration: InputDecoration(
-                                labelText: "Choose username",
-                                labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8.0),
+                                  ElevatedButton(
+                                    onPressed: _pickImage,
+                                    child: const Text("Select Profile Picture"),
+                                  ), 
+                              TextFormField(
+                                style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
+                                controller: _userNameController,
+                                decoration: InputDecoration(
+                                  labelText: "Choose username",
+                                  labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
                                 ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return "Please enter new username";
+                                  }
+                                return null;
+                                },
                               ),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return "Please enter new username";
-                                }
-                              return null;
-                              },
-                            ),
-                            const SizedBox(height: 15),
-                            TextFormField(
-                              style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
-                              controller: _passwordController,
-                              decoration: InputDecoration(
-                                labelText: "Choose Password",
-                                labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8.0),
+                              const SizedBox(height: 15),
+                              TextFormField(
+                                style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
+                                controller: _passwordController,
+                                decoration: InputDecoration(
+                                  labelText: "Choose Password",
+                                  labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    ),
                                   ),
-                                ),
-                              obscureText: true,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return "Please enter your password";
-                                } else if (value.length < 6) {
-                                  return "Password must be at least 6 characters long";
-                                }
-                                return null;
-                              },
-                            ),
-                            const SizedBox(height: 15),
-                            TextFormField(
-                              style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
-                              controller: _confirmPasswordController,
-                              decoration: InputDecoration(
-                                labelText: "Confirm Password",
-                                labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8.0),
+                                obscureText: true,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return "Please enter your password";
+                                  } else if (value.length < 6) {
+                                    return "Password must be at least 6 characters long";
+                                  }
+                                  return null;
+                                },
+                              ),
+                              const SizedBox(height: 15),
+                              TextFormField(
+                                style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
+                                controller: _confirmPasswordController,
+                                decoration: InputDecoration(
+                                  labelText: "Confirm Password",
+                                  labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    ),
                                   ),
-                                ),
-                              obscureText: true,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return "Please confirm your password";
-                                } else if (value != _passwordController.text) {
-                                  return "Passwords do not match";
-                                }
-                                return null;
-                              },
-                            ),
-                            const SizedBox(height: 20),
-                            _isLoading ? Center(child: CircularProgressIndicator()) : GradientButton(
-                              colors: [const Color.fromARGB(255, 183, 211, 54), const Color.fromARGB(255, 109, 190, 66)],
-                              height: 40,
-                              width: 300,
-                              radius: 20,
-                              gradientDirection: GradientDirection.leftToRight,
-                              textStyle: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
-                              text: "Create user",
-                              onPressed: _createUser, 
+                                obscureText: true,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return "Please confirm your password";
+                                  } else if (value != _passwordController.text) {
+                                    return "Passwords do not match";
+                                  }
+                                  return null;
+                                },
+                              ),
+                              const SizedBox(height: 20),
+                              _isLoading ? Center(child: CircularProgressIndicator()) : GradientButton(
+                                colors: [const Color.fromARGB(255, 183, 211, 54), const Color.fromARGB(255, 109, 190, 66)],
+                                height: 40,
+                                width: 300,
+                                radius: 20,
+                                gradientDirection: GradientDirection.leftToRight,
+                                textStyle: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
+                                text: "Create user",
+                                onPressed: _createUser, 
                               ),
                             ],
                           ),

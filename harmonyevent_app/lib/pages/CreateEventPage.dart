@@ -151,10 +151,8 @@ class CreateEventState extends State<CreateEventPage> {
       body: Padding(
       padding: const EdgeInsets.all(66.0),
       child: Form(
-        key: _formKey,
-        
+        key: _formKey,       
         child: Column(
-
           //FORM FIELD CHIRLDREN
           children: [
 

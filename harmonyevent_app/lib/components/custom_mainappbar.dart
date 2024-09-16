@@ -6,11 +6,14 @@ import 'package:harmonyevent_app/pages/UserProfilePage.dart';
 import 'package:harmonyevent_app/pages/EventPage.dart';
 
 class CustomMainAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final dynamic actions;
+
   const CustomMainAppBar({
+    this.actions,
     super.key,
   });
 
-  Size get PreferredSize => Size.fromHeight(kToolbarHeight);
+  //Size get PreferredSize => Size.fromHeight(kToolbarHeight);
   
   @override
   Widget build(BuildContext context) {
@@ -30,6 +33,7 @@ class CustomMainAppBar extends StatelessWidget implements PreferredSizeWidget {
             print("Hmm");
           }
         ),
+        
         //ALL EVENTS
         IconButton(
           icon: Icon(
