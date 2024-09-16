@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:harmonyevent_app/config/token.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:convert';
@@ -29,7 +30,8 @@ class _UpdateEventPageState extends State<UpdateEventPage> {
 
       try {
         // Get JWT token from secure storage
-        String? token = await _secureStorage.read(key: 'token');
+        //String? token = await _secureStorage.read(key: 'token');
+        String? token = mytoken;
         if (token == null) {
           throw Exception("Authentication token not found");
         }

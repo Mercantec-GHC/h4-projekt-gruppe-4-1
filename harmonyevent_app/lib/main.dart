@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gradient_button/flutter_gradient_button.dart';
 
 import 'package:harmonyevent_app/services/login_service.dart';
-import 'package:harmonyevent_app/pages/LoginPage.dart';   
-import 'package:harmonyevent_app/pages/CreateUserPage.dart';  
+import 'package:harmonyevent_app/pages/user/LoginPage.dart';   
+import 'package:harmonyevent_app/pages/user/CreateUserPage.dart';  
 import 'package:harmonyevent_app/pages/event/EventPage.dart'; 
 
 void main() {
@@ -13,7 +13,7 @@ void main() {
   ));
 }
 class MyApp extends StatelessWidget {
-  @override
+@override
   Widget build(BuildContext context) {
     return FutureBuilder<bool>(
       future: AuthService().isLoggedIn(), // Check if the user is logged in on startup
@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
               fontFamily: 'Purisa', 
               textTheme: Theme.of(context).textTheme.apply(
                 fontSizeFactor: 1,
-                fontSizeDelta: 0.5,
+                fontSizeDelta: 1,
                 fontFamily: 'Purisa', 
               ),
             ),

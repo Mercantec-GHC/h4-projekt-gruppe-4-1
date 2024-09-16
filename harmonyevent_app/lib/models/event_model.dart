@@ -40,7 +40,7 @@ factory EventDTO.fromJson(Map<String, dynamic> json) {
     id: json['id'] ?? '',
     eventPicture: json['imageURL'] ?? '',
     date: json['date'] ?? '',
-    location: json['location'] ?? '',
+    location: json['place_id'] ?? '',
     title: json['title'] ?? '',
     category: json['category'] ?? '',
     description: json['description'] ?? '',
@@ -85,7 +85,7 @@ class CreateEventDTO {
     return CreateEventDTO(
       eventPicture: json['imageURL'] ?? '',
       date: json['date'] ?? '',
-      location: json['location'] ?? '', 
+      location: json['place_id'] ?? '', 
       title: json['title'] ?? '',  
       category: json['category'] ?? '',
       description: json['description'] ?? '',

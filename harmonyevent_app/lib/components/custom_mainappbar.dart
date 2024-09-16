@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:harmonyevent_app/pages/event/CreateEventPage.dart';
-import 'package:harmonyevent_app/pages/UserProfilePage.dart';
+import 'package:harmonyevent_app/pages/user/UserProfilePage.dart';
 import 'package:harmonyevent_app/pages/event/EventPage.dart';
 import 'package:harmonyevent_app/pages/event/MyEventPage.dart';
 
@@ -86,7 +86,7 @@ class CustomMainAppBar extends StatelessWidget implements PreferredSizeWidget {
             color: Color.fromARGB(255, 183, 211, 54),
             size: 26
           ),
-          tooltip: "Your account",
+          tooltip: "My Profile",
           onPressed: () {
             Navigator.pushReplacement(
             context,

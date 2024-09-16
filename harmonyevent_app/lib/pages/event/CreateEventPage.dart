@@ -81,7 +81,6 @@ class CreateEventState extends State<CreateEventPage> {
     }
   }
 
-
   //  SwitchListTile standard selection
   bool SwitchIsChecked = false; 
 
@@ -193,6 +192,7 @@ class CreateEventState extends State<CreateEventPage> {
 
             //SELECT DATE AND TIME
             TextFormField(
+    
               style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
               controller: _dateController,
               readOnly: true, 
