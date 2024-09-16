@@ -90,9 +90,51 @@ namespace API.Controllers
 
             return NoContent();
         }
+        // Update user by id
+        [HttpPut("update/{id}")]
+        public async Task<ActionResult<UserDTO>> UpdateUserById(string id, [FromBody] UserDTO updatedUser)
+        {
+            var user = await _dbContext.Users.FindAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
 
-            // create user
-            [HttpPost("SignUp")]
+            // Update the properties of the user with the new data from updatedUser
+            user.FirstName = updatedUser.FirstName;
+            user.LastName = updatedUser.LastName;
+            user.Email = updatedUser.Email;
+            user.Username = updatedUser.Username;
+            user.ProfilePicture = updatedUser.ProfilePicture;
+            user.Address = updatedUser.Address;
+            user.Postal = updatedUser.Postal;
+            user.City = updatedUser.City;
+
+            
+            // Add other properties you want to update
+
+            try
+            {
+                _dbContext.Users.Update(user);
+                await _dbContext.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!_dbContext.Users.Any(u => u.id == id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return Ok(updatedUser);  // Return the updated user information
+        }
+
+        // create user
+        [HttpPost("SignUp")]
         public async Task<IActionResult> PostUser([FromForm] SignUpDTO userSignUp)
         {
             // Check if address is null or empty
