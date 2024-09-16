@@ -106,7 +106,7 @@ Future<void> updateUser(
     'address': address,
     'postal': postal,
     'city': city,
-    'ProfilePicture': profileImage != null ? base64Encode(await profileImage.readAsBytes()) : '', // Ensure 'ProfilePicture' field is included
+    'ProfilePicture': profileImage != null ? base64Encode(await profileImage.readAsBytes()) : '', 
   };
 
   final String? token = await secureStorage.read(key: 'jwt');

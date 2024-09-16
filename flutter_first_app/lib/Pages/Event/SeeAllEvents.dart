@@ -75,8 +75,7 @@ class _SeeAllEventsState extends State<SeeAllEvents> {
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => CreateEvent())); // Fixed import
       case 3:
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => MyEventsPage()));
+        _navigateToMyEventsPage(context);
       case 4:
         setState(() {}); // Do nothing, stay on SeeAllEvents
       default:
@@ -93,6 +92,22 @@ class _SeeAllEventsState extends State<SeeAllEvents> {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => UpdateUserPage()),
+    );
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('User not logged in or token expired')),
+    );
+  }
+}
+
+ void _navigateToMyEventsPage(BuildContext context) async {
+  final token = await _authService.getToken();
+  print('Token retrieved: $token'); // Debugging statement
+
+  if (token != null && !_authService.isTokenExpired(token)) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => MyEventsPage()),
     );
   } else {
     ScaffoldMessenger.of(context).showSnackBar(

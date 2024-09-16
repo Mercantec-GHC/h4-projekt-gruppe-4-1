@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_first_app/Http/User/loginuser.dart';
 import 'package:flutter_first_app/models/event.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
@@ -16,6 +17,7 @@ class MyEventsPage extends StatefulWidget {
 
 class _MyEventsPageState extends State<MyEventsPage> {
   final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
+  final AuthService _authService = AuthService();
   List<EventDTO> _userEvents = [];
   bool _isLoading = false;
 
@@ -26,42 +28,61 @@ class _MyEventsPageState extends State<MyEventsPage> {
   }
 
   // Method to fetch the user's events from the API
-  Future<void> _fetchUserEvents() async {
-    setState(() {
-      _isLoading = true; // Show loading indicator
-    });
+Future<void> _fetchUserEvents() async {
+  setState(() {
+    _isLoading = true; // Show loading indicator
+  });
 
-    try {
-      // Get JWT token from secure storage
-      String? token = await _secureStorage.read(key: 'token');
+  try {
+    // Get JWT token and user ID from secure storage
+    final String? userId = await _secureStorage.read(key: 'userId');
+    final String? token = await _secureStorage.read(key: 'jwt'); // Ensure the key is correct
 
-      // Make the GET request to fetch the user's events
-      final url = Uri.parse('${ApiConfig.apiUrl}/api/Event');
-      final response = await http.get(
-        url,
-        headers: {
-          'Authorization': 'Bearer $token',
-        },
-      );
+    // Debugging statements
+    print('User ID retrieved: $userId');
+    print('Token retrieved: $token');
 
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body) as List<dynamic>;
-        setState(() {
-          _userEvents = data.map((json) => EventDTO.fromJson(json)).toList(); // Parse JSON into EventDTO objects
-        });
-      } else {
-        throw Exception('Failed to load events');
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: ${e.toString()}')),
-      );
-    } finally {
-      setState(() {
-        _isLoading = false; // Hide loading indicator
-      });
+    if (userId == null || token == null) {
+      print('User ID or token is null');
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('User not logged in or token expired')));
+      Navigator.pop(context); // Navigate back if user is not logged in or token is expired
+      return;
     }
+
+    if (_authService.isTokenExpired(token)) {
+      print('Token is expired');
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('User not logged in or token expired')));
+      Navigator.pop(context); // Navigate back if user is not logged in or token is expired
+      return;
+    }
+
+    // Make the GET request to fetch the user's events
+    final url = Uri.parse('${ApiConfig.apiUrl}/api/Event/creator/$userId');
+    final response = await http.get(
+      url,
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body) as List<dynamic>;
+      setState(() {
+        _userEvents = data.map((json) => EventDTO.fromJson(json)).toList(); // Parse JSON into EventDTO objects
+      });
+    } else {
+      throw Exception('Failed to load events');
+    }
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Error: ${e.toString()}')),
+    );
+  } finally {
+    setState(() {
+      _isLoading = false; // Hide loading indicator
+    });
   }
+}
 
   // Method to navigate to the UpdateEventPage
   void _navigateToUpdateEvent(String eventId) {

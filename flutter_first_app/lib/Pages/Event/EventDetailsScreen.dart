@@ -14,20 +14,45 @@ class EventDetailsScreen extends StatefulWidget {
 class _EventDetailsScreenState extends State<EventDetailsScreen> {
   final EventService _eventService = EventService();
   bool _isAttending = false;
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkAttendanceStatus();
+  }
+
+  Future<void> _checkAttendanceStatus() async {
+    try {
+      bool isAttending = await _eventService.attendEvent(widget.eventId);
+      setState(() {
+        _isAttending = isAttending;
+        _isLoading = false;
+      });
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to load attendance status: $e')),
+      );
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
 
   Future<void> _attendEvent() async {
     try {
-      await _eventService.attendEvent(widget.eventId);
+      bool isAttending = await _eventService.attendEvent(widget.eventId);
       setState(() {
-        _isAttending = true;
+        _isAttending = isAttending;
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('You are now attending this event!')),
+        SnackBar(content: Text(isAttending ? 'You are now attending this event!' : 'You are already attending this event!')),
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Failed to attend event: $e')),
       );
+      print('Error: $e'); // Log the error message
     }
   }
 
@@ -37,19 +62,21 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Column(
-        children: [
-          // Add other event details here
-          Text(widget.title, style: TextStyle(fontSize: 24)),
-          // Other event info like date, description, etc.
+      body: _isLoading
+          ? Center(child: CircularProgressIndicator())
+          : Column(
+              children: [
+                // Add other event details here
+                Text(widget.title, style: TextStyle(fontSize: 24)),
+                // Other event info like date, description, etc.
 
-          SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: _isAttending ? null : _attendEvent,
-            child: Text(_isAttending ? 'Attending' : 'Attend Event'),
-          ),
-        ],
-      ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: _isAttending ? null : _attendEvent,
+                  child: Text(_isAttending ? 'Attending' : 'Attend Event'),
+                ),
+              ],
+            ),
     );
   }
 }

@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'dart:convert';
+import 'package:flutter_first_app/models/event.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_first_app/config/api_config.dart';
-import 'package:flutter_first_app/models/event.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class EventService {
@@ -24,7 +24,7 @@ class EventService {
     if (token == null) {
       throw Exception('Authentication token not found. Please log in.');
     }
-    request.headers['Authorization'] = 'Bearer $token';
+    request.headers['Authorization']; 'Bearer $token';
 
     request.fields['place_id'] = placeId;
     request.fields['date'] = date;
@@ -60,20 +60,23 @@ class EventService {
     }
   }
 
-  Future<void> attendEvent(String eventId) async {
-    final token = await _storage.read(key: 'jwt');
-    final url = Uri.parse('$_baseUrl/api/Event/$eventId/Attend');
-
+Future<bool> attendEvent(String eventId) async {
+    String? token = await _storage.read(key: 'jwt');
     final response = await http.post(
-      url,
+      Uri.parse('${ApiConfig.apiUrl}/api/event/$eventId/attend'),
       headers: {
-        'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
       },
     );
 
-    if (response.statusCode != 200) {
-      throw Exception('Failed to attend event: ${response.statusCode}');
+    if (response.statusCode == 200) {
+      return true; // Successfully attended the event
+    } else if (response.statusCode == 409) {
+      return false; // Already attending the event
+    } else {
+      final errorResponse = response.body;
+      throw Exception('Failed to attend event: ${response.statusCode} - $errorResponse');
     }
   }
 }
