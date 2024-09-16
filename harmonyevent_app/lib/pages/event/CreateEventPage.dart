@@ -302,6 +302,7 @@ class CreateEventState extends State<CreateEventPage> {
                     ),
                   ),
                   items: [
+                    DropdownMenuItem(value: 'Anniversary', child: Text('Anniversary')),
                     DropdownMenuItem(value: 'Birthday', child: Text('Birthday')),
                     DropdownMenuItem(value: 'Concert', child: Text('Concert')),
                     DropdownMenuItem(value: 'Corporate', child: Text('Corporate')),
