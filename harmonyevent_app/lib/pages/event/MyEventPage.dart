@@ -103,27 +103,87 @@ class _MyEventsPageState extends State<MyEventsPage> {
                   itemCount: _userEvents.length,
                   itemBuilder: (context, index) {
                     final event = _userEvents[index];
-                    return Card(
-                      elevation: 5,
-                      margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                      child: ListTile(
-                        title: Text(event['title']),
-                        subtitle: Text(event['description']),
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            IconButton(
-                              icon: Icon(Icons.edit, color: const Color.fromARGB(255, 183, 211, 83)),
-                              onPressed: () => _navigateToUpdateEvent(event['id']),
+                    
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Card(    
+                        color: const Color.fromARGB(255, 81, 76, 76),     
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.only(left: 15.0),
+                              child: Container(
+                                width: 50,
+                                child: CircleAvatar(
+                                  backgroundColor: const Color.fromARGB(255, 183, 211, 83),
+                                  radius: 40,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(3),
+                                    child: ClipOval (
+                                      child: Image.network(
+                                        "https://eventharmoni.mercantec.tech/eventharmoni/PPc0c029f2f1fc462eadaf7178f6c6dd74.png",                             
+                                        errorBuilder: (context, error, stackTrace) {
+                                          return const Icon(Icons.broken_image, size: 300); // Handle broken images
+                                        },
+                                      ), 
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ),
-                            IconButton(
-                              icon: Icon(Icons.delete, color: Color.fromARGB(255, 174, 9, 108)),
-                              onPressed: () => _navigateToDeleteEvent(event['id']),
+                            
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    "Date: ${event['date']}",
+                                      style: const TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
+                                        color: Color.fromARGB(255, 234, 208, 225),
+                                      ),
+                                    ),
+                                    Text(
+                                      "Title: ${event['description']}",
+                                      style: const TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color.fromARGB(255, 234, 208, 225),
+                                      ),
+                                    ),
+                                    Text(
+                                      "Category: ${event['category']}",
+                                      style: const TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
+                                        color: Color.fromARGB(255, 234, 208, 225),
+                                      ),  
+                                    ),
+                                ],
+                              ),
                             ),
+
+                            Column(
+        
+                              children: [
+                                IconButton(
+                                  icon: Icon(Icons.edit, color: const Color.fromARGB(255, 183, 211, 83)),
+                                  onPressed: () => _navigateToUpdateEvent(event['id']),
+                                ),
+                                IconButton(
+                                  icon: Icon(Icons.delete, color: Color.fromARGB(255, 104, 9, 9)),
+                                  onPressed: () => _navigateToDeleteEvent(event['id']),
+                                ),
+                              ],
+                            ),      
+
                           ],
                         ),
-                      ),
+                        ),
                     );
+                    
                   },
                 ),
     );
