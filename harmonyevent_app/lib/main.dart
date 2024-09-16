@@ -63,7 +63,14 @@ class HomeScreen extends StatelessWidget {
             ),
             Padding(  
               padding: const EdgeInsets.all(35),
-              child: Text("Harmony Event")
+              child: Text(
+                "Harmony Event",
+                style: TextStyle(
+                  color: const Color.fromARGB(255, 234, 208, 225),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 45,
+                ),
+              )      
             ),
             GradientButton(
               colors: [const Color.fromARGB(255, 183, 211, 54), const Color.fromARGB(255, 109, 190, 66)],
