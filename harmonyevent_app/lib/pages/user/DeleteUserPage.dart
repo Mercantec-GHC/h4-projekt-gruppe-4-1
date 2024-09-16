@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:harmonyevent_app/config/api_config.dart';
 import 'package:harmonyevent_app/pages/User/LoginPage.dart';
+import 'package:flutter_gradient_button/flutter_gradient_button.dart';
 
 
 class DeleteUserPage extends StatefulWidget {
@@ -86,21 +87,55 @@ class _DeleteUserPageState extends State<DeleteUserPage> {
   Future<void> _confirmDelete() async {
     final bool? confirm = await showDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text('Delete Account'),
-        content: Text('Are you sure you want to delete your account? This action cannot be undone.'),
+           builder: (context) => AlertDialog(
+        title: Text(
+          'Confirm Deletion',
+          style: const TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+              color: Color.fromARGB(255, 234, 208, 225),
+          ),
+        ),
+        backgroundColor: const Color.fromARGB(255, 81, 76, 76) ,
+          //dropdownColor: const Color.fromARGB(255, 81, 76, 76),
+        content: Text(
+          //'Are you sure you want to delete ${user.Username}? This action can not be undone!',
+          'Are you sure you want to delete RayTheMan? This action can not be undone!',
+           style: const TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+              color: Color.fromARGB(255, 234, 208, 225),
+          ),
+        ),
         actions: [
           TextButton(
             onPressed: () {
-              Navigator.of(context).pop(false); // User clicked "No"
+              Navigator.pop(context, false); 
             },
-            child: Text('No'),
+            child: Text(
+              'Cancel',
+              style: const TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+              color: const Color.fromARGB(255, 183, 211, 83),
+              ),
+            ),
           ),
-          ElevatedButton(
+          TextButton(
             onPressed: () {
-              Navigator.of(context).pop(true); // User clicked "Yes"
+              Navigator.pop(context, true); 
             },
-            child: Text('Yes'),
+            child: Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: Text(
+                'Delete',
+                style: TextStyle(
+                      fontSize: 18, 
+                      fontWeight: FontWeight.bold,
+                      color: Color.fromARGB(255, 104, 9, 9),
+                      ),
+              ),
+            ),   
           ),
         ],
       ),
@@ -114,45 +149,68 @@ class _DeleteUserPageState extends State<DeleteUserPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Delete Account'),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back), // Back arrow icon
+            appBar: AppBar(
+      automaticallyImplyLeading: false,
+      leading: IconButton(
+        icon: Icon(
+          Icons.arrow_back_ios,
+          color: Color.fromARGB(255, 234, 208, 225)),
           onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => UserProfilePage()), // Navigate to SeeAllEvents
-            );
-          },
-        ),
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => UserProfilePage()),
+          );
+        },
       ),
-      body: Center(
-        child: Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'Are you sure you want to delete your account?',
-                style: TextStyle(fontSize: 18),
-                textAlign: TextAlign.center,
+      title: Row(
+        children: [
+          Container(
+            child: Image(image: AssetImage('assets/images/HE_Logo.png'),
+            width: 50,
+            fit: BoxFit.cover     
+            ),  
+          ),        
+          Container(          
+            child: 
+            Text(
+              "Harmony Event",
+              style: TextStyle(
+                color: const Color.fromARGB(255, 234, 208, 225),
+                fontWeight: FontWeight.bold,
               ),
-              SizedBox(height: 20),
-              _isLoading
-                  ? CircularProgressIndicator()
-                  : ElevatedButton(
-                      onPressed: _confirmDelete,
-                      style: ElevatedButton.styleFrom(
-                        padding: EdgeInsets.symmetric(vertical: 16.0),
-                      ),
-                      child: Text(
-                        'Delete Account',
-                        style: TextStyle(fontSize: 16),
-                      ),
+            ),  
+          ), 
+        ],
+      ),
+    ),
+      body: Padding(
+        padding: const EdgeInsets.only(left: 96.0, right: 96.0, top: 96.0),
+        child: _isLoading
+            ? Center(child: CircularProgressIndicator()) 
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    'Are you sure you want to delete this profile?',
+                    style: TextStyle(
+                    fontSize: 18, 
+                    fontWeight: FontWeight.bold,
+                    color: Color.fromARGB(255, 234, 208, 225),
                     ),
-            ],
-          ),
-        ),
+                  ),
+                  SizedBox(height: 20),
+                  GradientButton(
+                    colors: [const Color.fromARGB(255, 183, 211, 54), const Color.fromARGB(255, 109, 190, 66)],
+                    height: 40,
+                    width: 350,
+                    radius: 20,
+                    gradientDirection: GradientDirection.leftToRight,
+                    textStyle:  TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
+                    text: "Delete Profile",
+                      onPressed: _confirmDelete
+                  ),
+                ],
+              ),
       ),
     );
   }

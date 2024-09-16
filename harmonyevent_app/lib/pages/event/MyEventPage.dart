@@ -135,6 +135,7 @@ class _MyEventsPageState extends State<MyEventsPage> {
                                     size: Size.fromRadius(48), // Image radius
                                     child: Image.network(
                                       "https://eventharmoni.mercantec.tech/eventharmoni/PPc0c029f2f1fc462eadaf7178f6c6dd74.png", 
+                                      //event.eventPicture,
                                       fit: BoxFit.cover, 
                                       errorBuilder: (context, error, stackTrace) {
                                         return const Icon(Icons.broken_image, size: 300); // Handle broken images

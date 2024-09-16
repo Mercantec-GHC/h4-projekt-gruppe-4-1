@@ -112,7 +112,7 @@ class _DeleteEventPageState extends State<DeleteEventPage> {
                 style: TextStyle(
                       fontSize: 18, 
                       fontWeight: FontWeight.bold,
-                      color: Color.fromARGB(255, 174, 9, 108),
+                      color: Color.fromARGB(255, 104, 9, 9),
                       ),
               ),
             ),   

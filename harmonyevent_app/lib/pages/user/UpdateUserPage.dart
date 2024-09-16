@@ -9,6 +9,9 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';  // Import 
 import 'dart:async';
 import 'dart:convert'; // To decode the JSON response
 import 'package:harmonyevent_app/pages/event/EventPage.dart'; // Import SeeAllEvents page
+import 'package:flutter_gradient_button/flutter_gradient_button.dart';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
 
 // Create an instance of FlutterSecureStorage
 final FlutterSecureStorage secureStorage = FlutterSecureStorage();
@@ -20,18 +23,31 @@ class UpdateUserPage extends StatefulWidget {
 
 class _UpdateUserPageState extends State<UpdateUserPage> {
   final _formKey = GlobalKey<FormState>();
-  final ImagePicker _picker = ImagePicker();
+      //File? profilePicture; // To store the selected image
+  //final picker = ImagePicker(); // Image picker instance
+  //final ImagePicker _picker = ImagePicker();
+    final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _confirmEmailController = TextEditingController();
+  final TextEditingController _userNameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
+    bool _isLoading = false;
 
+// Function to pick an image
+//  Future<void> _pickImage() async {
+//     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+//     if (pickedFile != null) {
+//       setState(() {
+//         profilePicture = File(pickedFile.path); // Save the selected image
+//       });
+//     }
+//   }
   // User information variables
   String? userId;
-  String firstName = '';
-  String lastName = '';
   String email = '';
   String username = '';
-  String address = '';
-  String postal = '';
-  String city = '';
-  File? profileImage;
+  String password = '';
+  //File? profileImage;
 
   @override
   void initState() {
@@ -65,13 +81,11 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
       final userData = jsonDecode(response.body);
       
       setState(() {
-        firstName = userData['firstName'] ?? '';
-        lastName = userData['lastName'] ?? '';
+
         email = userData['email'] ?? '';
         username = userData['username'] ?? '';
-        address = userData['address'] ?? '';
-        postal = userData['postal'] ?? '';
-        city = userData['city'] ?? '';
+        password = userData['password'] ?? '';
+
       });
     } else {
       throw Exception('Failed to load user data');
@@ -80,37 +94,30 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
 
   Future<void> updateUser(
     String userId,
-    String firstName,
-    String lastName,
     String email,
     String username,
-    String address,
-    String postal,
-    String city,
-    File? image,
+    String password,
+
+    //File? image,
   ) async {
     final String baseUrl = ApiConfig.apiUrl; 
     final request = http.MultipartRequest('PUT', Uri.parse('$baseUrl/api/User/Update/$userId'));
 
     // Add fields
-    request.fields['firstname'] = firstName;
-    request.fields['lastname'] = lastName;
     request.fields['email'] = email;
     request.fields['username'] = username;
-    request.fields['address'] = address;
-    request.fields['postal'] = postal;
-    request.fields['city'] = city;
+    request.fields['password'] = password;
 
     // Attach the image if it exists
-    if (image != null) {
-      request.files.add(
-        http.MultipartFile.fromBytes(
-          'profilePicture',
-          await image.readAsBytes(),
-          filename: image.path.split('/').last,
-        ),
-      );
-    }
+    // if (image != null) {
+    //   request.files.add(
+    //     http.MultipartFile.fromBytes(
+    //       'profilePicture',
+    //       await image.readAsBytes(),
+    //       filename: image.path.split('/').last,
+    //     ),
+    //   );
+    // }
 
     // Get the token from secure storage and attach it
     //final String? token = await secureStorage.read(key: 'token');
@@ -137,30 +144,52 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
   }
 
   // Image picker function
-  Future<void> pickImage() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      setState(() {
-        profileImage = File(pickedFile.path);
-      });
-    }
-  }
+  // Future<void> pickImage() async {
+  //   final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+  //   if (pickedFile != null) {
+  //     setState(() {
+  //       profileImage = File(pickedFile.path);
+  //     });
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Update User"),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back), // Back arrow icon
+    appBar: AppBar(
+      automaticallyImplyLeading: false,
+      leading: IconButton(
+        icon: Icon(
+          Icons.arrow_back_ios,
+          color: Color.fromARGB(255, 234, 208, 225)),
           onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => UserProfilePage()), // Navigate to SeeAllEvents
-            );
-          },
-        ),
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => UserProfilePage()),
+          );
+        },
       ),
+      title: Row(
+        children: [
+          Container(
+            child: Image(image: AssetImage('assets/images/HE_Logo.png'),
+            width: 50,
+            fit: BoxFit.cover     
+            ),  
+          ),        
+          Container(          
+            child: 
+            Text(
+              "Harmony Event",
+              style: TextStyle(
+                color: const Color.fromARGB(255, 234, 208, 225),
+                fontWeight: FontWeight.bold,
+              ),
+            ),  
+          ), 
+        ],
+      ),
+    ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -168,126 +197,147 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
           child: ListView(
             children: <Widget>[
               // First Name
-              TextFormField(
-                decoration: InputDecoration(labelText: "First Name"),
-                initialValue: firstName,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your first name';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  firstName = value!;
-                },
-              ),
-
-              // Last Name
-              TextFormField(
-                decoration: InputDecoration(labelText: "Last Name"),
-                initialValue: lastName,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your last name';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  lastName = value!;
-                },
-              ),
-
-              // Email
-              TextFormField(
-                decoration: InputDecoration(labelText: "Email"),
-                initialValue: email,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your email';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  email = value!;
-                },
-              ),
-
-              // Username
-              TextFormField(
-                decoration: InputDecoration(labelText: "Username"),
-                initialValue: username,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your username';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  username = value!;
-                },
-              ),
-
-              // Address
-              TextFormField(
-                decoration: InputDecoration(labelText: "Address"),
-                initialValue: address,
-                onSaved: (value) {
-                  address = value!;
-                },
-              ),
-
-              // Postal
-              TextFormField(
-                decoration: InputDecoration(labelText: "Postal Code"),
-                initialValue: postal,
-                onSaved: (value) {
-                  postal = value!;
-                },
-              ),
-
-              // City
-              TextFormField(
-                decoration: InputDecoration(labelText: "City"),
-                initialValue: city,
-                onSaved: (value) {
-                  city = value!;
-                },
-              ),
-
-              // Image picker
-              SizedBox(height: 20),
-              profileImage != null
-                  ? Image.file(profileImage!, height: 100, width: 100)
-                  : Text('No image selected'),
-              ElevatedButton(
-                onPressed: pickImage,
-                child: Text('Pick Profile Image'),
-              ),
-
+              Column(    
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [   
+                                // _pickImage == null
+                                // ? Text('No image selected.')
+                                // : Image.file(_pickImage!),
+                                // const SizedBox(height: 16),
+                                //   ElevatedButton(
+                                //     onPressed: _pickImage,
+                                //     child: const Text("Select Profile Picture"),
+                                //   ), 
+                              TextFormField(
+                                style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
+                                controller: _userNameController,
+                                decoration: InputDecoration(
+                                  labelText: "New Username",
+                                  labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return "Please re-enter new username";
+                                  }
+                                return null;
+                                },
+                              ),
+                               const SizedBox(height: 20),
+                               TextFormField(
+                            style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
+                            controller: _emailController,
+                            decoration: InputDecoration(
+                              labelText: "New Email",
+                              labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                                ),
+                              ),
+                            keyboardType: TextInputType.emailAddress,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Please enter your email";
+                              } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                                return "Please enter a valid email";
+                              }
+                              return null;
+                            },
+                          ),
+                          //const SizedBox(height: 15),
+                          TextFormField(
+                            style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
+                            controller: _confirmEmailController,
+                            decoration: InputDecoration(
+                              labelText: "Confirm new Email",
+                              labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                                ),
+                              ),
+                            keyboardType: TextInputType.emailAddress,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Please confirm your email";
+                              } else if (value != _emailController.text) {
+                                return "Emails does not match";
+                              }
+                              return null;
+                            },
+                          ),
+                              const SizedBox(height: 15),
+                              TextFormField(
+                                style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
+                                controller: _passwordController,
+                                decoration: InputDecoration(
+                                  labelText: "Choose new Password",
+                                  labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    ),
+                                  ),
+                                obscureText: true,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return "Please enter your password";
+                                  } else if (value.length < 6) {
+                                    return "Password must be at least 6 characters long";
+                                  }
+                                  return null;
+                                },
+                              ),
+                        
+                              TextFormField(
+                                style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
+                                controller: _confirmPasswordController,
+                                decoration: InputDecoration(
+                                  labelText: "Confirm new Password",
+                                  labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    ),
+                                  ),
+                                obscureText: true,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return "Please confirm your password";
+                                  } else if (value != _passwordController.text) {
+                                    return "Passwords do not match";
+                                  }
+                                  return null;
+                                },
+                              ),
+                              const SizedBox(height: 20),
+                              _isLoading ? Center(child: CircularProgressIndicator()) : GradientButton(
+                                colors: [const Color.fromARGB(255, 183, 211, 54), const Color.fromARGB(255, 109, 190, 66)],
+                                height: 40,
+                                width: 300,
+                                radius: 20,
+                                gradientDirection: GradientDirection.leftToRight,
+                                textStyle: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
+                                text: "Update Profile",
+                                onPressed: () {
+                                  if (_formKey.currentState!.validate()) {
+                                    _formKey.currentState!.save();
+                                    // Call the update user function
+                                    if (userId != null) {
+                                      updateUser(
+                                        userId!,
+                                        email,
+                                        username,
+                                        password,
+                                      );
+                                    }
+                                  }
+                                },
+                              ),
+                            ],
+                          ),
+          
               // Submit button
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    _formKey.currentState!.save();
-                    // Call the update user function
-                    if (userId != null) {
-                      updateUser(
-                        userId!,
-                        firstName,
-                        lastName,
-                        email,
-                        username,
-                        address,
-                        postal,
-                        city,
-                        profileImage,
-                      );
-                    }
-                  }
-                },
-                child: Text('Update User'),
-              ),
+             
             ],
           ),
         ),

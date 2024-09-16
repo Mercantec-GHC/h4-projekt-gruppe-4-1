@@ -36,16 +36,9 @@ class _UserProfilePageState extends State<UserProfilePage> {
                       //width: 150,
                       child: Column(
                         children: [
-                          Text(
-                            "RayTheMan",
-                            style: const TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                            color: const Color.fromARGB(255, 183, 211, 83),
-                            ),
-                          ),
+
                           Container(
-                            width: 50,
+                            width: 250,
                             child: CircleAvatar(
                               backgroundColor: const Color.fromARGB(255, 183, 211, 83),
                               radius: 40,
@@ -55,17 +48,35 @@ class _UserProfilePageState extends State<UserProfilePage> {
                                   child: Image.network(
                                     "https://eventharmoni.mercantec.tech/eventharmoni/PPc0c029f2f1fc462eadaf7178f6c6dd74.png",                             
                                     errorBuilder: (context, error, stackTrace) {
-                                      return const Icon(Icons.broken_image, size: 300); // Handle broken images
+                                      return const Icon(Icons.broken_image, size: 200); // Handle broken images
                                     },
                                   ), 
                                 ),
                               ),
                             ),
                           ),
+                           const SizedBox(height: 10),
+                          Text(
+                            "Username: RayTheMan",
+                            style: const TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                            color: const Color.fromARGB(255, 183, 211, 83),
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Text(
+                            "Email: ray@bradbury.com",
+                            style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: const Color.fromARGB(255, 183, 211, 83),
+                            ),
+                          ),
                         ],
                       ),
                     ),
-
+              const SizedBox(height: 30),
             GradientButton(
                colors: [const Color.fromARGB(255, 183, 211, 54), const Color.fromARGB(255, 109, 190, 66)],
                height: 40,
@@ -73,7 +84,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                radius: 20,
                gradientDirection: GradientDirection.leftToRight,
                textStyle:  TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
-               text: "Update profile",
+               text: "Edit profile",
                  onPressed: () {
                  Navigator.push(
                    context,
