@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:harmonyevent_app/config/token.dart';
+
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:harmonyevent_app/config/api_config.dart';  
-import 'package:harmonyevent_app/components/custom_mainappbar.dart';
+import 'package:flutter_gradient_button/flutter_gradient_button.dart';
+import 'package:harmonyevent_app/pages/event/MyEventPage.dart';
 
 class DeleteEventPage extends StatefulWidget {
   final String eventId;
@@ -67,25 +69,57 @@ class _DeleteEventPageState extends State<DeleteEventPage> {
     bool? confirm = await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Confirm Deletion'),
-        content: Text('Are you sure you want to delete this event?'),
+        title: Text(
+          'Confirm Deletion',
+          style: const TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+              color: Color.fromARGB(255, 234, 208, 225),
+          ),
+        ),
+        backgroundColor: const Color.fromARGB(255, 81, 76, 76) ,
+          //dropdownColor: const Color.fromARGB(255, 81, 76, 76),
+        content: Text(
+          'Are you sure you want to delete this event?',
+           style: const TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+              color: Color.fromARGB(255, 234, 208, 225),
+          ),
+        ),
         actions: [
           TextButton(
             onPressed: () {
               Navigator.pop(context, false); 
             },
-            child: Text('Cancel'),
+            child: Text(
+              'Cancel',
+              style: const TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+              color: const Color.fromARGB(255, 183, 211, 83),
+              ),
+            ),
           ),
           TextButton(
             onPressed: () {
               Navigator.pop(context, true); 
             },
-            child: Text('Delete'),
+            child: Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: Text(
+                'Delete',
+                style: TextStyle(
+                      fontSize: 18, 
+                      fontWeight: FontWeight.bold,
+                      color: Color.fromARGB(255, 174, 9, 108),
+                      ),
+              ),
+            ),   
           ),
         ],
       ),
     );
-
     if (confirm == true) {
       _deleteEvent(); 
     }
@@ -94,10 +128,43 @@ class _DeleteEventPageState extends State<DeleteEventPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //GETs CUSTOM MAIN APPBAR FROM /components/custom_mainappbar.dart
-      appBar: CustomMainAppBar(),
+
+      appBar: AppBar(
+      automaticallyImplyLeading: false,
+      leading: IconButton(
+        icon: Icon(
+          Icons.arrow_back_ios,
+          color: Color.fromARGB(255, 234, 208, 225)),
+          onPressed: () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => MyEventsPage()),
+          );
+        },
+      ),
+      title: Row(
+        children: [
+          Container(
+            child: Image(image: AssetImage('assets/images/HE_Logo.png'),
+            width: 50,
+            fit: BoxFit.cover     
+            ),  
+          ),        
+          Container(          
+            child: 
+            Text(
+              "Harmony Event",
+              style: TextStyle(
+                color: const Color.fromARGB(255, 234, 208, 225),
+                fontWeight: FontWeight.bold,
+              ),
+            ),  
+          ), 
+        ],
+      ),
+    ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.only(left: 96.0, right: 96.0, top: 96.0),
         child: _isLoading
             ? Center(child: CircularProgressIndicator()) 
             : Column(
@@ -105,16 +172,22 @@ class _DeleteEventPageState extends State<DeleteEventPage> {
                 children: [
                   Text(
                     'Are you sure you want to delete this event?',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                    fontSize: 18, 
+                    fontWeight: FontWeight.bold,
+                    color: Color.fromARGB(255, 234, 208, 225),
+                    ),
                   ),
                   SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: _confirmDelete,
-                    style: ElevatedButton.styleFrom(
-                      
-                      padding: EdgeInsets.symmetric(vertical: 16.0),
-                    ),
-                    child: Text('Delete Event', style: TextStyle(fontSize: 18)),
+                  GradientButton(
+                    colors: [const Color.fromARGB(255, 183, 211, 54), const Color.fromARGB(255, 109, 190, 66)],
+                    height: 40,
+                    width: 350,
+                    radius: 20,
+                    gradientDirection: GradientDirection.leftToRight,
+                    textStyle:  TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
+                    text: "Delete Event",
+                      onPressed: _confirmDelete
                   ),
                 ],
               ),

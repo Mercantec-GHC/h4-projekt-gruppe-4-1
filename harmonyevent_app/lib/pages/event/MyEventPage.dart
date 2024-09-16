@@ -98,7 +98,7 @@ class _MyEventsPageState extends State<MyEventsPage> {
       body: _isLoading
           ? Center(child: CircularProgressIndicator()) // Show loading indicator
           : _userEvents.isEmpty
-              ? Center(child: Text('You have no events'))
+              ? Center(child: Text('You have no current events'))
               : ListView.builder(
                   itemCount: _userEvents.length,
                   itemBuilder: (context, index) {
@@ -113,11 +113,11 @@ class _MyEventsPageState extends State<MyEventsPage> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             IconButton(
-                              icon: Icon(Icons.edit, color: Colors.blue),
+                              icon: Icon(Icons.edit, color: const Color.fromARGB(255, 183, 211, 83)),
                               onPressed: () => _navigateToUpdateEvent(event['id']),
                             ),
                             IconButton(
-                              icon: Icon(Icons.delete, color: Colors.red),
+                              icon: Icon(Icons.delete, color: Color.fromARGB(255, 174, 9, 108)),
                               onPressed: () => _navigateToDeleteEvent(event['id']),
                             ),
                           ],
