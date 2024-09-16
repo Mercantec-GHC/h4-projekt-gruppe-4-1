@@ -86,22 +86,16 @@ class _MyHomePageState extends State<MyHomePage> {
     switch (selectedIndex) {
       case 0:
         page = LoginPage();
-        break;
       case 1:
         page = CreateUserPage();
-        break;
       case 2:
         page = DeleteUserPage();
-        break;
       case 3:
         page = UpdateUserPage();
-        break;
       case 4:
         page = CreateEvent(); 
-        break;
       case 5:
         page = SeeAllEvents();
-        break;
       default:
         throw UnimplementedError('No widget for $selectedIndex');
     }
