@@ -35,7 +35,7 @@ namespace API.Controllers
         }
         // get all
         [HttpGet]
-        [Authorize]
+        
         public async Task<ActionResult<IEnumerable<EventDTO>>> GetEvents()
         {
             var events = await _dbContext.Events
@@ -49,6 +49,7 @@ namespace API.Controllers
                     Category = events.Category,
                     Title = events.Title,
                     isprivate = events.isprivate,
+                    Participants = events.Participants
                 })
                 .ToListAsync();
 
@@ -131,11 +132,49 @@ namespace API.Controllers
         {
             return _dbContext.Events.Any(e => e.id == id);
         }
-    
 
+        [HttpPost("{eventId}/attend")]
+        [Authorize]  // Ensure user is authenticated
+        public async Task<IActionResult> AttendEvent(String eventId)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (userId == null)
+            {
+                return Unauthorized("User ID not found in JWT");
+            }
+
+            // Check if the event exists
+            var eventToAttend = await _dbContext.Events
+                .Include(e => e.Participants) // Include participants to avoid loading twice
+                .FirstOrDefaultAsync(e => e.id == eventId);
+
+            if (eventToAttend == null)
+            {
+                return NotFound("Event not found");
+            }
+
+            // Check if the user is already a participant
+            if (eventToAttend.Participants.Any(p => p.UserId == userId))
+            {
+                return BadRequest("User is already attending the event");
+            }
+
+            // Add the participant to the event
+            var participant = new Participant
+            {
+                UserId = userId,
+                EventId = eventId
+            };
+
+            eventToAttend.Participants.Add(participant);
+            await _dbContext.SaveChangesAsync();
+
+            return Ok("You are now attending the event");
+        }
 
         // create event
-    [HttpPost("Create")]
+        [HttpPost("Create")]
         [Authorize]
         public async Task<IActionResult> PostUser([FromForm] CreateEventDTO eventCreate)
         {
@@ -181,5 +220,6 @@ namespace API.Controllers
 
 
     }
+    
 }
 

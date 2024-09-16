@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace API.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20240913094139_createeventdto")]
-    partial class createeventdto
+    [Migration("20240916122741_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -46,18 +46,13 @@ namespace API.Migrations
                     b.Property<string>("EventCreator_id")
                         .HasColumnType("text");
 
-                    b.Property<string>("EventCreatorid")
-                        .HasColumnType("text");
-
                     b.Property<string>("EventPictureURL")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Place_id")
                         .HasColumnType("text");
 
                     b.Property<string>("Title")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -66,42 +61,34 @@ namespace API.Migrations
                     b.Property<string>("User_id")
                         .HasColumnType("text");
 
-                    b.Property<bool>("isprivate")
-                        .HasColumnType("boolean");
+                    b.Property<string>("isprivate")
+                        .HasColumnType("text");
 
                     b.HasKey("id");
 
-                    b.HasIndex("EventCreatorid");
+                    b.HasIndex("EventCreator_id");
 
                     b.ToTable("Events");
                 });
 
             modelBuilder.Entity("API.Models.Participant", b =>
                 {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("id"));
-
-                    b.Property<string>("Eventid")
+                    b.Property<string>("Id")
                         .HasColumnType("text");
 
-                    b.Property<string>("User_FirstName")
+                    b.Property<string>("EventId")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("User_LastName")
+                    b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("User_id")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.HasKey("Id");
 
-                    b.HasKey("id");
+                    b.HasIndex("EventId");
 
-                    b.HasIndex("Eventid");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Participant");
                 });
@@ -113,26 +100,21 @@ namespace API.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Address")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("City")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("Password")
@@ -147,11 +129,9 @@ namespace API.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Postal")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("ProfilePicture")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Salt")
@@ -162,7 +142,6 @@ namespace API.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Username")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("id");
@@ -173,22 +152,42 @@ namespace API.Migrations
             modelBuilder.Entity("API.Models.Event", b =>
                 {
                     b.HasOne("API.Models.User", "EventCreator")
-                        .WithMany()
-                        .HasForeignKey("EventCreatorid");
+                        .WithMany("CreatedEvents")
+                        .HasForeignKey("EventCreator_id")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("EventCreator");
                 });
 
             modelBuilder.Entity("API.Models.Participant", b =>
                 {
-                    b.HasOne("API.Models.Event", null)
+                    b.HasOne("API.Models.Event", "Event")
                         .WithMany("Participants")
-                        .HasForeignKey("Eventid");
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API.Models.User", "User")
+                        .WithMany("ParticipatedEvents")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Event");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("API.Models.Event", b =>
                 {
                     b.Navigation("Participants");
+                });
+
+            modelBuilder.Entity("API.Models.User", b =>
+                {
+                    b.Navigation("CreatedEvents");
+
+                    b.Navigation("ParticipatedEvents");
                 });
 #pragma warning restore 612, 618
         }

@@ -36,6 +36,7 @@ namespace API.Models
         public string ImageURL { get; set; }
         public string Category { get; set; }
         public string isprivate { get; set; }
+        public List<Participant>? Participants { get; set; }
     }
 
 

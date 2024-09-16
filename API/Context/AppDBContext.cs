@@ -31,6 +31,20 @@ namespace API.Context
             .HasForeignKey(e => e.EventCreator_id) // Use EventCreator_id as the FK
             .OnDelete(DeleteBehavior.Restrict);    // Prevent cascade delete
             base.OnModelCreating(modelBuilder);
+
+
+            modelBuilder.Entity<Participant>()
+            .HasOne(p => p.Event)
+            .WithMany(e => e.Participants)
+            .HasForeignKey(p => p.EventId);
+
+            // Configuring foreign key between Participant and User
+            modelBuilder.Entity<Participant>()
+                .HasOne(p => p.User)
+                .WithMany(u => u.ParticipatedEvents)
+                .HasForeignKey(p => p.UserId);
+
+            base.OnModelCreating(modelBuilder);
         }
 
 

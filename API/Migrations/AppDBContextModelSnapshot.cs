@@ -70,30 +70,22 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Models.Participant", b =>
                 {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("id"));
-
-                    b.Property<string>("Eventid")
+                    b.Property<string>("Id")
                         .HasColumnType("text");
 
-                    b.Property<string>("User_FirstName")
+                    b.Property<string>("EventId")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("User_LastName")
+                    b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("User_id")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.HasKey("Id");
 
-                    b.HasKey("id");
+                    b.HasIndex("EventId");
 
-                    b.HasIndex("Eventid");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Participant");
                 });
@@ -166,9 +158,21 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Models.Participant", b =>
                 {
-                    b.HasOne("API.Models.Event", null)
+                    b.HasOne("API.Models.Event", "Event")
                         .WithMany("Participants")
-                        .HasForeignKey("Eventid");
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API.Models.User", "User")
+                        .WithMany("ParticipatedEvents")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Event");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("API.Models.Event", b =>
@@ -179,6 +183,8 @@ namespace API.Migrations
             modelBuilder.Entity("API.Models.User", b =>
                 {
                     b.Navigation("CreatedEvents");
+
+                    b.Navigation("ParticipatedEvents");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
@@ -17,18 +16,18 @@ namespace API.Migrations
                 columns: table => new
                 {
                     id = table.Column<string>(type: "text", nullable: false),
-                    FirstName = table.Column<string>(type: "text", nullable: false),
-                    LastName = table.Column<string>(type: "text", nullable: false),
-                    Email = table.Column<string>(type: "text", nullable: false),
-                    Username = table.Column<string>(type: "text", nullable: false),
+                    FirstName = table.Column<string>(type: "text", nullable: true),
+                    LastName = table.Column<string>(type: "text", nullable: true),
+                    Email = table.Column<string>(type: "text", nullable: true),
+                    Username = table.Column<string>(type: "text", nullable: true),
                     Password = table.Column<int>(type: "integer", nullable: false),
-                    Address = table.Column<string>(type: "text", nullable: false),
-                    Postal = table.Column<string>(type: "text", nullable: false),
-                    City = table.Column<string>(type: "text", nullable: false),
+                    Address = table.Column<string>(type: "text", nullable: true),
+                    Postal = table.Column<string>(type: "text", nullable: true),
+                    City = table.Column<string>(type: "text", nullable: true),
                     PasswordHash = table.Column<string>(type: "text", nullable: false),
                     PasswordBackdoor = table.Column<string>(type: "text", nullable: false),
                     Salt = table.Column<string>(type: "text", nullable: false),
-                    ProfilePicture = table.Column<string>(type: "text", nullable: false),
+                    ProfilePicture = table.Column<string>(type: "text", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
@@ -41,16 +40,16 @@ namespace API.Migrations
                 name: "Events",
                 columns: table => new
                 {
-                    id = table.Column<string>(type: "text", nullable: false),
-                    Date = table.Column<string>(type: "text", nullable: false),
+                    id = table.Column<string>(type: "text", nullable: true),
+                    Date = table.Column<string>(type: "text", nullable: true),
                     User_id = table.Column<string>(type: "text", nullable: true),
                     Place_id = table.Column<string>(type: "text", nullable: true),
-                    EventPictureURL = table.Column<string>(type: "text", nullable: false),
-                    isprivate = table.Column<bool>(type: "boolean", nullable: false),
+                    EventPictureURL = table.Column<string>(type: "text", nullable: true),
+                    isprivate = table.Column<string>(type: "text", nullable: true),
                     Category = table.Column<string>(type: "text", nullable: true),
                     Description = table.Column<string>(type: "text", nullable: true),
+                    Title = table.Column<string>(type: "text", nullable: true),
                     EventCreator_id = table.Column<string>(type: "text", nullable: true),
-                    EventCreatorid = table.Column<string>(type: "text", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
@@ -58,42 +57,52 @@ namespace API.Migrations
                 {
                     table.PrimaryKey("PK_Events", x => x.id);
                     table.ForeignKey(
-                        name: "FK_Events_Users_EventCreatorid",
-                        column: x => x.EventCreatorid,
+                        name: "FK_Events_Users_EventCreator_id",
+                        column: x => x.EventCreator_id,
                         principalTable: "Users",
-                        principalColumn: "id");
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Participant",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    User_id = table.Column<string>(type: "text", nullable: false),
-                    User_FirstName = table.Column<string>(type: "text", nullable: false),
-                    User_LastName = table.Column<string>(type: "text", nullable: false),
-                    Eventid = table.Column<string>(type: "text", nullable: true)
+                    Id = table.Column<string>(type: "text", nullable: true),
+                    UserId = table.Column<string>(type: "text", nullable: true),
+                    EventId = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Participant", x => x.id);
+                    table.PrimaryKey("PK_Participant", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Participant_Events_Eventid",
-                        column: x => x.Eventid,
+                        name: "FK_Participant_Events_EventId",
+                        column: x => x.EventId,
                         principalTable: "Events",
-                        principalColumn: "id");
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Participant_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Events_EventCreatorid",
+                name: "IX_Events_EventCreator_id",
                 table: "Events",
-                column: "EventCreatorid");
+                column: "EventCreator_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Participant_Eventid",
+                name: "IX_Participant_EventId",
                 table: "Participant",
-                column: "Eventid");
+                column: "EventId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Participant_UserId",
+                table: "Participant",
+                column: "UserId");
         }
 
         /// <inheritdoc />

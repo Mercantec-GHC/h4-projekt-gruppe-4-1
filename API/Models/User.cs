@@ -26,6 +26,7 @@ namespace API.Models
 
         public String? ProfilePicture { get; set; }
         public List<Event> ? CreatedEvents { get; set; }
+        public ICollection<Participant> ParticipatedEvents { get; set; }
 
     }
     public class UserDTO
