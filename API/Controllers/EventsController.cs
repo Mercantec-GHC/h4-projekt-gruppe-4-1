@@ -35,6 +35,7 @@ namespace API.Controllers
         }
         // get all
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<EventDTO>>> GetEvents()
         {
             var events = await _dbContext.Events
@@ -135,6 +136,7 @@ namespace API.Controllers
 
         // create event
     [HttpPost("Create")]
+        [Authorize]
         public async Task<IActionResult> PostUser([FromForm] CreateEventDTO eventCreate)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
