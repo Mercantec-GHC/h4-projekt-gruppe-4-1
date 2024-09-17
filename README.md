@@ -19,10 +19,13 @@ Der er 3 mapper i jeres projekt, I skal være velkommende til at tilføje flere 
 
 Her skal alt dokumentation være, der er noget documentation vi beder jer om at lave, men der er nok også flere dokumenter. Dem vi gerne skal have herinde er:
 
-1. Casebeskrivelse fra jeres kunde - gerne som PDF
-2. Kravspecifikation som I som gruppe har udarbejde ud fra kundens casebeskrivelse
-3. Herunder kan du finde rollefordeling for gruppe 4 https://docs.google.com/document/d/1Z8YHXhSDqolyOdG-cMSyVALI3nS5sJ8syp_qBTE3tFc/edit?usp=sharing
-4. Retrospektivt møder https://docs.google.com/document/d/1whzlPf4bnx1a4milswGlx3-l5CLf8YKfGDfrp1FUEm8/edit
+1. Casebeskrivelse fra kunden er beskrevet under det her link 
+   - https://github.com/Mercantec-GHC/h4-projekt-gruppe-3/tree/main/Docs/CustomerCase
+3. Kravspecifikation som I som gruppe har udarbejde ud fra kundens casebeskrivelse
+   - https://github.com/Mercantec-GHC/h4-projekt-gruppe-3/tree/main/Docs/CustomerCase
+5. Herunder kan du finde rollefordeling for gruppe 4 https://docs.google.com/document/d/1Z8YHXhSDqolyOdG-cMSyVALI3nS5sJ8syp_qBTE3tFc/edit?usp=sharing
+6. Retrospektivt møder https://docs.google.com/document/d/1whzlPf4bnx1a4milswGlx3-l5CLf8YKfGDfrp1FUEm8/edit
+7. Figma-design er på docs herunder https://www.figma.com/design/OOCY77mnWQIxKA2nln3wtG/Gruppe-4---EventHarmoni?node-id=0-1&t=LGaJvaH2zLjXICoi-0
 
 ### Logbøger
 1. Søren https://docs.google.com/document/d/11LO67FQVLq_fJb3XjbLIr3zJLGk4NqqCGSRQb8oAFsM/edit#heading=h.yyix323e8v4
