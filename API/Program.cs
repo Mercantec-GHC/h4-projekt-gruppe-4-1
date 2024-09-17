@@ -3,7 +3,7 @@ using API.Context;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using API.Controllers;
+using API.Service;
 
 namespace API
 {
@@ -38,7 +38,7 @@ namespace API
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            
+
             // Configure JWT Authentication
             builder.Services.AddAuthentication(x =>
             {
@@ -60,6 +60,14 @@ namespace API
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true
                 };
+            });
+            var accessKey = Configuration["AccessKey"] ?? Environment.GetEnvironmentVariable("ACCESS_KEY");
+            var secretKey = Configuration["SecretKey"] ?? Environment.GetEnvironmentVariable("SECRET_KEY");
+
+            builder.Services.AddSingleton(new AppConfiguration
+            {
+                AccessKey = accessKey,
+                SecretKey = secretKey
             });
 
 
