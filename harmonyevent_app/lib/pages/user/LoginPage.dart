@@ -21,12 +21,10 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
 }
-
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
@@ -83,14 +81,13 @@ class _LoginPageState extends State<LoginPage> {
           children: [
             Container(
               child: Image(image: AssetImage('assets/images/HE_Logo.png'),
-                width: 50,
-                fit: BoxFit.cover     
-                ),  
-              ),        
+              width: 50,
+              fit: BoxFit.cover     
+              ),  
+            ),        
             Container(          
-              child: 
-                Text("Harmony Event"),
-                ), 
+              child: Text("Harmony Event"),
+            ), 
           ],
         ),
       ),
@@ -102,66 +99,66 @@ class _LoginPageState extends State<LoginPage> {
               child: ConstrainedBox(
                 constraints: BoxConstraints(maxWidth: 500),
                 child: SingleChildScrollView(                                
-                    child: Padding(
-                      padding: EdgeInsets.all(66.0),
-                      child: Form(         
-                        key: _formKey,
-                        child: Column(                         
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            TextFormField(
-                              style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
-                              controller: _emailController,
-                              decoration: InputDecoration(
-                              labelText: 'Email',
-                              labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),               
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8.0),                                              
-                                ),
+                  child: Padding(
+                    padding: EdgeInsets.all(66.0),
+                    child: Form(         
+                      key: _formKey,
+                      child: Column(                         
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          TextFormField(
+                            style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
+                            controller: _emailController,
+                            decoration: InputDecoration(
+                            labelText: 'Email',
+                            labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),               
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8.0),                                              
                               ),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter your email';
-                                }
-                                return null;
-                              },
                             ),
-                            SizedBox(height: 30),
-                            TextFormField(
-                               style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
-                              controller: _passwordController,
-                              decoration: InputDecoration(
-                                labelText: 'Password',
-                                labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
-                                //fillColor: const Color.fromARGB(255, 109, 190, 66),
-                                //filled: true,
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8.0),
-                                ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your email';
+                              }
+                              return null;
+                            },
+                          ),
+                          SizedBox(height: 30),
+                          TextFormField(
+                            style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
+                            controller: _passwordController,
+                            decoration: InputDecoration(
+                              labelText: 'Password',
+                              labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
+                              //fillColor: const Color.fromARGB(255, 109, 190, 66),
+                              //filled: true,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8.0),
                               ),
-                              obscureText: true,                              
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter your password';
-                                }
-                                return null;
-                              },
                             ),
-                            SizedBox(height: 20),
-                            _isLoading ? Center(child: CircularProgressIndicator()) : GradientButton(
-                              colors: [const Color.fromARGB(255, 183, 211, 54), const Color.fromARGB(255, 109, 190, 66)],
-                              height: 40,
-                              width: 300,
-                              radius: 20,
-                              gradientDirection: GradientDirection.leftToRight,
-                              textStyle: TextStyle(color: const Color.fromARGB(255, 234, 208, 225)),
-                              text: "Login",
-                              onPressed: _login,                                 
-                            ),
-                          ],
-                        ),
+                            obscureText: true,                              
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your password';
+                              }
+                              return null;
+                            },
+                          ),
+                          SizedBox(height: 20),
+                          _isLoading ? Center(child: CircularProgressIndicator()) : GradientButton(
+                            colors: [const Color.fromARGB(255, 183, 211, 54), const Color.fromARGB(255, 109, 190, 66)],
+                            height: 40,
+                            width: 300,
+                            radius: 20,
+                            gradientDirection: GradientDirection.leftToRight,
+                            textStyle: TextStyle(color: const Color.fromARGB(255, 234, 208, 225)),
+                            text: "Login",
+                            onPressed: _login,                                 
+                          ),
+                        ],
                       ),
                     ),
+                  ),
                 ),
               ),
             ),
