@@ -212,6 +212,7 @@ namespace API.Controllers
             return CreatedAtAction(nameof(GetEventById), new { id = existingEvent.id }, existingEvent);
         }
         // create event
+        [HttpPost("event/create")]
         [Authorize]
         public async Task<IActionResult> PostUser([FromForm] CreateEventDTO eventCreate)
         {
