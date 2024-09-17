@@ -42,14 +42,14 @@ class EventDTO {
 factory EventDTO.fromJson(Map<String, dynamic> json) {
   return EventDTO(
     id: json['id'] ?? '',
-    eventPicture: json['imageURL'] ?? '',
+    eventPicture: json['eventPicture'] ?? '',
     date: json['date'] ?? '',
     location: json['place_id'] ?? '',
     title: json['title'] ?? '',
     category: json['category'] ?? '',
     description: json['description'] ?? '',
     isprivate: json['isprivate'] ??'', 
-    eventCreator_id: json['eventCreator_id']
+    eventCreator_id: json['eventCreator_id'] ??'',
   );
 }}
 
@@ -88,7 +88,7 @@ class CreateEventDTO {
   // Convert a JSON map into a CreateEventDTO object.
   factory CreateEventDTO.fromJson(Map<String, dynamic> json) {
     return CreateEventDTO(
-      eventPicture: json['imageURL'] ?? '',
+      eventPicture: json['eventPicure'] ?? '',
       date: json['date'] ?? '',
       location: json['place_id'] ?? '', 
       title: json['title'] ?? '',  

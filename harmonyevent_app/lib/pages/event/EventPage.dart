@@ -3,9 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_gradient_button/flutter_gradient_button.dart';
 
-//import 'package:harmonyevent_app/config/auth_workaround.dart';
+import 'package:harmonyevent_app/config/auth_workaround.dart';
 import 'package:harmonyevent_app/components/custom_mainappbar.dart';
-//import 'package:harmonyevent_app/config/api_config.dart';
 import 'package:harmonyevent_app/models/event_model.dart';
 import 'package:harmonyevent_app/services/fetch_service.dart';
 import 'package:harmonyevent_app/services/login_service.dart';
@@ -18,8 +17,8 @@ class EventPage extends StatefulWidget {
 }
 class _EventPageState extends State<EventPage> {
   late Future<List<EventDTO>> eventsFuture;
-  final FlutterSecureStorage _secureStorage = FlutterSecureStorage(); // Secure storage instance
-  final AuthService _authService = AuthService();
+  final FlutterSecureStorage secureStorage = FlutterSecureStorage(); // Secure storage instance
+  final AuthService authService = AuthService();
   //Inits fetchEvents from fetchevents_service.dart
   @override
   void initState() {
@@ -49,6 +48,7 @@ class _EventPageState extends State<EventPage> {
             else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
               // If data is available, build the event list
               final events = snapshot.data!;
+              print(events);
               return buildEvents(events);
             } 
             else {
@@ -182,38 +182,39 @@ class _EventPageState extends State<EventPage> {
                     
                     const SizedBox(height: 20),
                     //ORGANIZED BY
-                    Container(
-                      child: Column(
-                        children: [
-                          Text(
-                            "Organized by: ${event.eventCreator_id}",
-                            style: const TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                            color: const Color.fromARGB(255, 183, 211, 83),
-                            ),
-                          ),
-                          // Container(
-                          //   width: 50,
-                          //   child: CircleAvatar(
-                          //     backgroundColor: const Color.fromARGB(255, 183, 211, 83),
-                          //     radius: 40,
-                          //     child: Padding(
-                          //       padding: const EdgeInsets.all(3),
-                          //       child: ClipOval (
-                          //         child: Image.network(
-                          //           event.eventPicture,                             
-                          //           errorBuilder: (context, error, stackTrace) {
-                          //             return const Icon(Icons.broken_image, size: 300); // Handle broken images
-                          //           },
-                          //         ), 
-                          //       ),
-                          //     ),
-                          //   ),
-                          // ),
-                        ],
-                      ),
-                    ),
+                    // Container(
+                    //   child: Column(
+                    //     children: [
+                    //       Text(
+                    //         "Organized by: ${event.eventCreator_id}",
+                    //         style: const TextStyle(
+                    //         fontSize: 12,
+                    //         fontWeight: FontWeight.bold,
+                    //         color: const Color.fromARGB(255, 183, 211, 83),
+                    //         ),
+                    //       ),
+                          
+                    //       // Container(
+                    //       //   width: 50,
+                    //       //   child: CircleAvatar(
+                    //       //     backgroundColor: const Color.fromARGB(255, 183, 211, 83),
+                    //       //     radius: 40,
+                    //       //     child: Padding(
+                    //       //       padding: const EdgeInsets.all(3),
+                    //       //       child: ClipOval (
+                    //       //         child: Image.network(
+                    //       //           event.eventPicture,                             
+                    //       //           errorBuilder: (context, error, stackTrace) {
+                    //       //             return const Icon(Icons.broken_image, size: 300); // Handle broken images
+                    //       //           },
+                    //       //         ), 
+                    //       //       ),
+                    //       //     ),
+                    //       //   ),
+                    //       // ),
+                    //     ],
+                    //   ),
+                    // ),
 
                     //CREATE EVENT BUTTON
                     GradientButton(

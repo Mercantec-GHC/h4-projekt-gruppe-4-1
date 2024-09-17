@@ -51,8 +51,8 @@ class AuthService {
   }
   // Check if the user is logged in by verifying if the token exists and is valid
   Future<bool> isLoggedIn() async {
-    final token = await storage.read(key: 'jwt');
-    // final token = mytoken;
+    //final token = await storage.read(key: 'jwt');
+    final token = mytoken;
     return token != null && !isTokenExpired(token); // Check if token exists and is not expired
   }
   // Logout method to clear the stored JWT token

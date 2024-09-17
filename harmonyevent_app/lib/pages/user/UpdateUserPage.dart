@@ -8,7 +8,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';  // Import 
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_gradient_button/flutter_gradient_button.dart';
 
-//import 'package:harmonyevent_app/config/auth_workaround.dart';
+import 'package:harmonyevent_app/config/auth_workaround.dart';
 import 'package:harmonyevent_app/config/api_config.dart';
 import 'package:harmonyevent_app/pages/user/UserProfilePage.dart';
 
@@ -47,10 +47,10 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
 
   Future<void> _loadUserData() async {
     // Retrieve userId and token from secure storage
-    userId = await secureStorage.read(key: 'userId');  // Retrieve userId
-    String? token = await secureStorage.read(key: 'token');  // Retrieve token
-    // userId = myid;  // Retrieve userId
-    // String? token = mytoken;
+    // userId = await secureStorage.read(key: 'userId');  // Retrieve userId
+    // String? token = await secureStorage.read(key: 'token');  // Retrieve token
+    userId = myid;  // Retrieve userId
+    String? token = mytoken;
 
     if (userId == null || token == null) {
       // Handle the case where no userId or token is stored

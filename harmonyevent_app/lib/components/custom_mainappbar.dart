@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:harmonyevent_app/config/auth_workaround.dart';
 
 import 'package:harmonyevent_app/pages/event/CreateEventPage.dart';
 import 'package:harmonyevent_app/pages/user/UserProfilePage.dart';
@@ -61,7 +62,8 @@ class CustomMainAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
           tooltip: "Create Event",
           onPressed: () async {
-                  final token = await _authService.getToken();
+                  // final token = await _authService.getToken();
+                  final token = mytoken;
                   print('Token retrieved: $token'); // Debugging statement
                   if (token != null && !_authService.isTokenExpired(token)) {
                   Navigator.push(
@@ -84,9 +86,10 @@ class CustomMainAppBar extends StatelessWidget implements PreferredSizeWidget {
             Icons.event_available, 
             color: Color.fromARGB(255, 183, 211, 54)
             ),
-          tooltip: "My Events",
-          onPressed: () async {
-                  final token = await _authService.getToken();
+            tooltip: "My Events",
+            onPressed: () async {
+                  // final token = await _authService.getToken();
+                  final token = mytoken;
                   print('Token retrieved: $token'); // Debugging statement
                   if (token != null && !_authService.isTokenExpired(token)) {
                   Navigator.push(

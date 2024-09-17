@@ -3,7 +3,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-//import 'package:harmonyevent_app/config/auth_workaround.dart';
+import 'package:harmonyevent_app/config/auth_workaround.dart';
 import 'package:harmonyevent_app/services/login_service.dart';
 import 'package:harmonyevent_app/pages/event/UpdateEventPage.dart';
 import 'package:harmonyevent_app/pages/event/DeleteEventPage.dart';
@@ -34,10 +34,11 @@ class _MyEventsPageState extends State<MyEventsPage> {
     });
 
     try {
-      final String? userId = await _secureStorage.read(key: 'userId');
+      //final String? userId = await _secureStorage.read(key: 'userId');
+      final String? userId = myid;
       // Get JWT token from secure storage
-      String? token = await _secureStorage.read(key: 'token');
-      //String? token = mytoken;
+      //String? token = await _secureStorage.read(key: 'token');
+      String? token = mytoken;
 
       print('User ID retrieved: $userId');
       print('Token retrieved: $token');

@@ -5,7 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:flutter_gradient_button/flutter_gradient_button.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-//import 'package:harmonyevent_app/config/auth_workaround.dart';
+import 'package:harmonyevent_app/config/auth_workaround.dart';
 import 'package:harmonyevent_app/components/custom_limitedappbar.dart';
 import 'package:harmonyevent_app/components/custom_alerts.dart';
 import 'package:harmonyevent_app/models/event_model.dart';
@@ -22,7 +22,7 @@ class CreateEventPage extends StatefulWidget {
 
 class CreateEventState extends State<CreateEventPage> {
   final _formKey = GlobalKey<FormState>();
-  File? EventPicture; // To store the selected image
+  File? eventPicture; // To store the selected image
   final picker = ImagePicker(); // Image picker instance
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _timeController = TextEditingController(); 
@@ -33,8 +33,8 @@ class CreateEventState extends State<CreateEventPage> {
   final TextEditingController _isPrivateController = TextEditingController();
 
   final CreateEventService _eventService = CreateEventService(); 
-  final AuthService _authService = AuthService();
-  final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
+  // final AuthService _authService = AuthService();
+  // final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
   bool _isLoading = false;
 
   @override
@@ -52,39 +52,40 @@ class CreateEventState extends State<CreateEventPage> {
      @override
   void initState() {
     super.initState();
-    _checkAuthorization(); // Check authorization on page load
+    //_checkAuthorization(); // Check authorization on page load
   }
 
   // Function to check authorization
-  Future<void> _checkAuthorization() async {
-    final String? userId = await _secureStorage.read(key: 'userId');
-    final String? token = await _secureStorage.read(key: 'jwt');
-    // final String? userId = myid;
-    // final String? token = mytoken;
+  // Future<void> _checkAuthorization() async {
+  //   // final String? userId = await _secureStorage.read(key: 'userId');
+  //   // final String? token = await _secureStorage.read(key: 'jwt');
+  //   final String? userId = myid;
+  //   final String? token = mytoken;
     
-    // Debugging statements
-    print('User ID retrieved: $userId');
-    print('Token retrieved: $token');
+  //   // Debugging statements
+  //   print('User ID retrieved: $userId');
+  //   print('Token retrieved: $token');
 
-    if (userId == null || token == null || _authService.isTokenExpired(token)) {
-      print('User not logged in or token expired');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('User not logged in or token expired')),
-      );
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => EventPage()),
-      );
-    }
-  }
+  //   // if (userId == null || token == null || _authService.isTokenExpired(token)) {
+  //   if (userId == null || token == null) {
+  //     print('User not logged in or token expired');
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(content: Text('User not logged in or token expired')),
+  //     );
+  //     Navigator.pushReplacement(
+  //       context,
+  //       MaterialPageRoute(builder: (context) => EventPage()),
+  //     );
+  //   }
+  // }
 
   // Function to pick an image
  Future<void> _pickImage() async {
   final pickedFile = await picker.pickImage(source: ImageSource.gallery);
   if (pickedFile != null) {
     setState(() {
-      EventPicture = File(pickedFile.path); // Save the selected image
-      print('Image picked: ${EventPicture!.path}'); // Debugging statement
+      eventPicture = File(pickedFile.path); // Save the selected image
+      print('Image picked: ${eventPicture!.path}'); // Debugging statement
     });
   }
 }
@@ -124,8 +125,8 @@ class CreateEventState extends State<CreateEventPage> {
 
     File? eventPicture; // Declared as a nullable File
     // Ensure that the user has picked an image
-    if (EventPicture != null) {
-      eventPicture = EventPicture; // Set the image from the file picker
+    if (eventPicture != null) {
+      eventPicture = eventPicture; // Set the image from the file picker
     } 
     else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -167,7 +168,7 @@ class CreateEventState extends State<CreateEventPage> {
       // Reset the form after successful submission
       _formKey.currentState?.reset();
       setState(() {
-        EventPicture = null; // Clear the selected image
+        eventPicture = null; // Clear the selected image
       });
       } 
       catch (e) {
@@ -209,8 +210,8 @@ class CreateEventState extends State<CreateEventPage> {
                   color: const Color.fromARGB(255, 183, 211, 83),),
                   label: Text('Choose image'),              
               ),
-              EventPicture != null ? Image.file(
-                EventPicture!,
+              eventPicture != null ? Image.file(
+                eventPicture!,
                 height: 50,
               )
               : Text(

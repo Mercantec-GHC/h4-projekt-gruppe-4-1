@@ -20,14 +20,14 @@ class UserProfilePage extends StatefulWidget {
   State<UserProfilePage> createState() => _UserProfilePageState();
 }
 class _UserProfilePageState extends State<UserProfilePage> {
-  late Future<List<UserDTO>> usersFuture;
+  //late Future<List<UserDTO>> usersFuture;
   final AuthService _authService = AuthService();
   final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
 
   @override
   void initState() {
     super.initState();
-    usersFuture = fetchUsers(); // Fetch users in initState
+    //usersFuture = fetchUsers(); // Fetch users in initState
   }
 
   bool EventIsDueChecked = false;

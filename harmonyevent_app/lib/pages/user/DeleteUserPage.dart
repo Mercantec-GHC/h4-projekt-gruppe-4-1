@@ -5,7 +5,7 @@ import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_gradient_button/flutter_gradient_button.dart';
 
-//import 'package:harmonyevent_app/config/auth_workaround.dart';
+import 'package:harmonyevent_app/config/auth_workaround.dart';
 import 'package:harmonyevent_app/config/api_config.dart';
 import 'package:harmonyevent_app/pages/user/UserProfilePage.dart';
 import 'package:harmonyevent_app/pages/User/LoginPage.dart';
@@ -27,8 +27,8 @@ class _DeleteUserPageState extends State<DeleteUserPage> {
 
     try {
       // Fetch the token from secure storage
-      String? token = await _secureStorage.read(key: 'token');
-      //String? token = mytoken;
+      // String? token = await _secureStorage.read(key: 'token');
+      String? token = mytoken;
       if (token == null) {
         throw Exception('Authentication token not found');
       }
