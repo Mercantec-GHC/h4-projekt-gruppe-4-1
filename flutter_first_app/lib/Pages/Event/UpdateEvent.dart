@@ -9,10 +9,10 @@ class UpdateEventPage extends StatefulWidget {
   final EventDTO eventDetails; // Pass the current event details to populate the form
 
   const UpdateEventPage({
-    Key? key,
+    super.key,
     required this.eventId,
     required this.eventDetails,
-  }) : super(key: key);
+  });
 
   @override
   _UpdateEventPageState createState() => _UpdateEventPageState();

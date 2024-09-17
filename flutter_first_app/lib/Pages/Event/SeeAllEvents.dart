@@ -151,12 +151,6 @@ class _SeeAllEventsState extends State<SeeAllEvents> {
       return Scaffold(
         appBar: AppBar(
           title: const Text("See All Events"),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.pop(context); // Navigate back to the previous page
-            },
-          ),
           actions: [
             IconButton(
               icon: const Icon(Icons.logout),

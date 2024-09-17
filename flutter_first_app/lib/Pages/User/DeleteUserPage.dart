@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_first_app/Pages/Event/SeeAllEvents.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -115,7 +116,7 @@ class _DeleteUserPageState extends State<DeleteUserPage> {
           onPressed: () {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => LoginPage()), // Navigate to SeeAllEvents
+              MaterialPageRoute(builder: (context) => SeeAllEvents()), // Navigate to SeeAllEvents
             );
           },
         ),
