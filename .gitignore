@@ -4,4 +4,4 @@
 /API/bin
 /API/appsettings.json
 .vscode
-/harmonyevent_app//lib/components/auth_workaround.dart
+/harmonyevent_app/lib/components/auth_workaround.dart
