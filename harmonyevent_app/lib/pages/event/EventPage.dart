@@ -1,11 +1,11 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_gradient_button/flutter_gradient_button.dart';
 
 import 'package:harmonyevent_app/components/custom_mainappbar.dart';
 import 'package:harmonyevent_app/models/event_model.dart';
 import 'package:harmonyevent_app/services/fetch_service.dart';
-//import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class EventPage extends StatefulWidget {
   const EventPage({super.key});
@@ -15,7 +15,7 @@ class EventPage extends StatefulWidget {
 }
 class _EventPageState extends State<EventPage> {
   late Future<List<EventDTO>> eventsFuture;
-  //final FlutterSecureStorage _secureStorage = FlutterSecureStorage(); // Secure storage instance
+  final FlutterSecureStorage _secureStorage = FlutterSecureStorage(); // Secure storage instance
 
   //Inits fetchEvents from fetchevents_service.dart
   @override
@@ -35,19 +35,20 @@ class _EventPageState extends State<EventPage> {
         child: FutureBuilder<List<EventDTO>>(
           future: eventsFuture,
           builder: (context, snapshot) {
-            //print('snapshot: $snapshot');
             if (snapshot.connectionState == ConnectionState.waiting) {
               // Loading indicator while fetching data
               return const CircularProgressIndicator();
-            } else if (snapshot.hasError) {
+            } 
+            else if (snapshot.hasError) {
               // Display error message if the Future failed
               return const Text("Failed to load events.");
-            } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+            } 
+            else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
               // If data is available, build the event list
               final events = snapshot.data!;
-              //print('Test: $events');
               return buildEvents(events);
-            } else {
+            } 
+            else {
               // Display message if no data is available
               return const Text("No events available.");
             }
@@ -65,7 +66,6 @@ class _EventPageState extends State<EventPage> {
       physics: PageScrollPhysics(),
       itemBuilder: (context, index) {
         final event = events[index];
-
         events.sort((a, b) => a.date.compareTo(b.date));
 
         return Container(
@@ -79,7 +79,6 @@ class _EventPageState extends State<EventPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-
                     //EVENT ID
                     Text(
                       "Event ID: ${event.id}",
@@ -224,7 +223,7 @@ class _EventPageState extends State<EventPage> {
 
                       },
                     ),
-                  ],   
+                  ], 
                 ),
               ),
             ],
