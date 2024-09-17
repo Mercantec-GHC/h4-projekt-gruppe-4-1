@@ -9,10 +9,11 @@ class EventService {
   final String _baseUrl = ApiConfig.apiUrl;
   final FlutterSecureStorage _storage = FlutterSecureStorage();
 
+  // Create Event
   Future<CreateEventDTO> createEvent(
     String placeId,
     String date,
-    String isprivate,
+    String isPrivate,
     String category,
     String title,
     String description,
@@ -26,19 +27,21 @@ class EventService {
     }
     request.headers['Authorization'] = 'Bearer $token';
 
+    // Add event details to the request fields
     request.fields['place_id'] = placeId;
     request.fields['date'] = date;
-    request.fields['isprivate'] = isprivate;
+    request.fields['isprivate'] = isPrivate;
     request.fields['category'] = category;
     request.fields['title'] = title;
     request.fields['description'] = description;
 
+    // Add event picture if provided
     if (eventPicture != null) {
       var imageStream = http.ByteStream(eventPicture.openRead());
       var imageLength = await eventPicture.length();
       request.files.add(
         http.MultipartFile(
-          'EventPicture',
+          'eventPicture',  // Updated key based on your DTO
           imageStream,
           imageLength,
           filename: eventPicture.path.split('/').last,
@@ -59,7 +62,9 @@ class EventService {
       throw Exception('Error occurred while creating event: $e');
     }
   }
- Future<void> updateEventById(
+
+  // Update Event by ID
+  Future<void> updateEventById(
     String eventId,
     String date,
     String placeId,
@@ -67,26 +72,41 @@ class EventService {
     String description,
     String category,
     bool isPrivate, {
-    File? eventPicture, // Optional: Only if you're uploading an image
+    File? eventPicture, // Optional: Only if you're uploading a new image
   }) async {
-    final token = await _storage.read(key: 'jwt'); // Retrieve JWT token
+    final token = await _storage.read(key: 'jwt');
 
     if (token == null) {
       throw Exception('User not logged in');
     }
 
-    final url = Uri.parse('$_baseUrl/api/event/Update/$eventId'); // API endpoint
+    final url = Uri.parse('$_baseUrl/api/Event/Update/$eventId');
 
-    var request = http.MultipartRequest('POST', url); // Multipart for handling files
-    request.headers['Authorization'] = 'Bearer $token'; // Attach JWT token in headers
+    var request = http.MultipartRequest('PUT', url); // Multipart to handle files
+    request.headers['Authorization'] = 'Bearer $token';
 
-    // Add form fields
+    // Add the updated event details to the request fields
     request.fields['date'] = date;
     request.fields['place_id'] = placeId;
     request.fields['title'] = title;
     request.fields['description'] = description;
     request.fields['category'] = category;
     request.fields['isprivate'] = isPrivate.toString();
+
+    // Add the event picture if a new one is provided
+    if (eventPicture != null) {
+      var imageStream = http.ByteStream(eventPicture.openRead());
+      var imageLength = await eventPicture.length();
+      request.files.add(
+        http.MultipartFile(
+          'eventPicture', // The key should match the backend expectation
+          imageStream,
+          imageLength,
+          filename: eventPicture.path.split('/').last,
+        ),
+      );
+    }
+
     try {
       var response = await request.send();
 
@@ -101,11 +121,16 @@ class EventService {
     }
   }
 
-  
-Future<bool> attendEvent(String eventId) async {
-    String? token = await _storage.read(key: 'jwt');
+  // Attend Event
+  Future<bool> attendEvent(String eventId) async {
+    final token = await _storage.read(key: 'jwt');
+    
+    if (token == null) {
+      throw Exception('User not logged in');
+    }
+
     final response = await http.post(
-      Uri.parse('${ApiConfig.apiUrl}/api/event/$eventId/attend'),
+      Uri.parse('$_baseUrl/api/event/$eventId/attend'),
       headers: {
         'Authorization': 'Bearer $token',
         'Content-Type': 'application/json',
@@ -115,7 +140,7 @@ Future<bool> attendEvent(String eventId) async {
     if (response.statusCode == 200) {
       return true; // Successfully attended the event
     } else if (response.statusCode == 409) {
-      return false; // Already attending the event
+      return false; // User is already attending the event
     } else {
       final errorResponse = response.body;
       throw Exception('Failed to attend event: ${response.statusCode} - $errorResponse');

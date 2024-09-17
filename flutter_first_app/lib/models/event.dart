@@ -1,5 +1,3 @@
-import 'dart:core';
-
 class EventDTO {
   final String id;
   final String date;
@@ -9,6 +7,7 @@ class EventDTO {
   final String isprivate;
   final String category;
   final String description;
+  final List<dynamic> participants; // New field for participants
 
   EventDTO({
     required this.id,
@@ -19,6 +18,7 @@ class EventDTO {
     required this.isprivate,
     required this.category,
     required this.description,
+    required this.participants, // Initialize the new field
   });
 
   // Convert an EventDTO object into a JSON map.
@@ -32,6 +32,7 @@ class EventDTO {
       'isprivate': isprivate,
       'category': category,
       'description': description,
+      'participants': participants, // Include participants
     };
   }
 
@@ -46,6 +47,7 @@ class EventDTO {
       isprivate: json['isprivate'] ?? '',
       category: json['category'] ?? '',
       description: json['description'] ?? '',
+      participants: json['participants'] ?? [], // Handle missing participants
     );
   }
 }

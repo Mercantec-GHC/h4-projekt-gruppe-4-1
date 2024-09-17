@@ -85,16 +85,20 @@ Future<void> _fetchUserEvents() async {
 }
 
   // Method to navigate to the UpdateEventPage
-  void _navigateToUpdateEvent(String eventId) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => UpdateEventPage(eventId: eventId),
+ void _navigateToUpdateEvent(String eventId, EventDTO eventDetails) {
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => UpdateEventPage(
+        eventId: eventId,
+        eventDetails: eventDetails, // Pass event details here
       ),
-    ).then((_) {
-      _fetchUserEvents(); // Refresh events after updating
-    });
-  }
+    ),
+  ).then((_) {
+    _fetchUserEvents(); // Refresh events after updating
+  });
+}
+
 
   // Method to navigate to the DeleteEventPage
   void _navigateToDeleteEvent(String eventId) {
@@ -147,7 +151,7 @@ Future<void> _fetchUserEvents() async {
                           children: [
                             IconButton(
                               icon: Icon(Icons.edit, color: Colors.blue),
-                              onPressed: () => _navigateToUpdateEvent(event.id),
+                              onPressed: () => _navigateToUpdateEvent(event.id , event), // Pass event details to the method
                             ),
                             IconButton(
                               icon: Icon(Icons.delete, color: Colors.red),
