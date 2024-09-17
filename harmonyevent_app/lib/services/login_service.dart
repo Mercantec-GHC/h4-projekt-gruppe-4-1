@@ -17,9 +17,6 @@ class AuthService {
       body: jsonEncode(loginDTO.toJson()),
     );
 
-    // print('Status Code: ${response.statusCode}');
-    // print('Response Body: ${response.body}');
-
     if (response.statusCode == 200) {
       final responseBody = jsonDecode(response.body);
       print('Response JSON: $responseBody');

@@ -73,15 +73,15 @@ class CreateUserDTO {
 
   factory CreateUserDTO.fromJson(Map<String, dynamic> json) {
     return CreateUserDTO(
-      firstname: json['firstname'] as String,
-      lastname: json['lastname'] as String,
-      email: json['email'] as String,
-      username: json['username'] as String,
-      password: json['password'] as String,
-      address: json['address'] as String,
-      postal: json['postal'] as String,
-      city: json['city'] as String,
-      profilePicture: json['profilePicture'] as String,
+      firstname: json['firstname'] ?? '',
+      lastname: json['firstname'] ?? '',
+      email: json['email'] ?? '',
+      username: json['username'] ?? '',
+      password: json['password'] ?? '',
+      address: json['address'] ?? '',
+      postal: json['postal'] ?? '',
+      city: json['city'] ?? '',
+      profilePicture: json['profilePicture'] ?? '',
     );
   }
 }

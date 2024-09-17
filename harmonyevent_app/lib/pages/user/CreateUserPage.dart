@@ -6,8 +6,9 @@ import 'package:flutter_gradient_button/flutter_gradient_button.dart';
 
 import 'package:harmonyevent_app/components/custom_alerts.dart';
 import 'package:harmonyevent_app/main.dart';
-import 'package:harmonyevent_app/pages/user/LoginPage.dart';
 import 'package:harmonyevent_app/services/createuser_service.dart';
+import 'package:harmonyevent_app/pages/user/LoginPage.dart';
+
 
 class CreateUserPage extends StatefulWidget {
   @override
