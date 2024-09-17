@@ -49,7 +49,8 @@ namespace API.Controllers
                     Category = events.Category,
                     Title = events.Title,
                     isprivate = events.isprivate,
-                    Participants = events.Participants
+                    Participants = events.Participants,
+                    EventCreator_id = events.EventCreator_id
                 })
                 .ToListAsync();
 

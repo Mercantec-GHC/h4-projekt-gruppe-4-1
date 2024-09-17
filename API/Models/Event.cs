@@ -37,6 +37,7 @@ namespace API.Models
         public String? EventPicture { get; set; }
         public string? Category { get; set; }
         public string? isprivate { get; set; }
+        public string? EventCreator_id { get; set; }
         public List<Participant>? Participants { get; set; }
     }
 
