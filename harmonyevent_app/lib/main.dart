@@ -109,9 +109,9 @@ class HomeScreen extends StatelessWidget {
                   text: "Create User",
                   onPressed: () {
                     Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CreateUserPage(),
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CreateUserPage(),
                       ),   
                     );
                   },

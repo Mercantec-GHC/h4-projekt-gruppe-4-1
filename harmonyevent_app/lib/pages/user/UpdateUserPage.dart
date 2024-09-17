@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:harmonyevent_app/config/api_config.dart';
-import 'package:harmonyevent_app/config/token.dart';
+import 'package:harmonyevent_app/config/auth_workaround.dart';
 import 'package:harmonyevent_app/pages/user/UserProfilePage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;

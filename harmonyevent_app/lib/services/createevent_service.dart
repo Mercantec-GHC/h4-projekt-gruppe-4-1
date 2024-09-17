@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
  
 import 'package:harmonyevent_app/config/api_config.dart';
-import 'package:harmonyevent_app/config/token.dart';
+import 'package:harmonyevent_app/config/auth_workaround.dart';
 import 'package:harmonyevent_app/models/event_model.dart';
 
 class CreateEventService {
