@@ -212,8 +212,6 @@ namespace API.Controllers
             return CreatedAtAction(nameof(GetEventById), new { id = existingEvent.id }, existingEvent);
         }
         // create event
-        [HttpPost("Create")]
-
         [Authorize]
         public async Task<IActionResult> PostUser([FromForm] CreateEventDTO eventCreate)
         {
@@ -236,7 +234,7 @@ namespace API.Controllers
             };
 
 
-           
+
             var r2Service = new R2Service(_accessKey, _secretKey);
             var imageUrl = await r2Service.UploadToR2(eventCreate.EventPicture.OpenReadStream(), "PP" + events.id);
 
@@ -254,7 +252,7 @@ namespace API.Controllers
             }
 
 
-            return CreatedAtAction(nameof(GetEventById), new { Id = events.id }, events);
+            return CreatedAtAction(nameof(GetEventById), new { id = events.id }, events);
         }
 
 
