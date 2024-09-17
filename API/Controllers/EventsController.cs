@@ -163,6 +163,7 @@ namespace API.Controllers
             // Add the participant to the event
             var participant = new Participant
             {
+                Id  = Guid.NewGuid().ToString(),
                 UserId = userId,
                 EventId = eventId
             };
