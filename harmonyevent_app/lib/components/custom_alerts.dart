@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:status_alert/status_alert.dart';
 
@@ -13,7 +14,6 @@ void showSuccessAlert(BuildContext context) {
               size: 180.0,
       ), 
     backgroundColor: Colors.transparent,
-    // borderRadius: BorderRadius.circular(10),
   ); 
 } 
 void showErrorAlert(BuildContext context) { 

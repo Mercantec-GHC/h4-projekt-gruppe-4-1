@@ -13,8 +13,6 @@ class CustomMainAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.actions,
     super.key,
   });
-
-  //Size get PreferredSize => Size.fromHeight(kToolbarHeight);
   
   @override
   Widget build(BuildContext context) {
@@ -50,6 +48,7 @@ class CustomMainAppBar extends StatelessWidget implements PreferredSizeWidget {
             );
           }
         ),
+
         //CREATE EVENT
         IconButton(
           icon: Icon(
@@ -64,7 +63,8 @@ class CustomMainAppBar extends StatelessWidget implements PreferredSizeWidget {
             );
           }
         ),
-        //PLANNED EVENTS
+
+        //MY EVENTS
         IconButton(
           icon: const Icon(
             Icons.event_available, 
@@ -116,8 +116,7 @@ class CustomMainAppBar extends StatelessWidget implements PreferredSizeWidget {
         ],
       ),
     );
-  }
-  
+  }  
   @override
   Size get preferredSize => Size.fromHeight(60.0);
 }
