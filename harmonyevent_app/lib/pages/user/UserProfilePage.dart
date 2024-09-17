@@ -23,7 +23,8 @@ class _UserProfilePageState extends State<UserProfilePage> {
     usersFuture = fetchUsers(); // Fetch users in initState
   }
 
-  bool SwitchIsChecked = false;
+  bool EventIsDueChecked = false;
+  bool NewEventAddedChecked = false;
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,7 +87,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                   activeTrackColor: const Color.fromARGB(255, 183, 211, 83),
                   inactiveTrackColor: const Color.fromARGB(255, 234, 208, 225),
                   title: const Text(
-                    "Recieve notifications on new events",
+                    "New event added",
                     style: TextStyle(
                       color: Color.fromARGB(255, 234, 208, 225),
                       fontSize: 14,
@@ -100,10 +101,43 @@ class _UserProfilePageState extends State<UserProfilePage> {
                       size: 32,
                     ),
                   ),
-                  value: SwitchIsChecked,         
+                  value: NewEventAddedChecked,         
                   onChanged: (value) {
                     setState(() {
-                      SwitchIsChecked = value;
+                      NewEventAddedChecked = value;
+                      //_isPrivateController.text = value.toString();
+                      print(value);
+                    },);
+                  }
+                ),
+              ), 
+              Padding(
+                padding: const EdgeInsets.only(left: 86.0, right: 86.0),
+                child: SwitchListTile(
+                  hoverColor: const Color.fromARGB(255, 36, 51, 6),
+                  activeColor: Color.fromARGB(255, 234, 208, 225),
+                  inactiveThumbColor: Color.fromARGB(255, 234, 208, 225),
+                  activeTrackColor: const Color.fromARGB(255, 183, 211, 83),
+                  inactiveTrackColor: const Color.fromARGB(255, 234, 208, 225),
+                  title: const Text(
+                    "Event is due",
+                    style: TextStyle(
+                      color: Color.fromARGB(255, 234, 208, 225),
+                      fontSize: 14,
+                    ),
+                    selectionColor: const Color.fromARGB(255, 183, 211, 83),
+                  ),
+                  secondary: const SizedBox(
+                    child: Icon(
+                      Icons.notifications_none,
+                      color: const Color.fromARGB(255, 183, 211, 83),
+                      size: 32,
+                    ),
+                  ),
+                  value: EventIsDueChecked,         
+                  onChanged: (value) {
+                    setState(() {
+                      EventIsDueChecked = value;
                       //_isPrivateController.text = value.toString();
                       print(value);
                     },);
