@@ -4,7 +4,7 @@ class EventDTO {
   final String id;
   final String date;
   final String place_id;
-  final String EventPicture;
+  final String eventPicture;
   final String title;
   final String isprivate;
   final String category;
@@ -14,7 +14,7 @@ class EventDTO {
     required this.id,
     required this.date,
     required this.place_id,
-    required this.EventPicture,
+    required this.eventPicture,
     required this.title,
     required this.isprivate,
     required this.category,
@@ -27,7 +27,7 @@ class EventDTO {
       'id': id,
       'date': date,
       'place_id': place_id,
-      'EventPicture': EventPicture,
+      'eventPicture': eventPicture,
       'title': title,
       'isprivate': isprivate,
       'category': category,
@@ -41,7 +41,7 @@ class EventDTO {
       id: json['id'] ?? '',
       date: json['date'] ?? '',
       place_id: json['place_id'] ?? '',
-      EventPicture: json['EventPicture'] ?? '',
+      eventPicture: json['eventPicture'] ?? '',
       title: json['title'] ?? '',
       isprivate: json['isprivate'] ?? '',
       category: json['category'] ?? '',
@@ -75,7 +75,7 @@ class CreateEventDTO {
     return {
       'date': date.toIso8601String(),
       'place_id': placeId,
-      'EventPicture': eventPicture,
+      'eventPicture': eventPicture,
       'isprivate': isPrivate,
       'title': title,
       'category': category,
@@ -88,11 +88,49 @@ class CreateEventDTO {
     return CreateEventDTO(
       date: DateTime.parse(json['date'] ?? ''),
       placeId: json['place_id'] ?? '',
-      eventPicture: json['EventPicture'] ?? '',
+      eventPicture: json['eventPicture'] ?? '',
       isPrivate: json['isprivate'] ?? '',
       title: json['title'] ?? '', // Fixed incorrect field assignment
       category: json['category'] ?? '',
       description: json['description'] ?? '',
+    );
+  }
+}
+
+class UpdateEventDTO {
+  final String id;
+  final String date;
+  final String place_id;
+  final String description;
+  final String title;
+  final String eventPicture;
+  final String category;
+  final String isprivate;
+  final List<dynamic> participants;
+
+  UpdateEventDTO({
+    required this.id,
+    required this.date,
+    required this.place_id,
+    required this.description,
+    required this.title,
+    required this.eventPicture,
+    required this.category,
+    required this.isprivate,
+    required this.participants,
+  });
+
+  factory UpdateEventDTO.fromJson(Map<String, dynamic> json) {
+    return UpdateEventDTO(
+      id: json['id'],
+      date: json['date'],
+      place_id: json['place_id'],
+      description: json['description'],
+      title: json['title'],
+      eventPicture: json['eventPicture'],
+      category: json['category'],
+      isprivate: json['isprivate'],
+      participants: json['participants'] ?? [],
     );
   }
 }

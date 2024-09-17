@@ -1,7 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_first_app/Http/User/loginuser.dart';
 import 'package:flutter_first_app/models/event.dart';
 import 'package:flutter_first_app/services/event_service.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_first_app/Pages/Event/SeeAllEvents.dart'; 
 
@@ -26,6 +28,8 @@ class CreateEventState extends State<CreateEvent> {
   File? EventPicture; 
   final picker = ImagePicker(); 
   final EventService _eventService = EventService(); 
+  final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
+  final AuthService _authService = AuthService();
 
   @override
   void dispose() {
@@ -39,15 +43,41 @@ class CreateEventState extends State<CreateEvent> {
     super.dispose();
   }
 
-  // Function to pick an image from gallery
-  Future<void> _pickImage() async {
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      setState(() {
-        EventPicture = File(pickedFile.path); // Save the selected image
-      });
+    @override
+  void initState() {
+    super.initState();
+    _checkAuthorization(); // Check authorization on page load
+  }
+
+  // Function to check authorization
+  Future<void> _checkAuthorization() async {
+    final String? userId = await _secureStorage.read(key: 'userId');
+    final String? token = await _secureStorage.read(key: 'jwt');
+
+    // Debugging statements
+    print('User ID retrieved: $userId');
+    print('Token retrieved: $token');
+
+    if (userId == null || token == null || _authService.isTokenExpired(token)) {
+      print('User not logged in or token expired');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('User not logged in or token expired')),
+      );
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => SeeAllEvents()),
+      );
     }
   }
+  Future<void> _pickImage() async {
+  final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+  if (pickedFile != null) {
+    setState(() {
+      EventPicture = File(pickedFile.path); // Save the selected image
+      print('Image picked: ${EventPicture!.path}'); // Debugging statement
+    });
+  }
+}
 
   // Function to select a date using DatePicker
   Future<void> _selectDate(BuildContext context) async {

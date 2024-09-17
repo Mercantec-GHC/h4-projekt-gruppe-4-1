@@ -3,15 +3,14 @@ import 'package:flutter_first_app/Http/User/loginuser.dart';
 import 'package:flutter_first_app/Pages/Event/MyEventsPage.dart';
 import 'package:flutter_first_app/Pages/User/DeleteUserPage.dart';
 import 'package:flutter_first_app/Pages/User/UpdateUserPage.dart';
-import 'package:flutter_first_app/Pages/User/LoginPage.dart'; // Import the LoginPage
-import 'package:flutter_first_app/Pages/Event/EventPage.dart'; // Correct the import for CreateEvent
+import 'package:flutter_first_app/Pages/User/LoginPage.dart';
+import 'package:flutter_first_app/Pages/Event/EventPage.dart';
 import 'package:flutter_first_app/config/api_config.dart';
-import 'package:flutter_first_app/models/event.dart'; // Import the updated EventDTO model
+import 'package:flutter_first_app/models/event.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:flutter_first_app/Pages/Event/EventDetailsScreen.dart'; // Import EventDetailsScreen
-
+import 'package:flutter_first_app/Pages/Event/EventDetailsScreen.dart';
 
 class SeeAllEvents extends StatefulWidget {
   const SeeAllEvents({super.key});
@@ -72,8 +71,7 @@ class _SeeAllEventsState extends State<SeeAllEvents> {
       case 1:
         _navigateToUpdateUserPage(context);
       case 2:
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => CreateEvent())); // Fixed import
+        _navigateToCreateEventPage(context); // Fixed import
       case 3:
         _navigateToMyEventsPage(context);
       case 4:
@@ -84,37 +82,53 @@ class _SeeAllEventsState extends State<SeeAllEvents> {
   }
 
   // Navigate to UpdateUserPage with token validation
-   void _navigateToUpdateUserPage(BuildContext context) async {
-  final token = await _authService.getToken();
-  print('Token retrieved: $token'); // Debugging statement
+  void _navigateToUpdateUserPage(BuildContext context) async {
+    final token = await _authService.getToken();
+    print('Token retrieved: $token'); // Debugging statement
 
-  if (token != null && !_authService.isTokenExpired(token)) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => UpdateUserPage()),
-    );
-  } else {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('User not logged in or token expired')),
-    );
+    if (token != null && !_authService.isTokenExpired(token)) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => UpdateUserPage()),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('User not logged in or token expired')),
+      );
+    }
   }
-}
 
- void _navigateToMyEventsPage(BuildContext context) async {
-  final token = await _authService.getToken();
-  print('Token retrieved: $token'); // Debugging statement
+  void _navigateToMyEventsPage(BuildContext context) async {
+    final token = await _authService.getToken();
+    print('Token retrieved: $token'); // Debugging statement
 
-  if (token != null && !_authService.isTokenExpired(token)) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => MyEventsPage()),
-    );
-  } else {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('User not logged in or token expired')),
-    );
+    if (token != null && !_authService.isTokenExpired(token)) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => MyEventsPage()),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('User not logged in or token expired')),
+      );
+    }
   }
-}
+
+  void _navigateToCreateEventPage(BuildContext context) async {
+    final token = await _authService.getToken();
+    print('Token retrieved: $token'); // Debugging statement
+
+    if (token != null && !_authService.isTokenExpired(token)) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => CreateEvent()),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('User not logged in or token expired')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -205,6 +219,9 @@ class _SeeAllEventsState extends State<SeeAllEvents> {
       itemCount: events.length,
       itemBuilder: (context, index) {
         final event = events[index];
+        final eventPictureUrl = event.eventPicture;
+        print('Event Picture URL: $eventPictureUrl'); // Debugging statement
+
         return GestureDetector(
           onTap: () {
             Navigator.push(
@@ -227,13 +244,16 @@ class _SeeAllEventsState extends State<SeeAllEvents> {
               children: [
                 Expanded(
                   flex: 1,
-                  child: Image.network(
-                    event.EventPicture,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return const Icon(Icons.broken_image, size: 100);
-                    },
-                  ),
+                  child: eventPictureUrl.isNotEmpty
+                      ? Image.network(
+                          eventPictureUrl,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            print('Error loading image: $error'); // Debugging statement
+                            return const Icon(Icons.broken_image, size: 100);
+                          },
+                        )
+                      : const Icon(Icons.broken_image, size: 100),
                 ),
                 const SizedBox(width: 20),
                 Expanded(

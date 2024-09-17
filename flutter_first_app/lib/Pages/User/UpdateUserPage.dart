@@ -23,13 +23,8 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
 
   // User information variables
   String? userId;
-  String firstName = '';
-  String lastName = '';
   String email = '';
   String username = '';
-  String address = '';
-  String postal = '';
-  String city = '';
   File? profileImage;
 
   @override
@@ -38,96 +33,81 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
     _loadUserData(); // Load user data when the page is initialized
   }
 
-Future<void> _loadUserData() async {
-  userId = await secureStorage.read(key: 'userId');
-  String? token = await secureStorage.read(key: 'jwt'); // Use 'jwt' key
-  print('User ID retrieved: $userId'); // Debugging statement
-  print('Token retrieved in UpdateUserPage: $token'); // Debugging statement
+  Future<void> _loadUserData() async {
+    userId = await secureStorage.read(key: 'userId');
+    String? token = await secureStorage.read(key: 'jwt'); // Use 'jwt' key
+    print('User ID retrieved: $userId'); // Debugging statement
+    print('Token retrieved in UpdateUserPage: $token'); // Debugging statement
 
-  if (userId == null) {
-    print('User ID or token is null');
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('User not logged in or token expired')));
-    Navigator.pop(context); // Navigate back if user is not logged in or token is expired
-    return;
+    if (userId == null) {
+      print('User ID or token is null');
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('User not logged in or token expired')));
+      Navigator.pop(context); // Navigate back if user is not logged in or token is expired
+      return;
+    }
+
+    if (_authService.isTokenExpired(token!)) {
+      print('Token is expired');
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('User not logged in or token expired')));
+      Navigator.pop(context); // Navigate back if user is not logged in or token is expired
+      return;
+    }
+
+    const String baseUrl = ApiConfig.apiUrl;
+    final response = await http.get(
+      Uri.parse('$baseUrl/api/User/$userId'), // Correct endpoint to fetch user data
+      headers: {
+        HttpHeaders.authorizationHeader: 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      // Parse the user data from the response
+      final userData = jsonDecode(response.body);
+      setState(() {
+        email = userData['email'] ?? '';
+        username = userData['username'] ?? '';
+      });
+    } else {
+      throw Exception('Failed to load user data');
+    }
   }
 
-  if (_authService.isTokenExpired(token!)) {
-    print('Token is expired');
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('User not logged in or token expired')));
-    Navigator.pop(context); // Navigate back if user is not logged in or token is expired
-    return;
+  Future<void> updateUser(
+    String userId,
+    String email,
+    String username,
+    File? profileImage,
+  ) async {
+    const String baseUrl = ApiConfig.apiUrl;
+    final url = Uri.parse('$baseUrl/api/User/update/$userId');
+
+    final Map<String, dynamic> userData = {
+      'id': userId,
+      'email': email,
+      'username': username,
+      'ProfilePicture': profileImage != null ? base64Encode(await profileImage.readAsBytes()) : '', 
+    };
+
+    final String? token = await secureStorage.read(key: 'jwt');
+    final response = await http.put(
+      url,
+      headers: {
+        HttpHeaders.authorizationHeader: 'Bearer $token',
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(userData),
+    );
+
+    if (response.statusCode == 200) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('User updated successfully')));
+      Navigator.pop(context); // Navigate back after successful update
+    } else {
+      throw Exception('Failed to update user. Status code: ${response.statusCode}, Response: ${response.body}');
+    }
   }
 
-  const String baseUrl = ApiConfig.apiUrl;
-  final response = await http.get(
-    Uri.parse('$baseUrl/api/User/$userId'), // Correct endpoint to fetch user data
-    headers: {
-      HttpHeaders.authorizationHeader: 'Bearer $token',
-    },
-  );
-
-  if (response.statusCode == 200) {
-    // Parse the user data from the response
-    final userData = jsonDecode(response.body);
-    setState(() {
-      firstName = userData['firstName'] ?? '';
-      lastName = userData['lastName'] ?? '';
-      email = userData['email'] ?? '';
-      username = userData['username'] ?? '';
-      address = userData['address'] ?? '';
-      postal = userData['postal'] ?? '';
-      city = userData['city'] ?? '';
-    });
-  } else {
-    throw Exception('Failed to load user data');
-  }
-}
-
-Future<void> updateUser(
-  String userId,
-  String firstName,
-  String lastName,
-  String email,
-  String username,
-  String address,
-  String postal,
-  String city,
-  File? profileImage,
-) async {
-  const String baseUrl = ApiConfig.apiUrl;
-  final url = Uri.parse('$baseUrl/api/User/update/$userId');
-
-  final Map<String, dynamic> userData = {
-    'id': userId,
-    'firstName': firstName,
-    'lastName': lastName,
-    'email': email,
-    'username': username,
-    'address': address,
-    'postal': postal,
-    'city': city,
-    'ProfilePicture': profileImage != null ? base64Encode(await profileImage.readAsBytes()) : '', 
-  };
-
-  final String? token = await secureStorage.read(key: 'jwt');
-  final response = await http.put(
-    url,
-    headers: {
-      HttpHeaders.authorizationHeader: 'Bearer $token',
-      'Content-Type': 'application/json',
-    },
-    body: jsonEncode(userData),
-  );
-
-  if (response.statusCode == 200) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('User updated successfully')));
-    Navigator.pop(context); // Navigate back after successful update
-  } else {
-    throw Exception('Failed to update user. Status code: ${response.statusCode}, Response: ${response.body}');
-  }
-}
-
-Future<void> pickImage() async {
+  Future<void> pickImage() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
     setState(() {
       if (pickedFile != null) {
@@ -148,36 +128,6 @@ Future<void> pickImage() async {
           key: _formKey,
           child: ListView(
             children: <Widget>[
-              // First Name
-              TextFormField(
-                decoration: InputDecoration(labelText: "First Name"),
-                initialValue: firstName,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your first name';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  firstName = value!;
-                },
-              ),
-
-              // Last Name
-              TextFormField(
-                decoration: InputDecoration(labelText: "Last Name"),
-                initialValue: lastName,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your last name';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  lastName = value!;
-                },
-              ),
-
               // Email
               TextFormField(
                 decoration: InputDecoration(labelText: "Email"),
@@ -208,33 +158,6 @@ Future<void> pickImage() async {
                 },
               ),
 
-              // Address
-              TextFormField(
-                decoration: InputDecoration(labelText: "Address"),
-                initialValue: address,
-                onSaved: (value) {
-                  address = value!;
-                },
-              ),
-
-              // Postal
-              TextFormField(
-                decoration: InputDecoration(labelText: "Postal Code"),
-                initialValue: postal,
-                onSaved: (value) {
-                  postal = value!;
-                },
-              ),
-
-              // City
-              TextFormField(
-                decoration: InputDecoration(labelText: "City"),
-                initialValue: city,
-                onSaved: (value) {
-                  city = value!;
-                },
-              ),
-
               // Image picker
               SizedBox(height: 20),
               profileImage != null
@@ -254,13 +177,8 @@ Future<void> pickImage() async {
                     if (userId != null) {
                       updateUser(
                         userId!,
-                        firstName,
-                        lastName,
                         email,
                         username,
-                        address,
-                        postal,
-                        city,
                         profileImage,
                       );
                     }
