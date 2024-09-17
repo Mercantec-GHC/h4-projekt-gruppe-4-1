@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:harmonyevent_app/config/auth_workaround.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+//import 'package:harmonyevent_app/config/auth_workaround.dart';
+import 'package:harmonyevent_app/services/login_service.dart';
 import 'package:harmonyevent_app/pages/event/UpdateEventPage.dart';
 import 'package:harmonyevent_app/pages/event/DeleteEventPage.dart';
 import 'package:harmonyevent_app/config/api_config.dart';
@@ -15,6 +17,7 @@ class MyEventsPage extends StatefulWidget {
 
 class _MyEventsPageState extends State<MyEventsPage> {
   final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
+  final AuthService _authService = AuthService();
   List<dynamic> _userEvents = [];
   bool _isLoading = false;
 
@@ -31,12 +34,27 @@ class _MyEventsPageState extends State<MyEventsPage> {
     });
 
     try {
+      final String? userId = await _secureStorage.read(key: 'userId');
       // Get JWT token from secure storage
-      //String? token = await _secureStorage.read(key: 'token');
-      String? token = mytoken;
-      if (token == null) {
-        throw Exception("Authentication token not found");
+      String? token = await _secureStorage.read(key: 'token');
+      //String? token = mytoken;
+
+      print('User ID retrieved: $userId');
+      print('Token retrieved: $token');
+
+      if (userId == null || token == null) {
+        print('User ID or token is null');
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('User not logged in or token expired')));
+      Navigator.pop(context); // Navigate back if user is not logged in or token is expired
+      return;
       }
+
+      if (_authService.isTokenExpired(token)) {
+      print('Token is expired');
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('User not logged in or token expired')));
+      Navigator.pop(context); // Navigate back if user is not logged in or token is expired
+      return;
+    }
 
       // Make the GET request to fetch the user's events
       final url = Uri.parse('${ApiConfig.apiUrl}/api/Event');
@@ -131,7 +149,7 @@ class _MyEventsPageState extends State<MyEventsPage> {
                           size: Size.fromRadius(48), // Image radius
                           child: Image.network(
                             "https://eventharmoni.mercantec.tech/eventharmoni/PPc0c029f2f1fc462eadaf7178f6c6dd74.png", 
-                            //event.eventPicture,
+                            //ser.eventPicture,
                             fit: BoxFit.cover, 
                             errorBuilder: (context, error, stackTrace) {
                               return const Icon(Icons.broken_image, size: 300); // Handle broken images

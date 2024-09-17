@@ -5,7 +5,7 @@ import 'package:harmonyevent_app/config/api_config.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class CreateUserService {
-// Initialize secure storage
+  // Initialize secure storage
   final FlutterSecureStorage secureStorage = FlutterSecureStorage();
   final String baseUrl = ApiConfig.apiUrl;
   Future<void> createUser(

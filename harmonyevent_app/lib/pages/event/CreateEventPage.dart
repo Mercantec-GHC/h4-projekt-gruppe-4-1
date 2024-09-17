@@ -3,10 +3,13 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_gradient_button/flutter_gradient_button.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+//import 'package:harmonyevent_app/config/auth_workaround.dart';
 import 'package:harmonyevent_app/components/custom_limitedappbar.dart';
 import 'package:harmonyevent_app/components/custom_alerts.dart';
 import 'package:harmonyevent_app/models/event_model.dart';
+import 'package:harmonyevent_app/services/login_service.dart';
 import 'package:harmonyevent_app/services/createevent_service.dart';
 import 'package:harmonyevent_app/pages/event/EventPage.dart';
 
@@ -28,9 +31,11 @@ class CreateEventState extends State<CreateEventPage> {
   final TextEditingController _categoryController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _isPrivateController = TextEditingController();
-  bool _isLoading = false;
 
   final CreateEventService _eventService = CreateEventService(); 
+  final AuthService _authService = AuthService();
+  final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -44,15 +49,45 @@ class CreateEventState extends State<CreateEventPage> {
     super.dispose();
   }
 
-  // Function to pick an image
- Future<void> _pickImage() async {
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      setState(() {
-        EventPicture = File(pickedFile.path); // Save the selected image
-      });
+     @override
+  void initState() {
+    super.initState();
+    _checkAuthorization(); // Check authorization on page load
+  }
+
+  // Function to check authorization
+  Future<void> _checkAuthorization() async {
+    final String? userId = await _secureStorage.read(key: 'userId');
+    final String? token = await _secureStorage.read(key: 'jwt');
+    // final String? userId = myid;
+    // final String? token = mytoken;
+    
+    // Debugging statements
+    print('User ID retrieved: $userId');
+    print('Token retrieved: $token');
+
+    if (userId == null || token == null || _authService.isTokenExpired(token)) {
+      print('User not logged in or token expired');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('User not logged in or token expired')),
+      );
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => EventPage()),
+      );
     }
   }
+
+  // Function to pick an image
+ Future<void> _pickImage() async {
+  final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+  if (pickedFile != null) {
+    setState(() {
+      EventPicture = File(pickedFile.path); // Save the selected image
+      print('Image picked: ${EventPicture!.path}'); // Debugging statement
+    });
+  }
+}
 
   // Function to select a date using DatePicker
   Future<void> _selectDate(BuildContext context) async {

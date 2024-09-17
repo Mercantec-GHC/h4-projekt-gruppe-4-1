@@ -5,21 +5,25 @@ import 'package:harmonyevent_app/pages/event/CreateEventPage.dart';
 import 'package:harmonyevent_app/pages/user/UserProfilePage.dart';
 import 'package:harmonyevent_app/pages/event/EventPage.dart';
 import 'package:harmonyevent_app/pages/event/MyEventPage.dart';
+import 'package:harmonyevent_app/services/login_service.dart';
+
 
 class CustomMainAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final AuthService _authService = AuthService();
   final dynamic actions;
-
-  const CustomMainAppBar({
+  
+  CustomMainAppBar({
     this.actions,
     super.key,
   });
   
   @override
+  
   Widget build(BuildContext context) {
     return AppBar(
       automaticallyImplyLeading: false,
       actions: <Widget>[
-    
+        
         //SEARCH EVENTS
         IconButton(
           icon: const Icon(
@@ -56,13 +60,23 @@ class CustomMainAppBar extends StatelessWidget implements PreferredSizeWidget {
             color: const Color.fromARGB(255, 183, 211, 54),
           ),
           tooltip: "Create Event",
-          onPressed: () {
-            Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => CreateEventPage()), // Replace with the correct page
-            );
-          }
-        ),
+          onPressed: () async {
+                  final token = await _authService.getToken();
+                  print('Token retrieved: $token'); // Debugging statement
+                  if (token != null && !_authService.isTokenExpired(token)) {
+                  Navigator.push(
+                    context,                      
+                    MaterialPageRoute(
+                      builder: (context) => CreateEventPage()),
+                    );
+                  } 
+                  else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('User not logged in or token expired')),
+                    );
+                  }
+                }
+              ),
 
         //MY EVENTS
         IconButton(
@@ -71,13 +85,23 @@ class CustomMainAppBar extends StatelessWidget implements PreferredSizeWidget {
             color: Color.fromARGB(255, 183, 211, 54)
             ),
           tooltip: "My Events",
-          onPressed: () {
-             Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => MyEventsPage()), // Replace with the correct page
-            );
-          }
-        ),
+          onPressed: () async {
+                  final token = await _authService.getToken();
+                  print('Token retrieved: $token'); // Debugging statement
+                  if (token != null && !_authService.isTokenExpired(token)) {
+                  Navigator.push(
+                    context,                      
+                    MaterialPageRoute(
+                      builder: (context) => MyEventsPage()),
+                    );
+                  } 
+                  else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('User not logged in or token expired')),
+                    );
+                  }
+                }
+              ),
     
         //USER PROFILE
         IconButton(
@@ -120,3 +144,4 @@ class CustomMainAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => Size.fromHeight(60.0);
 }
+

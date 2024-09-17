@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:harmonyevent_app/config/auth_workaround.dart';
-
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:harmonyevent_app/config/api_config.dart';  
 import 'package:flutter_gradient_button/flutter_gradient_button.dart';
+
+//import 'package:harmonyevent_app/config/auth_workaround.dart';
+import 'package:harmonyevent_app/config/api_config.dart';  
 import 'package:harmonyevent_app/pages/event/MyEventPage.dart';
 
 class DeleteEventPage extends StatefulWidget {
@@ -27,9 +27,9 @@ class _DeleteEventPageState extends State<DeleteEventPage> {
     });
 
     try { 
-      //String? token = await _secureStorage.read(key: 'token');
+      String? token = await _secureStorage.read(key: 'token');
       //MACOS TEMPORARY WORKAROUND
-      String? token = mytoken;
+      //String? token = mytoken;
       if (token == null) {
         throw Exception("Authentication token not found");
       }

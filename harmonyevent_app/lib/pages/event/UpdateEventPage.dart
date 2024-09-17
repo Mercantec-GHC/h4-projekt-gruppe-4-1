@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:harmonyevent_app/config/auth_workaround.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'dart:convert';
-import 'package:harmonyevent_app/config/api_config.dart';
 import 'package:flutter_gradient_button/flutter_gradient_button.dart';
-import 'package:harmonyevent_app/pages/event/MyEventPage.dart';
+import 'dart:convert';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
+
+// import 'package:harmonyevent_app/config/auth_workaround.dart';
+import 'package:harmonyevent_app/config/api_config.dart';
+import 'package:harmonyevent_app/pages/event/MyEventPage.dart';
+
 
 class UpdateEventPage extends StatefulWidget {
   final String eventId;
@@ -77,8 +79,8 @@ class _UpdateEventPageState extends State<UpdateEventPage> {
 
       try {
         // Get JWT token from secure storage
-        //String? token = await _secureStorage.read(key: 'token');
-        String? token = mytoken;
+        String? token = await _secureStorage.read(key: 'token');
+        //String? token = mytoken;
         if (token == null) {
           throw Exception("Authentication token not found");
         }

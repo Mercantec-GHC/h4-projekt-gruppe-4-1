@@ -1,20 +1,22 @@
 
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:harmonyevent_app/config/auth_workaround.dart';
 import 'package:harmonyevent_app/config/api_config.dart';
 import 'package:harmonyevent_app/models/event_model.dart';
 import 'package:harmonyevent_app/models/user_model.dart';
 
+final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
 // Fetch events from API
 Future<List<EventDTO>> fetchEvents() async {
   const String baseUrl = ApiConfig.apiUrl;
+  
   final url = Uri.parse('$baseUrl/api/Event');
   try {
     // Get JWT token from secure storage
-    //String? token = await _secureStorage.read(key: 'token');
-    String? token = mytoken;
+    String? token = await _secureStorage.read(key: 'token');
+    // String? token = mytoken;
     if (token == null) {
       throw Exception("Authentication token not found");
     }
@@ -45,8 +47,8 @@ Future<List<UserDTO>> fetchUsers() async {
   final url = Uri.parse('$baseUrl/api/user');
   try {
     // Get JWT token from secure storage
-    //String? token = await _secureStorage.read(key: 'token');
-    String? token = mytoken;
+    String? token = await _secureStorage.read(key: 'token');
+    //String? token = mytoken;
     if (token == null) {
       throw Exception("Authentication token not found");
     }

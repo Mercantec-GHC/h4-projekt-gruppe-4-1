@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:harmonyevent_app/models/login_model.dart';
 import 'package:harmonyevent_app/config/api_config.dart';
+import 'package:harmonyevent_app/config/auth_workaround.dart';
 
 class AuthService {
   final String baseUrl = ApiConfig.apiUrl; 
@@ -51,6 +52,7 @@ class AuthService {
   // Check if the user is logged in by verifying if the token exists and is valid
   Future<bool> isLoggedIn() async {
     final token = await storage.read(key: 'jwt');
+    // final token = mytoken;
     return token != null && !isTokenExpired(token); // Check if token exists and is not expired
   }
   // Logout method to clear the stored JWT token

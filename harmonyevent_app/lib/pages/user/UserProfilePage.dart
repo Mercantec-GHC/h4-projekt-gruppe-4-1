@@ -1,12 +1,17 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_gradient_button/flutter_gradient_button.dart';
 
 import 'package:harmonyevent_app/components/custom_mainappbar.dart';
 import 'package:harmonyevent_app/models/user_model.dart';
+import 'package:harmonyevent_app/services/fetch_service.dart';
+import 'package:harmonyevent_app/services/login_service.dart';
+
+import 'package:harmonyevent_app/pages/user/LoginPage.dart';
 import 'package:harmonyevent_app/pages/user/UpdateUserPage.dart';
 import 'package:harmonyevent_app/pages/user/DeleteUserPage.dart';
-import 'package:harmonyevent_app/services/fetch_service.dart';
-import 'package:flutter_gradient_button/flutter_gradient_button.dart';
+
 
 class UserProfilePage extends StatefulWidget {
   const UserProfilePage({super.key});
@@ -16,6 +21,8 @@ class UserProfilePage extends StatefulWidget {
 }
 class _UserProfilePageState extends State<UserProfilePage> {
   late Future<List<UserDTO>> usersFuture;
+  final AuthService _authService = AuthService();
+  final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
 
   @override
   void initState() {
@@ -25,6 +32,16 @@ class _UserProfilePageState extends State<UserProfilePage> {
 
   bool EventIsDueChecked = false;
   bool NewEventAddedChecked = false;
+
+  // Logout function
+  Future<void> logout() async {
+    await _secureStorage.delete(key: 'token'); // Remove the stored token
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => LoginPage()), // Navigate to the LoginPage
+      (Route<dynamic> route) => false, // Remove all previous routes
+    );
+  }
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,7 +74,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                     ),
                     const SizedBox(height: 10),
                     Text(
-                      "Username: RayTheMan",
+                      "RayTheMan",
                       style: const TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
@@ -66,7 +83,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                     ),
                     const SizedBox(height: 10),
                     Text(
-                      "Email: ray@bradbury.com",
+                      "ray@bradbury.com",
                       style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
@@ -153,17 +170,25 @@ class _UserProfilePageState extends State<UserProfilePage> {
                 radius: 20,
                 gradientDirection: GradientDirection.leftToRight,
                 textStyle:  TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
-                text: "Edit profile",
-                onPressed: () {
+                text: "Edit Profile",
+                onPressed: () async {
+                  final token = await _authService.getToken();
+                  print('Token retrieved: $token'); // Debugging statement
+                  if (token != null && !_authService.isTokenExpired(token)) {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => UpdateUserPage(),
-                    ),  
+                    builder: (context) => UpdateUserPage()),
                   );
-                },
+                  } 
+                  else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('User not logged in or token expired')),
+                    );
+                  }
+                }
               ),
-            
+
               SizedBox(height: 20),
               GradientButton(
                 colors: [const Color.fromARGB(255, 183, 211, 54), const Color.fromARGB(255, 109, 190, 66)],
@@ -172,20 +197,44 @@ class _UserProfilePageState extends State<UserProfilePage> {
                 radius: 20,
                 gradientDirection: GradientDirection.leftToRight,
                 textStyle:  TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
-                text: "Delete profile",
-                  onPressed: () {
+                text: "Delete Profile",
+                onPressed: () async {
+                  final token = await _authService.getToken();
+                  print('Token retrieved: $token'); // Debugging statement
+                  if (token != null && !_authService.isTokenExpired(token)) {
                   Navigator.push(
-                    context,
+                    context,                      
                     MaterialPageRoute(
-                      builder: (context) => DeleteUserPage(),
-                    ),  
-                  );
-                },
+                      builder: (context) => DeleteUserPage()),
+                    );
+                  } 
+                  else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('User not logged in or token expired')),
+                    );
+                  }
+                }            
               ),
             ],
           ),
         ),
       ),
-    );  
+    );
   }
 }
+  // Navigate to UpdateUserPage with token validation
+  // void _navigateToUpdateUserPage(BuildContext context) async {
+  //   final token = await _authService.getToken();
+  //   print('Token retrieved: $token'); // Debugging statement
+
+  //   if (token != null && !_authService.isTokenExpired(token)) {
+  //     Navigator.push(
+  //       context,
+  //       MaterialPageRoute(builder: (context) => UpdateUserPage()),
+  //     );
+  //   } else {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(content: Text('User not logged in or token expired')),
+  //     );
+  //   }
+  // }
