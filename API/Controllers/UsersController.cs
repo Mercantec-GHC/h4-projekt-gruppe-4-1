@@ -47,7 +47,7 @@ namespace API.Controllers
                     Email = user.Email,
                     Username = user.Username,
                     ProfilePicture = user.ProfilePicture
-                    
+
                 })
                 .ToListAsync();
 
@@ -76,7 +76,7 @@ namespace API.Controllers
             return Ok(user);
         }
         // delete by id
-        [HttpDelete]
+        [HttpDelete("delete/{id}")]
         public async Task<ActionResult<UserDTO>> DeleteUserById(string id)
         {
             var user = await _dbContext.Users.FindAsync(id);
