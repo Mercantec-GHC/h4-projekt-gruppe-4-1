@@ -218,9 +218,9 @@ class _EventPageState extends State<EventPage> {
                       radius: 20,
                       gradientDirection: GradientDirection.leftToRight,
                       textStyle: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
-                      text: "Attend Event",
+                      text: "Attend Event (IN DEVELOPMENT)",
                       onPressed: () {
-
+                        print("In development - comming later");
                       },
                     ),
                   ], 

@@ -23,6 +23,8 @@ class _UserProfilePageState extends State<UserProfilePage> {
     usersFuture = fetchUsers(); // Fetch users in initState
   }
 
+  bool SwitchIsChecked = false;
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomMainAppBar(),
@@ -73,6 +75,42 @@ class _UserProfilePageState extends State<UserProfilePage> {
                   ],
                 ),
               ),
+
+              const SizedBox(height: 30),
+              Padding(
+                padding: const EdgeInsets.only(left: 86.0, right: 86.0),
+                child: SwitchListTile(
+                  hoverColor: const Color.fromARGB(255, 36, 51, 6),
+                  activeColor: Color.fromARGB(255, 234, 208, 225),
+                  inactiveThumbColor: Color.fromARGB(255, 234, 208, 225),
+                  activeTrackColor: const Color.fromARGB(255, 183, 211, 83),
+                  inactiveTrackColor: const Color.fromARGB(255, 234, 208, 225),
+                  title: const Text(
+                    "Recieve notifications on new events",
+                    style: TextStyle(
+                      color: Color.fromARGB(255, 234, 208, 225),
+                      fontSize: 14,
+                    ),
+                    selectionColor: const Color.fromARGB(255, 183, 211, 83),
+                  ),
+                  secondary: const SizedBox(
+                    child: Icon(
+                      Icons.notifications_none,
+                      color: const Color.fromARGB(255, 183, 211, 83),
+                      size: 32,
+                    ),
+                  ),
+                  value: SwitchIsChecked,         
+                  onChanged: (value) {
+                    setState(() {
+                      SwitchIsChecked = value;
+                      //_isPrivateController.text = value.toString();
+                      print(value);
+                    },);
+                  }
+                ),
+              ), 
+              
               const SizedBox(height: 30),
               GradientButton(
                 colors: [const Color.fromARGB(255, 183, 211, 54), const Color.fromARGB(255, 109, 190, 66)],
@@ -91,6 +129,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                   );
                 },
               ),
+            
               SizedBox(height: 20),
               GradientButton(
                 colors: [const Color.fromARGB(255, 183, 211, 54), const Color.fromARGB(255, 109, 190, 66)],
