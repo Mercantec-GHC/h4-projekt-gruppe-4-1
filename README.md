@@ -8,7 +8,7 @@ Vi har 2 projekter der skulle være blevet sat sammen, men grundet at det ene va
 komplikation som det har gjort, vi har brugt meget tid på at rette småfejl dependencies og mange andre ting, men vi sidder nu med to produkter en app der virker
 med alt fra autherisation til sletning og opretning af events osv. og et projekt med styling og 
 der sidder vi fast i problemer med authorization grundet at der har været så mange forskellige ting der er bygget op på hver sin OS. 
-Det vi ved fremadrettet er at flutter_secure_storage og autharisation ikke er for tøsedrenge
+Det vi ved fremadrettet er at flutter_secure_storage og autharisation ikke er for tøsedrenge, Vores styling del ligger inde under Saa-dev så i kan se de to forskellige apps 
 
 ## Mappe struktur
 
