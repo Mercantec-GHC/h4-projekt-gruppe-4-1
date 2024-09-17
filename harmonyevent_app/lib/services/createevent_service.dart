@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
 import 'package:harmonyevent_app/config/api_config.dart';
 import 'package:harmonyevent_app/config/auth_workaround.dart';
 import 'package:harmonyevent_app/models/event_model.dart';
@@ -10,7 +11,6 @@ import 'package:harmonyevent_app/models/event_model.dart';
 class CreateEventService {
   
   // Initialize secure storage
-  //VIRKER IKKE PÅ MACOS - UNDERSØGER LØSNINGSMULIGHEDER:
   final FlutterSecureStorage storage = FlutterSecureStorage();
 
   final String _baseUrl = ApiConfig.apiUrl;
@@ -27,7 +27,6 @@ class CreateEventService {
   async {
     var request = http.MultipartRequest('POST', Uri.parse('$_baseUrl/api/event/create'));
 
-    //VIRKER IKKE PÅ MACOS - UNDERSØGER LØSNINGSMULIGHEDER:
     //Retrieve the token securely
     //final String? token = await storage.read(key: 'jwt');
     final String? token = mytoken;
@@ -66,7 +65,8 @@ class CreateEventService {
         final errorResponse = await response.stream.bytesToString();
         throw Exception('Failed to create event: ${response.statusCode} - $errorResponse');
       }
-    } catch (e) {
+    } 
+    catch (e) {
       throw Exception('Error occurred while creating event: $e');
     }
   }

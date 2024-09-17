@@ -4,4 +4,4 @@
 /API/bin
 /API/appsettings.json
 .vscode
-/POC_LocalHost-Db/.env
+/lib/components/auth_workaround.dart
