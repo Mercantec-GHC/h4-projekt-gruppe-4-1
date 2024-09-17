@@ -174,7 +174,7 @@ namespace API.Controllers
             return Ok("You are now attending the event");
         }
         // Update event by id
-        [HttpPost("Update/{id}")]
+        [HttpPut("Update/{id}")]
         public async Task<IActionResult> UpdateEventById(string id, [FromForm] EventDTO eventUpdate)
         {
             var existingEvent = await _dbContext.Events.FindAsync(id);
