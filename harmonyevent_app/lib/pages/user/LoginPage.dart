@@ -43,15 +43,11 @@ class _LoginPageState extends State<LoginPage> {
         email: _emailController.text,
         password: _passwordController.text,
       );
-
       try {
          // Perform login and get the token
         final String token = await _authService.login(loginDTO); // Correctly call the method
-
         // Store the token securely in FlutterSecureStorage
         await _secureStorage.write(key: 'token', value: token);
-        
-        //await _authService.login(loginDTO);
         // Navigate to HomePage or another page on successful login
         showSuccessAlert(context);
         Navigator.pushReplacement(
@@ -130,8 +126,6 @@ class _LoginPageState extends State<LoginPage> {
                             decoration: InputDecoration(
                               labelText: 'Password',
                               labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
-                              //fillColor: const Color.fromARGB(255, 109, 190, 66),
-                              //filled: true,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8.0),
                               ),
