@@ -46,7 +46,7 @@ namespace API.Models
         public String? Date { get; set; }
         
         public string? Place_id { get; set; }
-        public IFormFile? EventPicture { get; set; }
+        public IFormFile EventPicture { get; set; }
         public string? isprivate { get; set; }
         public string? Title { get; set; }
         public string? Category { get; set; }
