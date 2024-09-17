@@ -197,7 +197,7 @@ namespace API.Controllers
             existingEvent.Description = eventUpdate.Description;
             existingEvent.Category = eventUpdate.Category;
 
-            _dbContext.Events.Add(existingEvent);
+            _dbContext.Events.Update(existingEvent);
             try
             {
 
