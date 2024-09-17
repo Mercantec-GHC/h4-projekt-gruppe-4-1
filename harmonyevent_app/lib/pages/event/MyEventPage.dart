@@ -55,11 +55,13 @@ class _MyEventsPageState extends State<MyEventsPage> {
       } else {
         throw Exception('Failed to load events');
       }
-    } catch (e) {
+    } 
+    catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error: ${e.toString()}')),
       );
-    } finally {
+    } 
+    finally {
       setState(() {
         _isLoading = false; // Hide loading indicator
       });
@@ -96,109 +98,100 @@ class _MyEventsPageState extends State<MyEventsPage> {
       //GETs CUSTOM MAIN APPBAR FROM /components/custom_mainappbar.dart
       appBar: CustomMainAppBar(),
       body: _isLoading
-          ? Center(child: CircularProgressIndicator()) // Show loading indicator
-          : _userEvents.isEmpty
-              ? Center(child: Text('You have no current events'))
-              : ListView.builder(
-                  itemCount: _userEvents.length,
-                  itemBuilder: (context, index) {
-                    final event = _userEvents[index];
-                    
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Card(    
-                        color: const Color.fromARGB(255, 36, 51, 6),
-                          shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                           side: BorderSide(
-                            color: const Color.fromARGB(255, 89, 99, 44),
-                            width: 2.0,
+      ? Center(child: CircularProgressIndicator()) // Show loading indicator
+      : _userEvents.isEmpty
+      ? Center(child: Text('You have no current events'))
+      : ListView.builder(
+        itemCount: _userEvents.length,
+        itemBuilder: (context, index) {
+          final event = _userEvents[index];           
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Card(    
+              color: const Color.fromARGB(255, 36, 51, 6),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15.0),
+                side: BorderSide(
+                  color: const Color.fromARGB(255, 89, 99, 44),
+                  width: 2.0,
+                ),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(left: 0),
+                    child:  Container(
+                      width: 100,
+                      height: 56,
+                      padding: EdgeInsets.all(2), // Border width
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: SizedBox.fromSize(
+                          size: Size.fromRadius(48), // Image radius
+                          child: Image.network(
+                            "https://eventharmoni.mercantec.tech/eventharmoni/PPc0c029f2f1fc462eadaf7178f6c6dd74.png", 
+                            //event.eventPicture,
+                            fit: BoxFit.cover, 
+                            errorBuilder: (context, error, stackTrace) {
+                              return const Icon(Icons.broken_image, size: 300); // Handle broken images
+                            },
                           ),
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.only(left: 0),
-                              child:  Container(
-                                width: 100,
-                                height: 56,
-                                padding: EdgeInsets.all(2), // Border width
-                                // decoration: BoxDecoration(
-                                //   color: const Color.fromARGB(255, 89, 99, 44), 
-                                //   borderRadius: BorderRadius.circular(10),
-                                  
-                                // ),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: SizedBox.fromSize(
-                                    size: Size.fromRadius(48), // Image radius
-                                    child: Image.network(
-                                      "https://eventharmoni.mercantec.tech/eventharmoni/PPc0c029f2f1fc462eadaf7178f6c6dd74.png", 
-                                      //event.eventPicture,
-                                      fit: BoxFit.cover, 
-                                      errorBuilder: (context, error, stackTrace) {
-                                        return const Icon(Icons.broken_image, size: 300); // Handle broken images
-                                      },
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                children: [
-                                  Text(
-                                    "Date: ${event['date']}",
-                                      style: const TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold,
-                                        color: Color.fromARGB(255, 234, 208, 225),
-                                      ),
-                                    ),
-                                    Text(
-                                      "Title: ${event['description']}",
-                                      style: const TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold,
-                                      color: Color.fromARGB(255, 234, 208, 225),
-                                      ),
-                                    ),
-                                    Text(
-                                      "Category: ${event['category']}",
-                                      style: const TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold,
-                                        color: Color.fromARGB(255, 234, 208, 225),
-                                      ),  
-                                    ),
-                                ],
-                              ),
-                            ),
+                      ),
+                    ),
+                  ),
 
-                            Column(
-        
-                              children: [
-                                IconButton(
-                                  icon: Icon(Icons.edit, color: const Color.fromARGB(255, 183, 211, 83)),
-                                  onPressed: () => _navigateToUpdateEvent(event['id']),
-                                ),
-                                IconButton(
-                                  icon: Icon(Icons.delete, color: Color.fromARGB(255, 104, 9, 9)),
-                                  onPressed: () => _navigateToDeleteEvent(event['id']),
-                                ),
-                              ],
-                            ),      
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        Text(
+                          "Date: ${event['date']}",
+                          style: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            color: Color.fromARGB(255, 234, 208, 225),
+                          ),
+                        ),
+                        Text(
+                          "Title: ${event['description']}",
+                          style: const TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                          color: Color.fromARGB(255, 234, 208, 225),
+                          ),
+                        ),
+                        Text(
+                          "Category: ${event['category']}",
+                          style: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            color: Color.fromARGB(255, 234, 208, 225),
+                          ),  
+                        ),
+                      ],
+                    ),
+                  ),
 
-                          ],
-                        ),
-                        ),
-                    );
-                    
-                  },
-                ),
+                  Column(
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.edit, color: const Color.fromARGB(255, 183, 211, 83)),
+                        onPressed: () => _navigateToUpdateEvent(event['id']),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.delete, color: Color.fromARGB(255, 104, 9, 9)),
+                        onPressed: () => _navigateToDeleteEvent(event['id']),
+                      ),
+                    ],
+                  ),      
+                ],
+              ),
+            ),
+          );          
+        },
+      ),
     );
   }
 }

@@ -23,97 +23,94 @@ class _UserProfilePageState extends State<UserProfilePage> {
     usersFuture = fetchUsers(); // Fetch users in initState
   }
 
- Widget build(BuildContext context) {
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomMainAppBar(),
       body: Padding(
         padding: const EdgeInsets.only(top: 70),
         child: Center(
           child: Column(
-          children: [
-            
-            Container(
-                      //width: 150,
-                      child: Column(
-                        children: [
-
-                          Container(
-                            width: 250,
-                            child: CircleAvatar(
-                              backgroundColor: const Color.fromARGB(255, 183, 211, 83),
-                              radius: 40,
-                              child: Padding(
-                                padding: const EdgeInsets.all(3),
-                                child: ClipOval (
-                                  child: Image.network(
-                                    "https://eventharmoni.mercantec.tech/eventharmoni/PPc0c029f2f1fc462eadaf7178f6c6dd74.png",                             
-                                    errorBuilder: (context, error, stackTrace) {
-                                      return const Icon(Icons.broken_image, size: 200); // Handle broken images
-                                    },
-                                  ), 
-                                ),
-                              ),
-                            ),
+            children: [
+              Container(
+                child: Column(
+                  children: [
+                    Container(
+                      width: 250,
+                      child: CircleAvatar(
+                        backgroundColor: const Color.fromARGB(255, 183, 211, 83),
+                        radius: 40,
+                        child: Padding(
+                          padding: const EdgeInsets.all(3),
+                          child: ClipOval (
+                            child: Image.network(
+                              "https://eventharmoni.mercantec.tech/eventharmoni/PPc0c029f2f1fc462eadaf7178f6c6dd74.png",                             
+                              errorBuilder: (context, error, stackTrace) {
+                                return const Icon(Icons.broken_image, size: 200); // Handle broken images
+                              },
+                            ), 
                           ),
-                           const SizedBox(height: 10),
-                          Text(
-                            "Username: RayTheMan",
-                            style: const TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
-                            color: const Color.fromARGB(255, 183, 211, 83),
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          Text(
-                            "Email: ray@bradbury.com",
-                            style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: const Color.fromARGB(255, 183, 211, 83),
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
                     ),
-              const SizedBox(height: 30),
-            GradientButton(
-               colors: [const Color.fromARGB(255, 183, 211, 54), const Color.fromARGB(255, 109, 190, 66)],
-               height: 40,
-               width: 350,
-               radius: 20,
-               gradientDirection: GradientDirection.leftToRight,
-               textStyle:  TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
-               text: "Edit profile",
-                 onPressed: () {
-                 Navigator.push(
-                   context,
-                   MaterialPageRoute(
-                     builder: (context) => UpdateUserPage(),
-                   ),  
-                 );
-               },
-            ),
-            SizedBox(height: 20),
-            GradientButton(
-               colors: [const Color.fromARGB(255, 183, 211, 54), const Color.fromARGB(255, 109, 190, 66)],
-               height: 40,
-               width: 350,
-               radius: 20,
-               gradientDirection: GradientDirection.leftToRight,
-               textStyle:  TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
-               text: "Delete profile",
-                 onPressed: () {
-                 Navigator.push(
-                   context,
-                   MaterialPageRoute(
-                     builder: (context) => DeleteUserPage(),
-                   ),  
-                 );
-               },
-            ),
-          ],
+                    const SizedBox(height: 10),
+                    Text(
+                      "Username: RayTheMan",
+                      style: const TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: const Color.fromARGB(255, 183, 211, 83),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      "Email: ray@bradbury.com",
+                      style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: const Color.fromARGB(255, 183, 211, 83),
+                      ),
+                    ),
+                  ],
                 ),
+              ),
+              const SizedBox(height: 30),
+              GradientButton(
+                colors: [const Color.fromARGB(255, 183, 211, 54), const Color.fromARGB(255, 109, 190, 66)],
+                height: 40,
+                width: 350,
+                radius: 20,
+                gradientDirection: GradientDirection.leftToRight,
+                textStyle:  TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
+                text: "Edit profile",
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => UpdateUserPage(),
+                    ),  
+                  );
+                },
+              ),
+              SizedBox(height: 20),
+              GradientButton(
+                colors: [const Color.fromARGB(255, 183, 211, 54), const Color.fromARGB(255, 109, 190, 66)],
+                height: 40,
+                width: 350,
+                radius: 20,
+                gradientDirection: GradientDirection.leftToRight,
+                textStyle:  TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
+                text: "Delete profile",
+                  onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => DeleteUserPage(),
+                    ),  
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );  

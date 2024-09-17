@@ -1,13 +1,14 @@
+
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:harmonyevent_app/config/auth_workaround.dart';
-import 'package:harmonyevent_app/pages/user/UserProfilePage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:harmonyevent_app/config/api_config.dart';
-import 'package:harmonyevent_app/pages/User/LoginPage.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_gradient_button/flutter_gradient_button.dart';
 
+import 'package:harmonyevent_app/config/api_config.dart';
+import 'package:harmonyevent_app/config/auth_workaround.dart';
+import 'package:harmonyevent_app/pages/user/UserProfilePage.dart';
+import 'package:harmonyevent_app/pages/User/LoginPage.dart';
 
 class DeleteUserPage extends StatefulWidget {
   @override
@@ -72,11 +73,13 @@ class _DeleteUserPageState extends State<DeleteUserPage> {
           SnackBar(content: Text('Failed to delete account: ${errorBody['message']}')),
         );
       }
-    } catch (e) {
+    } 
+    catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error: ${e.toString()}')),
       );
-    } finally {
+    } 
+    finally {
       setState(() {
         _isLoading = false; // Hide loading indicator
       });
@@ -87,7 +90,7 @@ class _DeleteUserPageState extends State<DeleteUserPage> {
   Future<void> _confirmDelete() async {
     final bool? confirm = await showDialog<bool>(
       context: context,
-           builder: (context) => AlertDialog(
+      builder: (context) => AlertDialog(
         title: Text(
           'Confirm Deletion',
           style: const TextStyle(
@@ -97,7 +100,6 @@ class _DeleteUserPageState extends State<DeleteUserPage> {
           ),
         ),
         backgroundColor: const Color.fromARGB(255, 81, 76, 76) ,
-          //dropdownColor: const Color.fromARGB(255, 81, 76, 76),
         content: Text(
           //'Are you sure you want to delete ${user.Username}? This action can not be undone!',
           'Are you sure you want to delete RayTheMan? This action can not be undone!',
@@ -140,7 +142,6 @@ class _DeleteUserPageState extends State<DeleteUserPage> {
         ],
       ),
     );
-
     if (confirm == true) {
       _deleteUser();
     }
@@ -150,67 +151,67 @@ class _DeleteUserPageState extends State<DeleteUserPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-      automaticallyImplyLeading: false,
-      leading: IconButton(
-        icon: Icon(
-          Icons.arrow_back_ios,
-          color: Color.fromARGB(255, 234, 208, 225)),
-          onPressed: () {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => UserProfilePage()),
-          );
-        },
+        automaticallyImplyLeading: false,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Color.fromARGB(255, 234, 208, 225)),
+            onPressed: () {
+              Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => UserProfilePage()),
+            );
+          },
+        ),
+        title: Row(
+          children: [
+            Container(
+              child: Image(image: AssetImage('assets/images/HE_Logo.png'),
+              width: 50,
+              fit: BoxFit.cover     
+              ),  
+            ),        
+            Container(          
+              child: 
+              Text(
+                "Harmony Event",
+                style: TextStyle(
+                  color: const Color.fromARGB(255, 234, 208, 225),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),  
+            ), 
+          ],
+        ),
       ),
-      title: Row(
-        children: [
-          Container(
-            child: Image(image: AssetImage('assets/images/HE_Logo.png'),
-            width: 50,
-            fit: BoxFit.cover     
-            ),  
-          ),        
-          Container(          
-            child: 
-            Text(
-              "Harmony Event",
-              style: TextStyle(
-                color: const Color.fromARGB(255, 234, 208, 225),
-                fontWeight: FontWeight.bold,
-              ),
-            ),  
-          ), 
-        ],
-      ),
-    ),
       body: Padding(
         padding: const EdgeInsets.only(left: 96.0, right: 96.0, top: 96.0),
         child: _isLoading
-            ? Center(child: CircularProgressIndicator()) 
-            : Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(
-                    'Are you sure you want to delete this profile?',
-                    style: TextStyle(
-                    fontSize: 18, 
-                    fontWeight: FontWeight.bold,
-                    color: Color.fromARGB(255, 234, 208, 225),
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  GradientButton(
-                    colors: [const Color.fromARGB(255, 183, 211, 54), const Color.fromARGB(255, 109, 190, 66)],
-                    height: 40,
-                    width: 350,
-                    radius: 20,
-                    gradientDirection: GradientDirection.leftToRight,
-                    textStyle:  TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
-                    text: "Delete Profile",
-                      onPressed: _confirmDelete
-                  ),
-                ],
+        ? Center(child: CircularProgressIndicator()) 
+        : Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              'Are you sure you want to delete this profile?',
+              style: TextStyle(
+              fontSize: 18, 
+              fontWeight: FontWeight.bold,
+              color: Color.fromARGB(255, 234, 208, 225),
               ),
+            ),
+            SizedBox(height: 20),
+            GradientButton(
+              colors: [const Color.fromARGB(255, 183, 211, 54), const Color.fromARGB(255, 109, 190, 66)],
+              height: 40,
+              width: 350,
+              radius: 20,
+              gradientDirection: GradientDirection.leftToRight,
+              textStyle:  TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
+              text: "Delete Profile",
+                onPressed: _confirmDelete
+            ),
+          ],
+        ),
       ),
     );
   }

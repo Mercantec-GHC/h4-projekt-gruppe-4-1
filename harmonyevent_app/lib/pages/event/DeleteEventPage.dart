@@ -48,17 +48,18 @@ class _DeleteEventPageState extends State<DeleteEventPage> {
           SnackBar(content: Text('Event deleted successfully')),
         );
         Navigator.pop(context); 
-      } else {
-        
+      } 
+      else {    
         final errorBody = jsonDecode(response.body);
         throw Exception(errorBody['message'] ?? 'Failed to delete event');
       }
-    } catch (e) {
-      
+    } 
+    catch (e) {      
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error: ${e.toString()}')),
       );
-    } finally {
+    } 
+    finally {
       setState(() {
         _isLoading = false; 
       });
@@ -72,13 +73,12 @@ class _DeleteEventPageState extends State<DeleteEventPage> {
         title: Text(
           'Confirm Deletion',
           style: const TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.bold,
-              color: Color.fromARGB(255, 234, 208, 225),
+            fontSize: 12,
+            fontWeight: FontWeight.bold,
+            color: Color.fromARGB(255, 234, 208, 225),
           ),
         ),
         backgroundColor: const Color.fromARGB(255, 81, 76, 76) ,
-          //dropdownColor: const Color.fromARGB(255, 81, 76, 76),
         content: Text(
           'Are you sure you want to delete this event?',
            style: const TextStyle(
@@ -128,69 +128,68 @@ class _DeleteEventPageState extends State<DeleteEventPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       appBar: AppBar(
-      automaticallyImplyLeading: false,
-      leading: IconButton(
-        icon: Icon(
-          Icons.arrow_back_ios,
-          color: Color.fromARGB(255, 234, 208, 225)),
-          onPressed: () {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => MyEventsPage()),
-          );
-        },
+        automaticallyImplyLeading: false,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Color.fromARGB(255, 234, 208, 225)),
+            onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => MyEventsPage()),
+            );
+          },
+        ),
+        title: Row(
+          children: [
+            Container(
+              child: Image(
+                image: AssetImage('assets/images/HE_Logo.png'),
+                width: 50,
+                fit: BoxFit.cover     
+              ),  
+            ),        
+            Container(          
+              child: Text(
+                "Harmony Event",
+                style: TextStyle(
+                  color: const Color.fromARGB(255, 234, 208, 225),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),  
+            ), 
+          ],
+        ),
       ),
-      title: Row(
-        children: [
-          Container(
-            child: Image(image: AssetImage('assets/images/HE_Logo.png'),
-            width: 50,
-            fit: BoxFit.cover     
-            ),  
-          ),        
-          Container(          
-            child: 
-            Text(
-              "Harmony Event",
-              style: TextStyle(
-                color: const Color.fromARGB(255, 234, 208, 225),
-                fontWeight: FontWeight.bold,
-              ),
-            ),  
-          ), 
-        ],
-      ),
-    ),
       body: Padding(
         padding: const EdgeInsets.only(left: 96.0, right: 96.0, top: 96.0),
         child: _isLoading
-            ? Center(child: CircularProgressIndicator()) 
-            : Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(
-                    'Are you sure you want to delete this event?',
-                    style: TextStyle(
-                    fontSize: 18, 
-                    fontWeight: FontWeight.bold,
-                    color: Color.fromARGB(255, 234, 208, 225),
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  GradientButton(
-                    colors: [const Color.fromARGB(255, 183, 211, 54), const Color.fromARGB(255, 109, 190, 66)],
-                    height: 40,
-                    width: 350,
-                    radius: 20,
-                    gradientDirection: GradientDirection.leftToRight,
-                    textStyle:  TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
-                    text: "Delete Event",
-                      onPressed: _confirmDelete
-                  ),
-                ],
+        ? Center(child: CircularProgressIndicator()) 
+        : Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              'Are you sure you want to delete this event?',
+              style: TextStyle(
+              fontSize: 18, 
+              fontWeight: FontWeight.bold,
+              color: Color.fromARGB(255, 234, 208, 225),
               ),
+            ),
+            SizedBox(height: 20),
+            GradientButton(
+              colors: [const Color.fromARGB(255, 183, 211, 54), const Color.fromARGB(255, 109, 190, 66)],
+              height: 40,
+              width: 350,
+              radius: 20,
+              gradientDirection: GradientDirection.leftToRight,
+              textStyle:  TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
+              text: "Delete Event",
+                onPressed: _confirmDelete
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -20,7 +20,7 @@ class UpdateEventPage extends StatefulWidget {
 
 class _UpdateEventPageState extends State<UpdateEventPage> {
   final _formKey = GlobalKey<FormState>();
-    File? EventPicture; // To store the selected image
+  File? EventPicture; // To store the selected image
   final picker = ImagePicker(); // Image picker instance
   final _dateController = TextEditingController();
   final _timeController = TextEditingController();
@@ -32,8 +32,8 @@ class _UpdateEventPageState extends State<UpdateEventPage> {
   final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
   bool _isLoading = false;
 
-// Function to pick an image
- Future<void> _pickImage() async {
+  // Function to pick an image
+  Future<void> _pickImage() async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       setState(() {
@@ -110,11 +110,13 @@ class _UpdateEventPageState extends State<UpdateEventPage> {
           final errorBody = jsonDecode(response.body);
           throw Exception(errorBody['message'] ?? 'Failed to update event');
         }
-      } catch (e) {
+      } 
+      catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Error: ${e.toString()}')),
         );
-      } finally {
+      } 
+      finally {
         setState(() {
           _isLoading = false; // Hide loading indicator
         });
@@ -126,39 +128,39 @@ class _UpdateEventPageState extends State<UpdateEventPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-      automaticallyImplyLeading: false,
-      leading: IconButton(
-        icon: Icon(
-          Icons.arrow_back_ios,
-          color: Color.fromARGB(255, 234, 208, 225)),
-          onPressed: () {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => MyEventsPage()),
-          );
-        },
+        automaticallyImplyLeading: false,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Color.fromARGB(255, 234, 208, 225)),
+            onPressed: () {
+              Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => MyEventsPage()),
+            );
+          },
+        ),
+        title: Row(
+          children: [
+            Container(
+              child: Image(image: AssetImage('assets/images/HE_Logo.png'),
+              width: 50,
+              fit: BoxFit.cover     
+              ),  
+            ),        
+            Container(          
+              child: 
+              Text(
+                "Harmony Event",
+                style: TextStyle(
+                  color: const Color.fromARGB(255, 234, 208, 225),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),  
+            ), 
+          ],
+        ),
       ),
-      title: Row(
-        children: [
-          Container(
-            child: Image(image: AssetImage('assets/images/HE_Logo.png'),
-            width: 50,
-            fit: BoxFit.cover     
-            ),  
-          ),        
-          Container(          
-            child: 
-            Text(
-              "Harmony Event",
-              style: TextStyle(
-                color: const Color.fromARGB(255, 234, 208, 225),
-                fontWeight: FontWeight.bold,
-              ),
-            ),  
-          ), 
-        ],
-      ),
-    ),
       body: Padding(
         padding: const EdgeInsets.only(left: 66.0, right: 66.0, top: 10),
         child: Form(
@@ -166,224 +168,221 @@ class _UpdateEventPageState extends State<UpdateEventPage> {
           child: Column(
             children: [
               //SELECT IMAGE
-            ElevatedButton.icon(
-              onPressed: _pickImage,
-              icon: Icon(
-                Icons.image,
-                color: const Color.fromARGB(255, 183, 211, 83),),
-                label: Text('Choose image'),              
-            ),
-            //SizedBox(height: 10),
-            EventPicture != null ? Image.file(
-              EventPicture!,
-              height: 50,
-            )
-            : Text(
-              'Prefered size 500x281 pixels',
-              style: TextStyle(
-                 color: const Color.fromARGB(255, 183, 211, 83)
-                ),),
-            SizedBox(height: 10),
-
-            //SELECT DATE AND TIME
-            TextFormField(
-    
-              style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
-              controller: _dateController,
-              readOnly: true, 
-              decoration: InputDecoration(
-                labelText: 'Occurs',
-                labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                suffixIcon: IconButton(
-                  icon: Icon(
-                    Icons.calendar_today,
-                        color: const Color.fromARGB(255, 183, 211, 83),
-                    ),
-                  onPressed: () => _selectDate(context),
+              ElevatedButton.icon(
+                onPressed: _pickImage,
+                icon: Icon(
+                  Icons.image,
+                  color: const Color.fromARGB(255, 183, 211, 83),),
+                  label: Text('Choose image'),              
+              ),
+              EventPicture != null ? Image.file(
+                EventPicture!,
+                height: 50,
+              )
+              : Text(
+                'Prefered size 500x281 pixels',
+                style: TextStyle(
+                  color: const Color.fromARGB(255, 183, 211, 83)
                 ),
               ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please choose date and time';
-                }
-                return null;
-              },
-            ),
-            // Time field
-                TextFormField(
-                  style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
-                  controller: _timeController,
-                  readOnly: true,
-                  decoration: InputDecoration(
-                    labelText: 'Time',
-                    labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
-                      border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        Icons.access_time,
-                        color: const Color.fromARGB(255, 183, 211, 83),
-                      ),
-                      onPressed: () => _selectTime(context),
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please choose a time';
-                    }
-                    return null;
-                  },
-                ),
-            
-            //SELECT LOCATION
-            TextFormField(
-              style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
-              controller: _locationController,
-              decoration: InputDecoration(
-                labelText: 'Location',
-                labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please choose location';
-                }
-                return null;
-              },
-            ),
-            //const SizedBox(height: 15),
+              SizedBox(height: 10),
 
-            //SELECT TITLE 
-            TextFormField(
-              style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
-              controller: _titleController,
-              decoration: InputDecoration(
-                labelText: 'Title',
-                labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
+              //SELECT DATE AND TIME
+              TextFormField(
+                style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
+                controller: _dateController,
+                readOnly: true, 
+                decoration: InputDecoration(
+                  labelText: 'Occurs',
+                  labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
                   border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      Icons.calendar_today,
+                          color: const Color.fromARGB(255, 183, 211, 83),
+                      ),
+                    onPressed: () => _selectDate(context),
+                  ),
                 ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please choose date and time';
+                  }
+                  return null;
+                },
               ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please choose title';
-                }
-                return null;
-              },
-            ),
-            //const SizedBox(height: 15),
-
-            //SELECT CATEGORY
-            DropdownButtonFormField<String>(
-                  dropdownColor: const Color.fromARGB(255, 81, 76, 76),
-                  borderRadius: BorderRadius.circular(8.0),
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 234, 208, 225),
-                      fontFamily: "Purisa",
-                    ),
-                  value: _categoryController.text.isNotEmpty ? _categoryController.text : null,
-                  decoration: InputDecoration(
-                    //hoverColor: const Color.fromARGB(255, 36, 51, 6),
-                    labelText: 'Category',
-                    labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83)),
+              // Time field
+              TextFormField(
+                style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
+                controller: _timeController,
+                readOnly: true,
+                decoration: InputDecoration(
+                  labelText: 'Time',
+                  labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
                     border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.0),
-                    ),
                   ),
-                  items: [
-                    DropdownMenuItem(value: 'Anniversary', child: Text('Anniversary')),
-                    DropdownMenuItem(value: 'Birthday', child: Text('Birthday')),
-                    DropdownMenuItem(value: 'Concert', child: Text('Concert')),
-                    DropdownMenuItem(value: 'Corporate', child: Text('Corporate')),
-                    DropdownMenuItem(value: 'Convention', child: Text('Convention')),
-                    DropdownMenuItem(value: 'Exhibition', child: Text('Exhibition')),
-                    DropdownMenuItem(value: 'Festival', child: Text('Festival')),
-                    DropdownMenuItem(value: 'Lecture', child: Text('Lecture')),
-                    DropdownMenuItem(value: 'Networking', child: Text('Networking')),
-                    DropdownMenuItem(value: 'Party', child: Text('Party')),
-                    DropdownMenuItem(value: 'Reception', child: Text('Reception')),
-                    DropdownMenuItem(value: 'Sports', child: Text('Sports')),
-                    DropdownMenuItem(value: 'Seminar', child: Text('Seminar')),
-                    DropdownMenuItem(value: 'Team builing', child: Text('Team builing')),
-                    DropdownMenuItem(value: 'Wedding', child: Text('Wedding')),
-                    DropdownMenuItem(value: 'Workshop', child: Text('Workshop')),
-                    DropdownMenuItem(value: 'Others', child: Text('Others')),
-                  ],
-                  onChanged: (value) {
-                    setState(() {
-                      _categoryController.text = value!;  
-                    });
-                  },
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please chose category';
-                    }
-                    return null;
-                  },
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      Icons.access_time,
+                      color: const Color.fromARGB(255, 183, 211, 83),
+                    ),
+                    onPressed: () => _selectTime(context),
+                  ),
                 ),
-            // WRITE DESCRIPTION
-            TextFormField(
-              style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
-              maxLines: 3,
-              minLines: 3,
-              controller: _descriptionController,
-              decoration: InputDecoration(
-                alignLabelWithHint: true,
-                labelText: 'Description',   
-                labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please choose a time';
+                  }
+                  return null;
+                },
               ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please make decription';
-                }
-                return null;
-              },
-            ),
+        
+              //SELECT LOCATION
+              TextFormField(
+                style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
+                controller: _locationController,
+                decoration: InputDecoration(
+                  labelText: 'Location',
+                  labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please choose location';
+                  }
+                  return null;
+                },
+              ),
 
-                // Private/Public dropdown
-                DropdownButtonFormField<String>(
-                  borderRadius: BorderRadius.circular(8.0),
-                  dropdownColor: const Color.fromARGB(255, 81, 76, 76),
+              //SELECT TITLE 
+              TextFormField(
+                style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
+                controller: _titleController,
+                decoration: InputDecoration(
+                  labelText: 'Title',
+                  labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
+                    border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please choose title';
+                  }
+                  return null;
+                },
+              ),
+ 
+              //SELECT CATEGORY
+              DropdownButtonFormField<String>(
+                dropdownColor: const Color.fromARGB(255, 81, 76, 76),
+                borderRadius: BorderRadius.circular(8.0),
                   style: TextStyle(
                     color: Color.fromARGB(255, 234, 208, 225),
                     fontFamily: "Purisa",
                   ),
-                  value: _isPrivateController.text.isNotEmpty ? _isPrivateController.text : null,
-                  decoration: InputDecoration(
-                    labelText: 'Private/Public',
-                    labelStyle: TextStyle(
-                      color: const Color.fromARGB(255, 183, 211, 83), 
-                      //fontSize: 14.0
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
+                value: _categoryController.text.isNotEmpty ? _categoryController.text : null,
+                decoration: InputDecoration(
+                  //hoverColor: const Color.fromARGB(255, 36, 51, 6),
+                  labelText: 'Category',
+                  labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83)),
+                  border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
                   ),
-                  items: [
-                    DropdownMenuItem(value: 'true', child: Text('Private')),
-                    DropdownMenuItem(value: 'false', child: Text('Public')),
-                  ],
-                  onChanged: (value) {
-                    setState(() {
-                      _isPrivateController.text = value!;  
-                    });
-                  },
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please specify if the event is private or public';
-                    }
-                    return null;
-                  },
                 ),
+                items: [
+                  DropdownMenuItem(value: 'Anniversary', child: Text('Anniversary')),
+                  DropdownMenuItem(value: 'Birthday', child: Text('Birthday')),
+                  DropdownMenuItem(value: 'Concert', child: Text('Concert')),
+                  DropdownMenuItem(value: 'Corporate', child: Text('Corporate')),
+                  DropdownMenuItem(value: 'Convention', child: Text('Convention')),
+                  DropdownMenuItem(value: 'Exhibition', child: Text('Exhibition')),
+                  DropdownMenuItem(value: 'Festival', child: Text('Festival')),
+                  DropdownMenuItem(value: 'Lecture', child: Text('Lecture')),
+                  DropdownMenuItem(value: 'Networking', child: Text('Networking')),
+                  DropdownMenuItem(value: 'Party', child: Text('Party')),
+                  DropdownMenuItem(value: 'Reception', child: Text('Reception')),
+                  DropdownMenuItem(value: 'Sports', child: Text('Sports')),
+                  DropdownMenuItem(value: 'Seminar', child: Text('Seminar')),
+                  DropdownMenuItem(value: 'Team builing', child: Text('Team builing')),
+                  DropdownMenuItem(value: 'Wedding', child: Text('Wedding')),
+                  DropdownMenuItem(value: 'Workshop', child: Text('Workshop')),
+                  DropdownMenuItem(value: 'Others', child: Text('Others')),
+                ],
+                onChanged: (value) {
+                  setState(() {
+                    _categoryController.text = value!;  
+                  });
+                },
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please chose category';
+                  }
+                  return null;
+                },
+              ),
+              // WRITE DESCRIPTION
+              TextFormField(
+                style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
+                maxLines: 3,
+                minLines: 3,
+                controller: _descriptionController,
+                decoration: InputDecoration(
+                  alignLabelWithHint: true,
+                  labelText: 'Description',   
+                  labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                ),
+                validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please make decription';
+                }
+                return null;
+                },
+              ),
+
+              // Private/Public dropdown
+              DropdownButtonFormField<String>(
+                borderRadius: BorderRadius.circular(8.0),
+                dropdownColor: const Color.fromARGB(255, 81, 76, 76),
+                style: TextStyle(
+                  color: Color.fromARGB(255, 234, 208, 225),
+                  fontFamily: "Purisa",
+                ),
+                value: _isPrivateController.text.isNotEmpty ? _isPrivateController.text : null,
+                decoration: InputDecoration(
+                  labelText: 'Private/Public',
+                  labelStyle: TextStyle(
+                    color: const Color.fromARGB(255, 183, 211, 83), 
+                    //fontSize: 14.0
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                ),
+                items: [
+                  DropdownMenuItem(value: 'true', child: Text('Private')),
+                  DropdownMenuItem(value: 'false', child: Text('Public')),
+                ],
+                onChanged: (value) {
+                  setState(() {
+                    _isPrivateController.text = value!;  
+                  });
+                },
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please specify if the event is private or public';
+                  }
+                  return null;
+                },
+              ),
               const SizedBox(height: 15),     
               SizedBox(height: 20),
 
