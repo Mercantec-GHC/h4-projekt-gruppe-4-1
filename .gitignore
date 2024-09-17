@@ -4,4 +4,4 @@
 /API/bin
 /API/appsettings.json
 .vscode
-# /lib/components/auth_workaround.dart
+/lib/components/auth_workaround.dart
