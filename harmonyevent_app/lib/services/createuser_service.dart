@@ -3,26 +3,24 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:harmonyevent_app/config/api_config.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-//import 'package:harmonyevent_app/models/user_model.dart';
 
 class CreateUserService {
 // Initialize secure storage
-final FlutterSecureStorage secureStorage = FlutterSecureStorage();
-final String baseUrl = ApiConfig.apiUrl;
-Future<void> createUser(
-  String firstName,
-  String lastName,
-  String email,
-  String username,
-  String password,
-  String address,
-  String postal,
-  String city,
-  File? image
-) async {
-
+  final FlutterSecureStorage secureStorage = FlutterSecureStorage();
+  final String baseUrl = ApiConfig.apiUrl;
+  Future<void> createUser(
+    String firstName,
+    String lastName,
+    String email,
+    String username,
+    String password,
+    String address,
+    String postal,
+    String city,
+    File? image
+  ) async {
+  
   final request = http.MultipartRequest('POST', Uri.parse('$baseUrl/api/User/SignUp'));
-
   // Add all fields to the request
   request.fields['firstname'] = firstName;
   request.fields['lastname'] = lastName;
@@ -32,7 +30,7 @@ Future<void> createUser(
   request.fields['address'] = address;
   request.fields['postal'] = postal;
   request.fields['city'] = city;
-
+  
   if (image != null) {
     request.files.add(
       http.MultipartFile.fromBytes(
@@ -42,16 +40,14 @@ Future<void> createUser(
       ),
     );
   }
-
+  
   // Retrieve the token securely
   final String? token = await secureStorage.read(key: 'token');
   if (token != null) {
     request.headers[HttpHeaders.authorizationHeader] = 'Bearer $token';
   }
-
   try {
     final response = await request.send();
-
     if (response.statusCode == 200) {
       final responseBody = await response.stream.bytesToString();
       print("User created successfully: $responseBody");
