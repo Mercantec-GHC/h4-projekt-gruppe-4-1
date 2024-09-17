@@ -9,6 +9,7 @@ komplikation som det har gjort, vi har brugt meget tid på at rette småfejl dep
 med alt fra autherisation til sletning og opretning af events osv. og et projekt med styling og 
 der sidder vi fast i problemer med authorization grundet at der har været så mange forskellige ting der er bygget op på hver sin OS. 
 Det vi ved fremadrettet er at flutter_secure_storage og autharisation ikke er for tøsedrenge, Vores styling del ligger inde under Saa-dev så i kan se de to forskellige apps 
+Appsettings.json er kommet med fordi det kom med fra starten, som gjorde at der hele tiden var problemer med at køre serveren på render, selvom værdierne fra appsettings.json blev overført til render. Derfor er appsettings.json på github og vi er klar over at i fremtiden, vil sikkerheden være mere topmoderne, for at undgå dette breach of security.
 
 ## Mappe struktur
 
