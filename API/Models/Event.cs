@@ -7,7 +7,7 @@ namespace API.Models
     public class Event : Common
     {
         
-        public String Date { get; set; }
+        public String? Date { get; set; }
         public string? User_id { get; set; }
         public string? Place_id { get; set; }
         public string? EventPictureURL { get; set; }
@@ -30,13 +30,13 @@ namespace API.Models
     public class EventDTO
     {
         public string? Id { get; set; }
-        public String Date { get; set; }
-        public string Place_id { get; set; }
-        public string Description { get; set; }
-        public string Title { get; set; }
+        public String? Date { get; set; }
+        public string? Place_id { get; set; }
+        public string? Description { get; set; }
+        public string? Title { get; set; }
         public String? EventPicture { get; set; }
-        public string Category { get; set; }
-        public string isprivate { get; set; }
+        public string? Category { get; set; }
+        public string? isprivate { get; set; }
         public List<Participant>? Participants { get; set; }
     }
 

@@ -254,7 +254,7 @@ namespace API.Controllers
             }
 
 
-            return CreatedAtAction(nameof(GetEventById), new { id = events.id }, events);
+            return CreatedAtAction(nameof(GetEventById), new { Id = events.id }, events);
         }
 
 
