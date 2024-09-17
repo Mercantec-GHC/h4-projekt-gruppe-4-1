@@ -66,8 +66,7 @@ class _SeeAllEventsState extends State<SeeAllEvents> {
   void _navigateToPage(int index) {
     switch (index) {
       case 0:
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => DeleteUserPage()));
+        _navigateToDeleteUserPage(context);
       case 1:
         _navigateToUpdateUserPage(context);
       case 2:
@@ -122,6 +121,22 @@ class _SeeAllEventsState extends State<SeeAllEvents> {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => CreateEvent()),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('User not logged in or token expired')),
+      );
+    }
+  }
+
+  void _navigateToDeleteUserPage(BuildContext context) async {
+    final token = await _authService.getToken();
+    print('Token retrieved: $token'); // Debugging statement
+
+    if (token != null && !_authService.isTokenExpired(token)) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => DeleteUserPage()),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(

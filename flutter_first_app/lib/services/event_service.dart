@@ -123,6 +123,7 @@ class EventService {
 
   // Attend Event
   Future<bool> attendEvent(String eventId) async {
+    final eventId = await _storage.read(key: 'jwt');
     final token = await _storage.read(key: 'jwt');
     
     if (token == null) {

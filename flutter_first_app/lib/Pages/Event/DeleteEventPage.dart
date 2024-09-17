@@ -41,7 +41,6 @@ class _DeleteEventPageState extends State<DeleteEventPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Event deleted successfully')),
         );
-        Navigator.pop(context); 
       } else {
         
         final errorBody = jsonDecode(response.body);

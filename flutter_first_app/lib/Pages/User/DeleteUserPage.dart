@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_first_app/config/api_config.dart';
 import 'package:flutter_first_app/Pages/User/LoginPage.dart';
-import 'package:flutter_first_app/Pages/Event/SeeAllEvents.dart'; // Import SeeAllEvents page
+ // Import SeeAllEvents page
 
 class DeleteUserPage extends StatefulWidget {
   @override
@@ -23,13 +23,17 @@ class _DeleteUserPageState extends State<DeleteUserPage> {
 
     try {
       // Fetch the token from secure storage
-      String? token = await _secureStorage.read(key: 'token');
+      String? token = await _secureStorage.read(key: 'jwt');
 
       // Fetch the userId from secure storage if necessary
       String? userId = await _secureStorage.read(key: 'userId');
 
+      if (token == null || userId == null) {
+        throw Exception('Authentication token or user ID not found. Please log in.');
+      }
+
       // Make the DELETE request to the server
-      final url = Uri.parse('${ApiConfig.apiUrl}/api/User/Delete/$userId');
+      final url = Uri.parse('${ApiConfig.apiUrl}/api/User/delete/$userId');
       final response = await http.delete(
         url,
         headers: {
@@ -45,7 +49,7 @@ class _DeleteUserPageState extends State<DeleteUserPage> {
         );
 
         // Clear the secure storage (token, userId)
-        await _secureStorage.delete(key: 'token');
+        await _secureStorage.delete(key: 'jwt');
         await _secureStorage.delete(key: 'userId');
 
         // Navigate back to login page
@@ -111,7 +115,7 @@ class _DeleteUserPageState extends State<DeleteUserPage> {
           onPressed: () {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => SeeAllEvents()), // Navigate to SeeAllEvents
+              MaterialPageRoute(builder: (context) => LoginPage()), // Navigate to SeeAllEvents
             );
           },
         ),
@@ -138,6 +142,7 @@ class _DeleteUserPageState extends State<DeleteUserPage> {
                       child: Text(
                         'Delete Account',
                         style: TextStyle(fontSize: 16),
+                        
                       ),
                     ),
             ],
