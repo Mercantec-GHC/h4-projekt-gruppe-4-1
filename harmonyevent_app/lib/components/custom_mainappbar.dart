@@ -62,7 +62,7 @@ class CustomMainAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
           tooltip: "Create Event",
           onPressed: () async {
-                  // final token = await _authService.getToken();
+                  //final token = await _authService.getToken();
                   final token = mytoken;
                   print('Token retrieved: $token'); // Debugging statement
                   if (token != null && !_authService.isTokenExpired(token)) {
