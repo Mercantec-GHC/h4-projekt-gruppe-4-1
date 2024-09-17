@@ -9,12 +9,10 @@ import 'package:harmonyevent_app/main.dart';
 import 'package:harmonyevent_app/services/createuser_service.dart';
 import 'package:harmonyevent_app/pages/user/LoginPage.dart';
 
-
 class CreateUserPage extends StatefulWidget {
   @override
   _CreateUserPageState createState() => _CreateUserPageState();
 }
-
 class _CreateUserPageState extends State<CreateUserPage> {
   final _formKey = GlobalKey<FormState>(); 
   final _formKeyNext = GlobalKey<FormState>(); 
@@ -45,7 +43,6 @@ class _CreateUserPageState extends State<CreateUserPage> {
   }
 
   void _createUser() async {
-    // if (_formKey.currentState!.validate() || _formKeyNext.currentState!.validate()) {
     if (_formKeyNext.currentState!.validate()) {
       setState(() {
         _isLoading = true;      
@@ -79,7 +76,6 @@ class _CreateUserPageState extends State<CreateUserPage> {
         );  
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            // content: Text("User ${newUserDTO.username} created successfully."),
              content: Text("User created successfully."),
           ),
         );
@@ -121,8 +117,7 @@ class _CreateUserPageState extends State<CreateUserPage> {
         automaticallyImplyLeading: false,
         leading: IconButton(
         icon: Icon(Icons.arrow_back_ios),
-        color: const Color.fromARGB(255, 234, 208, 225),
-        
+        color: const Color.fromARGB(255, 234, 208, 225),     
         onPressed: () {
           Navigator.pushReplacement(
             context,
@@ -182,7 +177,6 @@ class _CreateUserPageState extends State<CreateUserPage> {
                             return null;
                             },
                           ),
-                          //const SizedBox(height: 15),
                           TextFormField(
                             style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
                             controller: _lastNameController,
@@ -218,7 +212,6 @@ class _CreateUserPageState extends State<CreateUserPage> {
                             return null;
                             },
                           ),
-                          //const SizedBox(height: 15),
                           TextFormField(
                             style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
                             controller: _postalController,
@@ -236,7 +229,6 @@ class _CreateUserPageState extends State<CreateUserPage> {
                             return null;
                             },
                           ),
-                          //const SizedBox(height: 15),
                           TextFormField(
                              style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
                             controller: _cityController,
@@ -275,7 +267,6 @@ class _CreateUserPageState extends State<CreateUserPage> {
                               return null;
                             },
                           ),
-                          //const SizedBox(height: 15),
                           TextFormField(
                             style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
                             controller: _confirmEmailController,
@@ -296,7 +287,6 @@ class _CreateUserPageState extends State<CreateUserPage> {
                               return null;
                             },
                           ),
-                          //StandardPadding(),
                           const SizedBox(height: 20),
                           Builder(
                             builder: (context) {
@@ -333,9 +323,7 @@ class _CreateUserPageState extends State<CreateUserPage> {
           child: Stack(
             children: [
               SafeArea(
-                //padding: const EdgeInsets.all(18.0),
                 child: Container(
-                  // color: const Color.fromARGB(255, 89, 99, 44),
                   decoration: BoxDecoration(
                     color: const Color.fromARGB(255, 89, 99, 44),
                      boxShadow: [
