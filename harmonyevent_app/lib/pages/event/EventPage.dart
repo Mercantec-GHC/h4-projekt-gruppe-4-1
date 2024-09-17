@@ -1,242 +1,399 @@
-
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
 import 'package:flutter_gradient_button/flutter_gradient_button.dart';
 
-import 'package:harmonyevent_app/config/auth_workaround.dart';
-import 'package:harmonyevent_app/components/custom_mainappbar.dart';
+import 'package:harmonyevent_app/components/custom_limitedappbar.dart';
+import 'package:harmonyevent_app/components/custom_alerts.dart';
 import 'package:harmonyevent_app/models/event_model.dart';
-import 'package:harmonyevent_app/services/fetch_service.dart';
-import 'package:harmonyevent_app/services/login_service.dart';
+import 'package:harmonyevent_app/services/createevent_service.dart';
+import 'package:harmonyevent_app/pages/event/EventPage.dart';
 
-class EventPage extends StatefulWidget {
-  const EventPage({super.key});
-
+class CreateEventPage extends StatefulWidget {
   @override
-  State<EventPage> createState() => _EventPageState();
-}
-class _EventPageState extends State<EventPage> {
-  late Future<List<EventDTO>> eventsFuture;
-  final FlutterSecureStorage secureStorage = FlutterSecureStorage(); // Secure storage instance
-  final AuthService authService = AuthService();
-  //Inits fetchEvents from fetchevents_service.dart
-  @override
-  void initState() {
-    super.initState();
-    eventsFuture = fetchEvents(); // Fetch events in initState
+  CreateEventState createState() {
+    return CreateEventState();
   }
-  
+}
+
+class CreateEventState extends State<CreateEventPage> {
+  final _formKey = GlobalKey<FormState>();
+  File? EventPicture; // To store the selected image
+  final picker = ImagePicker(); // Image picker instance
+  final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _timeController = TextEditingController(); 
+  final TextEditingController _locationController = TextEditingController();
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _categoryController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _isPrivateController = TextEditingController();
+  bool _isLoading = false;
+  //final GlobalKey<FormFieldState> _isPrivateFieldKey = GlobalKey();
+
+  final CreateEventService _eventService = CreateEventService(); 
+
   @override
-  Widget build(BuildContext context) {   
+  void dispose() {
+    _dateController.dispose();
+    _timeController.dispose();
+    _locationController.dispose();
+    _titleController.dispose();
+    _categoryController.dispose();
+    _descriptionController.dispose();
+    _isPrivateController.dispose();
+    super.dispose();
+  }
+
+// Function to pick an image
+ Future<void> _pickImage() async {
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        EventPicture = File(pickedFile.path); // Save the selected image
+      });
+    }
+  }
+
+  // Function to select a date using DatePicker
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? selected = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2050),
+    );
+    if (selected != null) {
+      setState(() {
+        _dateController.text = selected.toUtc().toString().split(' ')[0]; // Update date
+      });
+    }
+  }
+  Future<void> _selectTime(BuildContext context) async {
+  final TimeOfDay? selected = await showTimePicker(
+    context: context,
+    initialTime: TimeOfDay.now(),
+  );
+  if (selected != null) {
+    setState(() {
+      _timeController.text = selected.format(context); 
+      });
+    }
+  }
+
+
+  //  SwitchListTile standard selection
+  bool SwitchIsChecked = false; 
+
+  // Function to handle form submission
+  Future<void> _submitData() async {
+  if (_formKey.currentState!.validate()) {
+    setState(() {
+      _isLoading = true;      
+    });
+
+    File? eventPicture; // Declared as a nullable File
+    // Ensure that the user has picked an image
+    if (EventPicture != null) {
+      eventPicture = EventPicture; // Set the image from the file picker
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Please select an event picture."),
+        ),
+      );
+      return;
+    }
+    final String date = _dateController.text;
+    final String time = _timeController.text;
+    final String location = _locationController.text;
+    final String title = _titleController.text;
+    final String category = _categoryController.text;
+    final String description = _descriptionController.text;
+    final String isPrivate = _isPrivateController.text;
+    
+    try {
+      // Call EventService to create the event
+      final CreateEventDTO newEventDTO = await _eventService.createEvent(
+        eventPicture, 
+        "$date $time", 
+        location,
+        category,
+        title,
+        description,
+        isPrivate,
+      );
+      showSuccessAlertCreateEvent(context);
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => EventPage()), // Replace with the correct page
+        );  
+        ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Event '${newEventDTO.title}' created successfully."),
+        ),
+      );
+      // Reset the form after successful submission
+      _formKey.currentState?.reset();
+      setState(() {
+        EventPicture = null; // Clear the selected image
+      });
+    } 
+    catch (e) {
+      showErrorAlertCreateEvent(context);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Failed to create event: $e"),
+        ),
+      );
+    }
+    finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+}
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
 
-      //GETs CUSTOM MAIN APPBAR FROM /components/custom_mainappbar.dart
-      appBar: CustomMainAppBar(),
-  
-      body: Center(
-        child: FutureBuilder<List<EventDTO>>(
-          future: eventsFuture,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              // Loading indicator while fetching data
-              return const CircularProgressIndicator();
-            } 
-            else if (snapshot.hasError) {
-              // Display error message if the Future failed
-              return const Text("Failed to load events.");
-            } 
-            else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-              // If data is available, build the event list
-              final events = snapshot.data!;
-              print(events);
-              return buildEvents(events);
-            } 
-            else {
-              // Display message if no data is available
-              return const Text("No events available.");
-            }
-          },
-        ),
-      ),
-    );
-  }
-  // Build the event list UI
-  Widget buildEvents(List<EventDTO> events) {
-    var screenSize = MediaQuery.of(context).size;
-    return ListView.builder(   
-      scrollDirection: Axis.horizontal,
-      itemCount: events.length,
-      physics: PageScrollPhysics(),
-      itemBuilder: (context, index) {
-        final event = events[index];
-        final eventPictureUrl = event.eventPicture;
-        events.sort((a, b) => a.date.compareTo(b.date));
+      //GET CUSTOM LIMITED APPBAR FROM /components/custom_limitedappbar.dart
+      appBar: CustomLimitedAppBar(),
 
-        return Container(
-          width: screenSize.width,
-          height: screenSize.height,
-          margin: const EdgeInsets.symmetric(vertical: 30, horizontal: 0),
-          padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-          child: Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    //EVENT ID
-                    Text(
-                      "Event ID: ${event.id}",
-                      style: const TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                        color: Color.fromARGB(255, 234, 208, 225),
-                      ),
-                    ),
-                    
-                    //EVENT IMAGE
-                    Container(
-                      width: 500,
-                      height: 281,
-                      padding: EdgeInsets.all(2), // Border width
-                      decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 89, 99, 44), 
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: SizedBox.fromSize(
-                          size: Size.fromRadius(48), // Image radius
-                          child: eventPictureUrl.isNotEmpty 
-                           ? Image.network(
-                            eventPictureUrl, 
-                            fit: BoxFit.cover, 
-                            errorBuilder: (context, error, stackTrace) {
-                              return const Icon(Icons.broken_image, size: 300); // Handle broken images
-                            },
-                          )
-                          : const Icon(Icons.broken_image, size: 100),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                   
-                    //EVENT DATE AND TIME
-                    Text(
-                      "Occurs: ${event.date}",
-                      style: const TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                        color: Color.fromARGB(255, 234, 208, 225),
-                      ),
-                    ),
+      //FORM FIELD
+      body: Padding(
+      padding: const EdgeInsets.only(left: 66.0, right: 66.0, top: 10),
+      child: Form(
+        key: _formKey,       
+        child: Column(
+          //FORM FIELD CHIRLDREN
+          children: [
 
-                    //EVENT LOCATION
-                    Text(
-                      "Location: ${event.location}",
-                      style: const TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                        color: const Color.fromARGB(255, 234, 208, 225),
-                      ),
-                    ),
+            //SELECT IMAGE
+            ElevatedButton.icon(
+              onPressed: _pickImage,
+              icon: Icon(
+                Icons.image,
+                color: const Color.fromARGB(255, 183, 211, 83),),
+                label: Text('Choose image'),              
+            ),
+            //SizedBox(height: 10),
+            EventPicture != null ? Image.file(
+              EventPicture!,
+              height: 50,
+            )
+            : Text(
+              'Prefered size 500x281 pixels',
+              style: TextStyle(
+                 color: const Color.fromARGB(255, 183, 211, 83)
+                ),),
+            SizedBox(height: 10),
 
-                    //EVENT TITLE
-                    Text(
-                      "Title: ${event.title}",
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
+            //SELECT DATE AND TIME
+            TextFormField(
+              style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
+              controller: _dateController,
+              readOnly: true, 
+              decoration: InputDecoration(
+                labelText: 'Occurs',
+                labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    Icons.calendar_today,
+                        color: const Color.fromARGB(255, 183, 211, 83),
+                    ),
+                  onPressed: () => _selectDate(context),
+                ),
+              ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please choose date and time';
+                }
+                return null;
+              },
+            ),
+            // Time field
+                TextFormField(
+                  style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
+                  controller: _timeController,
+                  readOnly: true,
+                  decoration: InputDecoration(
+                    labelText: 'Time',
+                    labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
+                      border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        Icons.access_time,
                         color: const Color.fromARGB(255, 183, 211, 83),
                       ),
+                      onPressed: () => _selectTime(context),
                     ),
-
-                    //EVENT CATEGORY
-                    Text(
-                      "Category: ${event.category}",
-                      style: const TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                        color: Color.fromARGB(255, 234, 208, 225),
-                      ),
-                    ),
-
-                    //EVENT DESCRIPTION
-                    Text(
-                      "Decription: ${event.description}",
-                      style: const TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                        color: Color.fromARGB(255, 234, 208, 225),
-                      ),
-                    ),
-
-                    //EVENTTYPE (PRIVATE/PUBLIC)
-                    Text(
-                      "Type: ${event.isprivate}",
-                      style: const TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                        color: Color.fromARGB(255, 234, 208, 225),
-                      ),
-                    ),
-                    
-                    const SizedBox(height: 20),
-                    //ORGANIZED BY
-                    // Container(
-                    //   child: Column(
-                    //     children: [
-                    //       Text(
-                    //         "Organized by: ${event.eventCreator_id}",
-                    //         style: const TextStyle(
-                    //         fontSize: 12,
-                    //         fontWeight: FontWeight.bold,
-                    //         color: const Color.fromARGB(255, 183, 211, 83),
-                    //         ),
-                    //       ),
-                          
-                    //       // Container(
-                    //       //   width: 50,
-                    //       //   child: CircleAvatar(
-                    //       //     backgroundColor: const Color.fromARGB(255, 183, 211, 83),
-                    //       //     radius: 40,
-                    //       //     child: Padding(
-                    //       //       padding: const EdgeInsets.all(3),
-                    //       //       child: ClipOval (
-                    //       //         child: Image.network(
-                    //       //           event.eventPicture,                             
-                    //       //           errorBuilder: (context, error, stackTrace) {
-                    //       //             return const Icon(Icons.broken_image, size: 300); // Handle broken images
-                    //       //           },
-                    //       //         ), 
-                    //       //       ),
-                    //       //     ),
-                    //       //   ),
-                    //       // ),
-                    //     ],
-                    //   ),
-                    // ),
-
-                    //CREATE EVENT BUTTON
-                    GradientButton(
-                      colors: [const Color.fromARGB(255, 183, 211, 54), const Color.fromARGB(255, 109, 190, 66)],
-                      height: 40,
-                      width: 350,
-                      radius: 20,
-                      gradientDirection: GradientDirection.leftToRight,
-                      textStyle: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
-                      text: "Attend Event (IN DEVELOPMENT)",
-                      onPressed: () {
-                        print("In development - comming later");
-                      },
-                    ),
-                  ], 
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please choose a time';
+                    }
+                    return null;
+                  },
                 ),
+            
+            //SELECT LOCATION
+            TextFormField(
+              style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
+              controller: _locationController,
+              decoration: InputDecoration(
+                labelText: 'Location',
+                labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+              ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please choose location';
+                }
+                return null;
+              },
+            ),
+            //const SizedBox(height: 15),
+
+            //SELECT TITLE 
+            TextFormField(
+              style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
+              controller: _titleController,
+              decoration: InputDecoration(
+                labelText: 'Title',
+                labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
+                  border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+              ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please choose title';
+                }
+                return null;
+              },
+            ),
+            //const SizedBox(height: 15),
+
+            //SELECT CATEGORY
+            DropdownButtonFormField<String>(
+                  dropdownColor: const Color.fromARGB(255, 81, 76, 76),
+                  borderRadius: BorderRadius.circular(8.0),
+                    style: TextStyle(
+                      color: Color.fromARGB(255, 234, 208, 225),
+                      fontFamily: "Purisa",
+                    ),
+                  value: _categoryController.text.isNotEmpty ? _categoryController.text : null,
+                  decoration: InputDecoration(
+                    //hoverColor: const Color.fromARGB(255, 36, 51, 6),
+                    labelText: 'Category',
+                    labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83)),
+                    border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    ),
+                  ),
+                  items: [
+                    DropdownMenuItem(value: 'Birthday', child: Text('Birthday')),
+                    DropdownMenuItem(value: 'Concert', child: Text('Concert')),
+                    DropdownMenuItem(value: 'Lecture', child: Text('Lecture')),
+                    DropdownMenuItem(value: 'Wedding', child: Text('Wedding')),
+                    DropdownMenuItem(value: 'Other', child: Text('Others')),
+                  ],
+                  onChanged: (value) {
+                    setState(() {
+                      _categoryController.text = value!;  
+                    });
+                  },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please chose category';
+                    }
+                    return null;
+                  },
+                ),
+            // WRITE DESCRIPTION
+            TextFormField(
+              style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
+              maxLines: 3,
+              minLines: 3,
+              controller: _descriptionController,
+              decoration: InputDecoration(
+                alignLabelWithHint: true,
+                labelText: 'Description',   
+                labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+              ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please make decription';
+                }
+                return null;
+              },
+            ),
+
+                // Private/Public dropdown
+                DropdownButtonFormField<String>(
+                  borderRadius: BorderRadius.circular(8.0),
+                  dropdownColor: const Color.fromARGB(255, 81, 76, 76),
+                  style: TextStyle(
+                    color: Color.fromARGB(255, 234, 208, 225),
+                    fontFamily: "Purisa",
+                  ),
+                  value: _isPrivateController.text.isNotEmpty ? _isPrivateController.text : null,
+                  decoration: InputDecoration(
+                    labelText: 'Private/Public',
+                    labelStyle: TextStyle(
+                      color: const Color.fromARGB(255, 183, 211, 83), 
+                      //fontSize: 14.0
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                  ),
+                  items: [
+                    DropdownMenuItem(value: 'true', child: Text('Private')),
+                    DropdownMenuItem(value: 'false', child: Text('Public')),
+                  ],
+                  onChanged: (value) {
+                    setState(() {
+                      _isPrivateController.text = value!;  
+                    });
+                  },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please specify if the event is private or public';
+                    }
+                    return null;
+                  },
+                ),
+              const SizedBox(height: 15),       
+
+              //CREATE EVENT BUTTON
+              SizedBox(height: 20),
+              _isLoading ? Center(child: CircularProgressIndicator()) : GradientButton(
+              colors: [const Color.fromARGB(255, 183, 211, 54), const Color.fromARGB(255, 109, 190, 66)],
+              height: 40,
+              width: 350,
+              radius: 20,
+              gradientDirection: GradientDirection.leftToRight,
+              textStyle:  TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
+              text: "Create event",
+              onPressed: _submitData, 
               ),
             ],
           ),
-        );
-      },
+        ),
+      )
     );
   }
 }
-
