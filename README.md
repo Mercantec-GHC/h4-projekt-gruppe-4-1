@@ -22,7 +22,7 @@ Her skal alt dokumentation være, der er noget documentation vi beder jer om at 
 1. Casebeskrivelse fra kunden er beskrevet under det her link 
    - https://github.com/Mercantec-GHC/h4-projekt-gruppe-3/tree/main/Docs/CustomerCase
 3. Kravspecifikation som I som gruppe har udarbejde ud fra kundens casebeskrivelse
-   - https://github.com/Mercantec-GHC/h4-projekt-gruppe-3/tree/main/Docs/CustomerCase
+   - https://edumercantec-my.sharepoint.com/:b:/g/personal/erxx4679_edu_mercantec_dk/EbwaqM7JEodMjRIyjIMprS8BuPrbmwOVRVGKML8Mf9jb-w?e=zaTCOz
 5. Herunder kan du finde rollefordeling for gruppe 4 https://docs.google.com/document/d/1Z8YHXhSDqolyOdG-cMSyVALI3nS5sJ8syp_qBTE3tFc/edit?usp=sharing
 6. Retrospektivt møder https://docs.google.com/document/d/1whzlPf4bnx1a4milswGlx3-l5CLf8YKfGDfrp1FUEm8/edit
 7. Figma-design er på docs herunder https://www.figma.com/design/OOCY77mnWQIxKA2nln3wtG/Gruppe-4---EventHarmoni?node-id=0-1&t=LGaJvaH2zLjXICoi-0
