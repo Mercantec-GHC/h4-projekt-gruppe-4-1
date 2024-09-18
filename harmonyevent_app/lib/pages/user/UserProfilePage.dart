@@ -4,6 +4,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_gradient_button/flutter_gradient_button.dart';
 
 import 'package:harmonyevent_app/components/custom_mainappbar.dart';
+import 'package:harmonyevent_app/config/auth_workaround.dart';
 import 'package:harmonyevent_app/models/user_model.dart';
 import 'package:harmonyevent_app/services/fetch_service.dart';
 import 'package:harmonyevent_app/services/login_service.dart';
@@ -172,7 +173,8 @@ class _UserProfilePageState extends State<UserProfilePage> {
                 textStyle:  TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
                 text: "Edit Profile",
                 onPressed: () async {
-                  final token = await _authService.getToken();
+                  //final token = await _authService.getToken();
+                  final token = mytoken;
                   print('Token retrieved: $token'); // Debugging statement
                   if (token != null && !_authService.isTokenExpired(token)) {
                   Navigator.push(
@@ -199,7 +201,8 @@ class _UserProfilePageState extends State<UserProfilePage> {
                 textStyle:  TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
                 text: "Delete Profile",
                 onPressed: () async {
-                  final token = await _authService.getToken();
+                  //final token = await _authService.getToken();
+                  final token = mytoken;
                   print('Token retrieved: $token'); // Debugging statement
                   if (token != null && !_authService.isTokenExpired(token)) {
                   Navigator.push(

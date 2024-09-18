@@ -25,7 +25,7 @@ class CreateEventService {
     String isprivate,
   ) 
   async {
-    var request = http.MultipartRequest('POST', Uri.parse('$_baseUrl/api/event/create'));
+    var request = http.MultipartRequest('POST', Uri.parse('$_baseUrl/api/event/event/create'));
 
     //Retrieve the token securely
     //final String? token = await storage.read(key: 'jwt');
@@ -35,6 +35,8 @@ class CreateEventService {
       throw Exception('Authentication token not found. Please log in');
     }
     request.headers['Authorization'] = 'Bearer $token';
+    print(request.headers);
+    print(request);
 
     if (EventPicture != null) {
       var imageStream = http.ByteStream(EventPicture.openRead());
