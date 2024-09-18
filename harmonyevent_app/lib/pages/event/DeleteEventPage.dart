@@ -186,7 +186,13 @@ class _DeleteEventPageState extends State<DeleteEventPage> {
               gradientDirection: GradientDirection.leftToRight,
               textStyle:  TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
               text: "Delete Event",
-                onPressed: _confirmDelete
+              onPressed: _confirmDelete
+              // onPressed: () {
+              //   Navigator.pushReplacement(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => MyEventsPage()),
+              //   );
+              // },
             ),
           ],
         ),

@@ -218,6 +218,35 @@ class _UserProfilePageState extends State<UserProfilePage> {
                   }
                 }            
               ),
+              SizedBox(height: 20),
+              // GradientButton(
+              //   colors: [const Color.fromARGB(255, 183, 211, 54), const Color.fromARGB(255, 109, 190, 66)],
+              //   height: 40,
+              //   width: 350,
+              //   radius: 20,
+              //   gradientDirection: GradientDirection.leftToRight,
+              //   textStyle:  TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
+              //   text: "Log out",
+              //   onPressed: logout        
+              // )
+                            IconButton(
+                icon: Icon(
+                  Icons.auto_delete, 
+                  color: const Color.fromARGB(255, 183, 211, 54),
+
+                ),
+                tooltip: "Delete user",
+                onPressed: logout
+              ),
+              IconButton(
+                icon: Icon(
+                  Icons.logout, 
+                  color: const Color.fromARGB(255, 183, 211, 54),
+
+                ),
+                tooltip: "Logout",
+                onPressed: logout
+              ),
             ],
           ),
         ),

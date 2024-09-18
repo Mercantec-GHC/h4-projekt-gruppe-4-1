@@ -10,6 +10,7 @@ class EventDTO {
   final String description;
   final String isprivate;
   final String eventCreator_id;
+  final List<dynamic> participants; // New field for participants
 
   EventDTO({
     required this.id,
@@ -20,7 +21,8 @@ class EventDTO {
     required this.category,
     required this.description,
     required this.isprivate,
-    required this.eventCreator_id
+    required this.eventCreator_id,
+    required this.participants, // 
   });
 
   // Convert an EventDTO object into a JSON map.
@@ -35,6 +37,7 @@ class EventDTO {
       'description': description,
       'isprivate': isprivate,
       'eventCreator_id': eventCreator_id,
+      'participants': participants, 
     };
   }
 
@@ -50,6 +53,7 @@ factory EventDTO.fromJson(Map<String, dynamic> json) {
     description: json['description'] ?? '',
     isprivate: json['isprivate'] ??'', 
     eventCreator_id: json['eventCreator_id'] ??'',
+    participants: json['participants'] ?? [], // Handle missing participants
   );
 }}
 

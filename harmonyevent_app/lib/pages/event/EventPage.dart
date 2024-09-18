@@ -182,39 +182,39 @@ class _EventPageState extends State<EventPage> {
                     
                     const SizedBox(height: 20),
                     //ORGANIZED BY
-                    // Container(
-                    //   child: Column(
-                    //     children: [
-                    //       Text(
-                    //         "Organized by: ${event.eventCreator_id}",
-                    //         style: const TextStyle(
-                    //         fontSize: 12,
-                    //         fontWeight: FontWeight.bold,
-                    //         color: const Color.fromARGB(255, 183, 211, 83),
-                    //         ),
-                    //       ),
+                    Container(
+                      child: Column(
+                        children: [
+                          Text(
+                            "Organized by: ${event.eventCreator_id}",
+                            style: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            color: const Color.fromARGB(255, 183, 211, 83),
+                            ),
+                          ),
                           
-                    //       // Container(
-                    //       //   width: 50,
-                    //       //   child: CircleAvatar(
-                    //       //     backgroundColor: const Color.fromARGB(255, 183, 211, 83),
-                    //       //     radius: 40,
-                    //       //     child: Padding(
-                    //       //       padding: const EdgeInsets.all(3),
-                    //       //       child: ClipOval (
-                    //       //         child: Image.network(
-                    //       //           event.eventPicture,                             
-                    //       //           errorBuilder: (context, error, stackTrace) {
-                    //       //             return const Icon(Icons.broken_image, size: 300); // Handle broken images
-                    //       //           },
-                    //       //         ), 
-                    //       //       ),
-                    //       //     ),
-                    //       //   ),
-                    //       // ),
-                    //     ],
-                    //   ),
-                    // ),
+                          Container(
+                            width: 50,
+                            child: CircleAvatar(
+                              backgroundColor: const Color.fromARGB(255, 183, 211, 83),
+                              radius: 40,
+                              child: Padding(
+                                padding: const EdgeInsets.all(3),
+                                child: ClipOval (
+                                  child: Image.network(
+                                    event.eventPicture,                             
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return const Icon(Icons.broken_image, size: 300); // Handle broken images
+                                    },
+                                  ), 
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
 
                     //CREATE EVENT BUTTON
                     GradientButton(

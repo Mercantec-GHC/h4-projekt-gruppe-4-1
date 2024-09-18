@@ -34,6 +34,7 @@ class CreateEventService {
     if (token == null) {
       throw Exception('Authentication token not found. Please log in');
     }
+    //request.headers['Authorization'] = 'Bearer: $token';
     request.headers['Authorization'] = 'Bearer $token';
     print(request.headers);
     print(request);

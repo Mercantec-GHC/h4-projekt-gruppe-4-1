@@ -123,19 +123,19 @@ class CreateEventState extends State<CreateEventPage> {
       _isLoading = true;      
     });
 
-    // File? eventPicture; // Declared as a nullable File
-    // // Ensure that the user has picked an image
-    // if (eventPicture != null) {
-    //   eventPicture = eventPicture; // Set the image from the file picker
-    // } 
-    // else {
-    //   ScaffoldMessenger.of(context).showSnackBar(
-    //     SnackBar(
-    //       content: Text("Please select an event picture."),
-    //     ),
-    //   );
-    //   return;
-    // }
+    File? eventPicture; // Declared as a nullable File
+    // Ensure that the user has picked an image
+    if (eventPicture != null) {
+      eventPicture = eventPicture; // Set the image from the file picker
+    } 
+    else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Please select an event picture."),
+        ),
+      );
+      return;
+    }
     final String date = _dateController.text;
     final String time = _timeController.text;
     final String location = _locationController.text;
@@ -338,6 +338,7 @@ class CreateEventState extends State<CreateEventPage> {
                   DropdownMenuItem(value: 'Festival', child: Text('Festival')),
                   DropdownMenuItem(value: 'Lecture', child: Text('Lecture')),
                   DropdownMenuItem(value: 'Networking', child: Text('Networking')),
+                  DropdownMenuItem(value: 'Programming', child: Text('Programming')),
                   DropdownMenuItem(value: 'Party', child: Text('Party')),
                   DropdownMenuItem(value: 'Reception', child: Text('Reception')),
                   DropdownMenuItem(value: 'Sports', child: Text('Sports')),
