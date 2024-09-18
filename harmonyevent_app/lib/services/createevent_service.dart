@@ -58,7 +58,7 @@ class CreateEventService {
     try {
       var response = await request.send();
 
-      if (response.statusCode == 201) {
+      if (response.statusCode == 200) {
         final responseBody = await response.stream.bytesToString();
         return CreateEventDTO.fromJson(jsonDecode(responseBody));
       } else {
