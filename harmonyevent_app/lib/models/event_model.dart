@@ -6,7 +6,6 @@ class EventDTO {
   final String location;
   final String title;
   final String category;
-  
   final String description;
   final String isprivate;
   final String eventCreator_id;
