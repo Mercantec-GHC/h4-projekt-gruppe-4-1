@@ -5,11 +5,13 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';  // Import the secure storage package
 //import 'dart:async';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_gradient_button/flutter_gradient_button.dart';
 
 import 'package:harmonyevent_app/config/auth_workaround.dart';
 import 'package:harmonyevent_app/config/api_config.dart';
+import 'package:harmonyevent_app/services/login_service.dart';
 import 'package:harmonyevent_app/pages/user/UserProfilePage.dart';
 import 'package:harmonyevent_app/pages/user/DeleteUserPage.dart';
 
@@ -23,22 +25,15 @@ class UpdateUserPage extends StatefulWidget {
 
 class _UpdateUserPageState extends State<UpdateUserPage> {
   final _formKey = GlobalKey<FormState>();
-  //File? profilePicture; // To store the selected image
-  //final picker = ImagePicker(); // Image picker instance
-  //final ImagePicker _picker = ImagePicker();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _confirmEmailController = TextEditingController();
-  final TextEditingController _userNameController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final ImagePicker _picker = ImagePicker();
+  final AuthService _authService = AuthService(); // Create an instance of AuthService
   bool _isLoading = false;
 
   // User information variables
   String? userId;
   String email = '';
   String username = '';
-  String password = '';
-  //File? profileImage;
+  File? profileImage;
 
   @override
   void initState() {
@@ -74,8 +69,6 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
 
         email = userData['email'] ?? '';
         username = userData['username'] ?? '';
-        password = userData['password'] ?? '';
-
       });
     } 
     else {
@@ -83,67 +76,48 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
     }
   }
 
-  Future<void> updateUser(
+   Future<void> updateUser(
     String userId,
     String email,
     String username,
-    String password,
-    //File? image,
+    File? profileImage,
+  ) async {
+    const String baseUrl = ApiConfig.apiUrl;
+    final url = Uri.parse('$baseUrl/api/User/update/$userId');
 
-  ) 
-  async {
-    final String baseUrl = ApiConfig.apiUrl; 
-    final request = http.MultipartRequest('PUT', Uri.parse('$baseUrl/api/User/Update/$userId'));
+    final Map<String, dynamic> userData = {
+      'id': userId,
+      'email': email,
+      'username': username,
+      'ProfilePicture': profileImage != null ? base64Encode(await profileImage.readAsBytes()) : '', 
+    };
 
-    // Add fields
-    request.fields['email'] = email;
-    request.fields['username'] = username;
-    request.fields['password'] = password;
+    final String? token = await secureStorage.read(key: 'jwt');
+    final response = await http.put(
+      url,
+      headers: {
+        HttpHeaders.authorizationHeader: 'Bearer $token',
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(userData),
+    );
 
-    // Attach the image if it exists
-    // if (image != null) {
-    //   request.files.add(
-    //     http.MultipartFile.fromBytes(
-    //       'profilePicture',
-    //       await image.readAsBytes(),
-    //       filename: image.path.split('/').last,
-    //     ),
-    //   );
-    // }
-
-    // Get the token from secure storage and attach it
-    final String? token = await secureStorage.read(key: 'token');
-    //final String? token = mytoken;
-    if (token != null) {
-      request.headers[HttpHeaders.authorizationHeader] = 'Bearer $token';
-    }
-    try {
-      final response = await request.send();
-
-      if (response.statusCode == 200) {
-        final responseBody = await response.stream.bytesToString();
-        print("User updated successfully: $responseBody");
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('User updated successfully')));
-      } else {
-        final responseBody = await response.stream.bytesToString();
-        throw Exception('Failed to update user. Status code: ${response.statusCode}, Response: $responseBody');
-      }
-    } 
-    catch (e) {
-      print("Error: $e");
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e')));
+    if (response.statusCode == 200) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('User updated successfully')));
+      Navigator.pop(context); // Navigate back after successful update
+    } else {
+      throw Exception('Failed to update user. Status code: ${response.statusCode}, Response: ${response.body}');
     }
   }
 
-  // Image picker function
-  // Future<void> pickImage() async {
-  //   final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-  //   if (pickedFile != null) {
-  //     setState(() {
-  //       profileImage = File(pickedFile.path);
-  //     });
-  //   }
-  // }
+  Future<void> pickImage() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      if (pickedFile != null) {
+        profileImage = File(pickedFile.path);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -188,117 +162,70 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
         key: _formKey,
           child: ListView(
             children: <Widget>[
+
+              
+                            // Image picker
+              SizedBox(height: 20),
+              profileImage != null
+                  ? Image.file(profileImage!, height: 100, width: 100)
+                  : Text('No image selected',
+                  style: TextStyle(
+                   color: const Color.fromARGB(255, 183, 211, 83)
+                  ),
+                  ),
+              ElevatedButton(
+                onPressed: pickImage,
+                child: Text('Pick new profile Image'),
+              ),
+                     const SizedBox(height: 20),         // Username
+              TextFormField(
+                  style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
+                decoration: InputDecoration(
+                  labelText: "New Username",
+                  labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),               
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8.0),                                              
+                              ),
+                  ),
+                initialValue: username,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter new username';
+                  }
+                  return null;
+                },
+                onSaved: (value) {
+                  username = value!;
+                },
+              ),
+                const SizedBox(height: 20),
               Column(    
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [   
-                  // _pickImage == null
-                  // ? Text('No image selected.')
-                  // : Image.file(_pickImage!),
-                  // const SizedBox(height: 16),
-                  //   ElevatedButton(
-                  //     onPressed: _pickImage,
-                  //     child: const Text("Select Profile Picture"),
-                  //   ), 
                   TextFormField(
-                    style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
-                    controller: _userNameController,
-                    decoration: InputDecoration(
-                      labelText: "New Username",
-                      labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Please re-enter new username";
-                      }
-                    return null;
-                    },
+                      style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
+                decoration: InputDecoration(
+                  labelText: "New Email",
+                  labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),               
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8.0),                                              
+                              ),
                   ),
-                  const SizedBox(height: 20),
-            
-                  TextFormField(
-                    style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
-                    controller: _emailController,
-                    decoration: InputDecoration(
-                      labelText: "New Email",
-                      labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                        ),
-                      ),
-                    keyboardType: TextInputType.emailAddress,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Please enter your email";
-                      } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
-                        return "Please enter a valid email";
-                      }
-                      return null;
-                    },
-                  ),
-                  TextFormField(
-                    style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
-                    controller: _confirmEmailController,
-                    decoration: InputDecoration(
-                      labelText: "Confirm new Email",
-                      labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                        ),
-                      ),
-                    keyboardType: TextInputType.emailAddress,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Please confirm your email";
-                      } else if (value != _emailController.text) {
-                        return "Emails does not match";
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 15),
-                  TextFormField(
-                    style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
-                    controller: _passwordController,
-                    decoration: InputDecoration(
-                      labelText: "Choose new Password",
-                      labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                        ),
-                      ),
-                    obscureText: true,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Please enter your password";
-                      } else if (value.length < 6) {
-                        return "Password must be at least 6 characters long";
-                      }
-                      return null;
-                    },
-                  ),         
-                  TextFormField(
-                    style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
-                    controller: _confirmPasswordController,
-                    decoration: InputDecoration(
-                      labelText: "Confirm new Password",
-                      labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                        ),
-                      ),
-                    obscureText: true,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Please confirm your password";
-                      } else if (value != _passwordController.text) {
-                        return "Passwords do not match";
-                      }
-                      return null;
-                    },
-                  ),
+                initialValue: email,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter new email';
+                  }
+                  return null;
+                },
+                onSaved: (value) {
+                  email = value!;
+                },
+              ),
+
+
+
+
                   const SizedBox(height: 20),
                   _isLoading ? Center(child: CircularProgressIndicator()) : GradientButton(
                     colors: [const Color.fromARGB(255, 183, 211, 54), const Color.fromARGB(255, 109, 190, 66)],
@@ -311,49 +238,48 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         _formKey.currentState!.save();
-                        // Call the update user function
                         if (userId != null) {
                           updateUser(
                             userId!,
                             email,
                             username,
-                            password,
+                            profileImage,
                           );
                         }
                       }
                     },
                   ),
                   Center(
-                child: Container(
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 40),
-                      Text(
-                        "Delete Profile",
-                        style: const TextStyle(
-                        fontSize: 9,
-                        fontWeight: FontWeight.bold,
-                        color: Color.fromARGB(255, 234, 208, 225),
+                    child: Container(
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 40),
+                          Text(
+                            "Delete Profile",
+                            style: const TextStyle(
+                            fontSize: 9,
+                            fontWeight: FontWeight.bold,
+                            color: Color.fromARGB(255, 234, 208, 225),
+                          ),
+                          ),
+                          IconButton(
+                            icon: Icon(
+                              Icons.do_disturb_alt_sharp, 
+                              color: const Color.fromARGB(255, 198, 27, 27),
+                              size: 25,
+                            ),
+                            tooltip: "Delete Profle",
+                            onPressed: () {
+                              Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(builder: (context) => DeleteUserPage()), // Replace with the correct page
+                              );
+                            }
+                          ),
+                        ],
                       ),
-                      ),
-                      IconButton(
-                        icon: Icon(
-                          Icons.do_disturb_alt_sharp, 
-                          color: const Color.fromARGB(255, 198, 27, 27),
-                          size: 25,
-                        ),
-                        tooltip: "Delete Profle",
-                        onPressed: () {
-                          Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(builder: (context) => DeleteUserPage()), // Replace with the correct page
-                          );
-                        }
-                      ),
-                    ],
+                    ),
                   ),
-                ),
-              ),
                 ],
               ), 
             ],
