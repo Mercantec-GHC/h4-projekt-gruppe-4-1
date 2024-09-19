@@ -123,89 +123,95 @@ class _MyEventsPageState extends State<MyEventsPage> {
       : ListView.builder(
         itemCount: _userEvents.length,
         itemBuilder: (context, index) {
-          final event = _userEvents[index];           
+          final event = _userEvents[index];   
+          print("EventTEST ${_userEvents[0]}");      
           return Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Card(    
-              color: const Color.fromARGB(255, 36, 51, 6),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15.0),
-                side: BorderSide(
-                  color: const Color.fromARGB(255, 89, 99, 44),
-                  width: 2.0,
+            child: Container(
+              //fit: BoxFit.contain,
+              child: Card(        
+                color: const Color.fromARGB(255, 36, 51, 6),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15.0),
+                  side: BorderSide(
+                    color: const Color.fromARGB(255, 89, 99, 44),
+                    width: 1.0,
+                  ),
                 ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(left: 0),
-                    child:  Container(
-                      width: 100,
-                      height: 56,
-                      padding: EdgeInsets.all(2), // Border width
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: SizedBox.fromSize(
-                          size: Size.fromRadius(48), // Image radius
-                          child: Image.network(
-                            "https://eventharmoni.mercantec.tech/eventharmoni/PPc0c029f2f1fc462eadaf7178f6c6dd74.png", 
-                            //ser.eventPicture,
-                            fit: BoxFit.cover, 
-                            errorBuilder: (context, error, stackTrace) {
-                              return const Icon(Icons.broken_image, size: 300); // Handle broken images
-                            },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(left: 0),
+                      child:  Container(
+                        width: 150,
+                        height: 84,
+                        padding: EdgeInsets.all(2), // Border width
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: SizedBox.fromSize(
+                            size: Size.fromRadius(48), // Image radius
+                            child: Image.network(
+                              "${event['eventPicture']}", 
+                              fit: BoxFit.cover, 
+                              errorBuilder: (context, error, stackTrace) {
+                                return const Icon(Icons.broken_image, size: 300); // Handle broken images
+                              },
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
+              
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          Text(
+                            "Date: ${event['date']}",
+                            style: const TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              color: Color.fromARGB(255, 234, 208, 225),
+                            ),
+                          ),
+                          Text(
+                            "${event['title']}",
+                            softWrap: true,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            color: Color.fromARGB(255, 234, 208, 225),
+                            ),
+                          ),
+                          Text(
+                            "Category: ${event['category']}",
+                            style: const TextStyle(
+                              overflow: TextOverflow.ellipsis,
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              color: Color.fromARGB(255, 234, 208, 225),
+                            ),  
+                          ),
+                        ],
+                      ),
+                    ),
+              
+                    Column(
                       children: [
-                        Text(
-                          "Date: ${event['date']}",
-                          style: const TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                            color: Color.fromARGB(255, 234, 208, 225),
-                          ),
+                        IconButton(
+                          icon: Icon(Icons.event_repeat_outlined, color: const Color.fromARGB(255, 183, 211, 83)),
+                          onPressed: () => _navigateToUpdateEvent(event['id']),
                         ),
-                        Text(
-                          "Title: ${event['description']}",
-                          style: const TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                          color: Color.fromARGB(255, 234, 208, 225),
-                          ),
-                        ),
-                        Text(
-                          "Category: ${event['category']}",
-                          style: const TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                            color: Color.fromARGB(255, 234, 208, 225),
-                          ),  
+                        IconButton(
+                          icon: Icon(Icons.free_cancellation_outlined, color: Color.fromARGB(255, 205, 22, 67)),
+                          onPressed: () => _navigateToDeleteEvent(event['id']),
                         ),
                       ],
-                    ),
-                  ),
-
-                  Column(
-                    children: [
-                      IconButton(
-                        icon: Icon(Icons.edit, color: const Color.fromARGB(255, 183, 211, 83)),
-                        onPressed: () => _navigateToUpdateEvent(event['id']),
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.delete, color: Color.fromARGB(255, 104, 9, 9)),
-                        onPressed: () => _navigateToDeleteEvent(event['id']),
-                      ),
-                    ],
-                  ),      
-                ],
+                    ),      
+                  ],
+                ),
               ),
             ),
           );          

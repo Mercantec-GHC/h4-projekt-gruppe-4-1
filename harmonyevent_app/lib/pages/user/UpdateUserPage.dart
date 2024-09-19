@@ -11,6 +11,7 @@ import 'package:flutter_gradient_button/flutter_gradient_button.dart';
 import 'package:harmonyevent_app/config/auth_workaround.dart';
 import 'package:harmonyevent_app/config/api_config.dart';
 import 'package:harmonyevent_app/pages/user/UserProfilePage.dart';
+import 'package:harmonyevent_app/pages/user/DeleteUserPage.dart';
 
 // Create an instance of FlutterSecureStorage
 final FlutterSecureStorage secureStorage = FlutterSecureStorage();
@@ -322,6 +323,37 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
                       }
                     },
                   ),
+                  Center(
+                child: Container(
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 40),
+                      Text(
+                        "Delete Profile",
+                        style: const TextStyle(
+                        fontSize: 9,
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromARGB(255, 234, 208, 225),
+                      ),
+                      ),
+                      IconButton(
+                        icon: Icon(
+                          Icons.do_disturb_alt_sharp, 
+                          color: const Color.fromARGB(255, 198, 27, 27),
+                          size: 25,
+                        ),
+                        tooltip: "Delete Profle",
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => DeleteUserPage()), // Replace with the correct page
+                          );
+                        }
+                      ),
+                    ],
+                  ),
+                ),
+              ),
                 ],
               ), 
             ],

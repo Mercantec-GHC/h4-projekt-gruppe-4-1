@@ -102,7 +102,7 @@ class _DeleteUserPageState extends State<DeleteUserPage> {
         backgroundColor: const Color.fromARGB(255, 81, 76, 76) ,
         content: Text(
           //'Are you sure you want to delete ${user.Username}? This action can not be undone!',
-          'Are you sure you want to delete RayTheMan? This action can not be undone!',
+          'Are you sure you want to delete userId (Developer notice: Insert UserID.username)? This action can not be undone!',
            style: const TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.bold,

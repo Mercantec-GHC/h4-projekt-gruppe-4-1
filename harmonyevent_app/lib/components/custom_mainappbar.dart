@@ -37,6 +37,18 @@ class CustomMainAppBar extends StatelessWidget implements PreferredSizeWidget {
             print("Hmm");
           }
         ),
+        //FAVORITE EVENTS
+        IconButton(
+          icon: const Icon(
+            Icons.favorite, 
+            color: Color.fromARGB(255, 183, 211, 54),
+            size: 22,
+            ),
+          tooltip: "Favorite Events",
+          onPressed: () {
+            print("Hmm");
+          }
+        ),
         
         //ALL EVENTS
         IconButton(
@@ -53,6 +65,8 @@ class CustomMainAppBar extends StatelessWidget implements PreferredSizeWidget {
             );
           }
         ),
+
+
 
         //CREATE EVENT
         IconButton(

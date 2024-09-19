@@ -1,9 +1,8 @@
-
 class EventDTO {
   final String id;
-  final String eventPicture;
   final String date;
-  final String location;
+  final String eventPicture;
+  final String place_id;
   final String title;
   final String category;
   final String description;
@@ -15,89 +14,91 @@ class EventDTO {
     required this.id,
     required this.eventPicture,
     required this.date,
-    required this.location,
+    required this.place_id,
     required this.title,
     required this.category,
     required this.description,
     required this.isprivate,
     required this.eventCreator_id,
-    required this.participants, // 
+    required this.participants, // Initialize the new field
   });
 
   // Convert an EventDTO object into a JSON map.
   Map<String, dynamic> toJson() {
     return {
-      'id': id,  
+      'id': id,
+      'date': date,
       'eventPicture': eventPicture,
-      'date': date,  
-      'location': location,
+      'place_id': place_id,
       'title': title,
       'category': category,
       'description': description,
       'isprivate': isprivate,
       'eventCreator_id': eventCreator_id,
-      'participants': participants, 
+      'participants': participants, // Include participants
     };
   }
 
-// Convert a JSON map into an EventDTO object.
-factory EventDTO.fromJson(Map<String, dynamic> json) {
-  return EventDTO(
-    id: json['id'] ?? '',
-    eventPicture: json['eventPicture'] ?? '',
-    date: json['date'] ?? '',
-    location: json['place_id'] ?? '',
-    title: json['title'] ?? '',
-    category: json['category'] ?? '',
-    description: json['description'] ?? '',
-    isprivate: json['isprivate'] ??'', 
-    eventCreator_id: json['eventCreator_id'] ??'',
-    participants: json['participants'] ?? [], // Handle missing participants
-  );
-}}
+  // Convert a JSON map into an EventDTO object.
+  factory EventDTO.fromJson(Map<String, dynamic> json) {
+    return EventDTO(
+      id: json['id'] ?? '',
+      eventPicture: json['eventPicture'] ?? '',
+      date: json['date'] ?? '',
+      place_id: json['place_id'] ?? '',
+      title: json['title'] ?? '',
+      category: json['category'] ?? '',
+      description: json['description'] ?? '',
+      isprivate: json['isprivate'] ?? '',
+      eventCreator_id: json['eventCreator_id'] ?? '',
+      participants: json['participants'] ?? [], // Handle missing participants
+    );
+  }
+}
+
 
 class CreateEventDTO {
-  final String eventPicture;
+  final String eventPicture; // Updated to camelCase
   final String date;
-  final String location;
+  final String placeId; // Updated to camelCase
   final String title;
   final String category;
   final String description;
-  final String isprivate;
-  
+  final String isPrivate; // Updated to camelCase
+
   CreateEventDTO({
     required this.eventPicture,
     required this.date,
-    required this.location,
+    required this.placeId,
     required this.title,
     required this.category,
     required this.description,
-    required this.isprivate,
+    required this.isPrivate,
   });
 
-  // Convert an EventDTO object into a JSON map.
+  // Convert a CreateEventDTO object into a JSON map.
   Map<String, dynamic> toJson() {
     return {
       'eventPicture': eventPicture,
-      'date': date,  
-      'location': location,
-      'title': title,  
+      'date': date,
+      'place_id': placeId,
+      'title': title,
       'category': category,
       'description': description,
-      'isprivate': isprivate,  
+      'isprivate': isPrivate,
     };
   }
 
   // Convert a JSON map into a CreateEventDTO object.
   factory CreateEventDTO.fromJson(Map<String, dynamic> json) {
     return CreateEventDTO(
-      eventPicture: json['eventPicure'] ?? '',
+      eventPicture: json['eventPicture'] ?? '',
       date: json['date'] ?? '',
-      location: json['place_id'] ?? '', 
-      title: json['title'] ?? '',  
+      placeId: json['place_id'] ?? '',
+      title: json['title'] ?? '', // Fixed incorrect field assignment
       category: json['category'] ?? '',
       description: json['description'] ?? '',
-      isprivate: json['isprivate'] ?? '', 
+      isPrivate: json['isprivate'] ?? '',
     );
   }
 }

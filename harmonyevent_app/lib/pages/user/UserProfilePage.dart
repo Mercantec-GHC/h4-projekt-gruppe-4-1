@@ -5,13 +5,10 @@ import 'package:flutter_gradient_button/flutter_gradient_button.dart';
 
 import 'package:harmonyevent_app/components/custom_mainappbar.dart';
 import 'package:harmonyevent_app/config/auth_workaround.dart';
-import 'package:harmonyevent_app/models/user_model.dart';
-import 'package:harmonyevent_app/services/fetch_service.dart';
 import 'package:harmonyevent_app/services/login_service.dart';
 
 import 'package:harmonyevent_app/pages/user/LoginPage.dart';
 import 'package:harmonyevent_app/pages/user/UpdateUserPage.dart';
-import 'package:harmonyevent_app/pages/user/DeleteUserPage.dart';
 
 
 class UserProfilePage extends StatefulWidget {
@@ -96,41 +93,47 @@ class _UserProfilePageState extends State<UserProfilePage> {
               ),
 
               const SizedBox(height: 30),
-              Padding(
-                padding: const EdgeInsets.only(left: 86.0, right: 86.0),
-                child: SwitchListTile(
-                  hoverColor: const Color.fromARGB(255, 36, 51, 6),
-                  activeColor: Color.fromARGB(255, 234, 208, 225),
-                  inactiveThumbColor: Color.fromARGB(255, 234, 208, 225),
-                  activeTrackColor: const Color.fromARGB(255, 183, 211, 83),
-                  inactiveTrackColor: const Color.fromARGB(255, 234, 208, 225),
-                  title: const Text(
-                    "New event added",
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 234, 208, 225),
-                      fontSize: 14,
+              Center(
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 56.0, right: 56.0),
+                      child: SwitchListTile(
+                        hoverColor: const Color.fromARGB(255, 36, 51, 6),
+                        activeColor: Color.fromARGB(255, 234, 208, 225),
+                        inactiveThumbColor: Color.fromARGB(255, 234, 208, 225),
+                        activeTrackColor: const Color.fromARGB(255, 183, 211, 83),
+                        inactiveTrackColor: const Color.fromARGB(255, 234, 208, 225),
+                        title: const Text(
+                          "Notification on new events",
+                          style: TextStyle(
+                            color: Color.fromARGB(255, 234, 208, 225),
+                            fontSize: 14,
+                          ),
+                          selectionColor: const Color.fromARGB(255, 183, 211, 83),
+                        ),
+                        secondary: const SizedBox(
+                          child: Icon(
+                            Icons.notifications_none,
+                            color: const Color.fromARGB(255, 183, 211, 83),
+                            size: 32,
+                          ),
+                        ),
+                        value: NewEventAddedChecked,         
+                        onChanged: (value) {
+                          setState(() {
+                            NewEventAddedChecked = value;
+                            //_isPrivateController.text = value.toString();
+                            print(value);
+                          },);
+                        }
+                      ),
                     ),
-                    selectionColor: const Color.fromARGB(255, 183, 211, 83),
-                  ),
-                  secondary: const SizedBox(
-                    child: Icon(
-                      Icons.notifications_none,
-                      color: const Color.fromARGB(255, 183, 211, 83),
-                      size: 32,
-                    ),
-                  ),
-                  value: NewEventAddedChecked,         
-                  onChanged: (value) {
-                    setState(() {
-                      NewEventAddedChecked = value;
-                      //_isPrivateController.text = value.toString();
-                      print(value);
-                    },);
-                  }
+                  ],
                 ),
               ), 
               Padding(
-                padding: const EdgeInsets.only(left: 86.0, right: 86.0),
+                padding: const EdgeInsets.only(left: 56.0, right: 56.0),
                 child: SwitchListTile(
                   hoverColor: const Color.fromARGB(255, 36, 51, 6),
                   activeColor: Color.fromARGB(255, 234, 208, 225),
@@ -138,7 +141,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                   activeTrackColor: const Color.fromARGB(255, 183, 211, 83),
                   inactiveTrackColor: const Color.fromARGB(255, 234, 208, 225),
                   title: const Text(
-                    "Event is due",
+                    "Notification on due events",
                     style: TextStyle(
                       color: Color.fromARGB(255, 234, 208, 225),
                       fontSize: 14,
@@ -190,62 +193,30 @@ class _UserProfilePageState extends State<UserProfilePage> {
                   }
                 }
               ),
-
               SizedBox(height: 20),
-              GradientButton(
-                colors: [const Color.fromARGB(255, 183, 211, 54), const Color.fromARGB(255, 109, 190, 66)],
-                height: 40,
-                width: 350,
-                radius: 20,
-                gradientDirection: GradientDirection.leftToRight,
-                textStyle:  TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
-                text: "Delete Profile",
-                onPressed: () async {
-                  //final token = await _authService.getToken();
-                  final token = mytoken;
-                  print('Token retrieved: $token'); // Debugging statement
-                  if (token != null && !_authService.isTokenExpired(token)) {
-                  Navigator.push(
-                    context,                      
-                    MaterialPageRoute(
-                      builder: (context) => DeleteUserPage()),
-                    );
-                  } 
-                  else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('User not logged in or token expired')),
-                    );
-                  }
-                }            
-              ),
-              SizedBox(height: 20),
-              // GradientButton(
-              //   colors: [const Color.fromARGB(255, 183, 211, 54), const Color.fromARGB(255, 109, 190, 66)],
-              //   height: 40,
-              //   width: 350,
-              //   radius: 20,
-              //   gradientDirection: GradientDirection.leftToRight,
-              //   textStyle:  TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
-              //   text: "Log out",
-              //   onPressed: logout        
-              // )
-                            IconButton(
-                icon: Icon(
-                  Icons.auto_delete, 
-                  color: const Color.fromARGB(255, 183, 211, 54),
-
+              Center(
+                child: Container(
+                  child: Column(
+                    children: [
+                      Text("Logout Profile",
+                      style: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromARGB(255, 234, 208, 225),
+                      ),
+                      ),
+                      IconButton(
+                        icon: Icon(
+                          Icons.logout_sharp, 
+                          color: const Color.fromARGB(255, 183, 211, 54),
+                          size: 40,
+                        ),
+                      tooltip: "Logout",
+                      onPressed: logout
+                      ),                   
+                    ],
+                  ),
                 ),
-                tooltip: "Delete user",
-                onPressed: logout
-              ),
-              IconButton(
-                icon: Icon(
-                  Icons.logout, 
-                  color: const Color.fromARGB(255, 183, 211, 54),
-
-                ),
-                tooltip: "Logout",
-                onPressed: logout
               ),
             ],
           ),

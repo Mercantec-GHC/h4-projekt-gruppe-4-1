@@ -16,13 +16,13 @@ class CreateEventService {
   final String _baseUrl = ApiConfig.apiUrl;
   // Method to create event with image upload
   Future<CreateEventDTO> createEvent(
-    File? EventPicture,
+    File? eventPicture,
     String date,
-    String location,
-    String title,
+    String placeId,
     String category,
+    String title,
     String description,
-    String isprivate,
+    String isPrivate,
   ) 
   async {
     var request = http.MultipartRequest('POST', Uri.parse('$_baseUrl/api/event/event/create'));
@@ -39,29 +39,31 @@ class CreateEventService {
     print(request.headers);
     print(request);
 
-    if (EventPicture != null) {
-      var imageStream = http.ByteStream(EventPicture.openRead());
-      var imageLength = await EventPicture.length();
+    // Add event picture if provided
+    if (eventPicture != null) {
+      var imageStream = http.ByteStream(eventPicture.openRead());
+      var imageLength = await eventPicture.length();
       request.files.add(
         http.MultipartFile(
-          'EventPicture',
+          'eventPicture',  // Updated key based on your DTO
           imageStream,
           imageLength,
-          filename: EventPicture.path.split('/').last,
+          filename: eventPicture.path.split('/').last,
         ),
       );
     }
     request.fields['date'] = date;
-    request.fields['place_id'] = location;
+    request.fields['place_id'] = placeId;
     request.fields['title'] = title;
     request.fields['category'] = category;
     request.fields['description'] = description;
-    request.fields['isprivate'] = isprivate;
+    request.fields['isprivate'] = isPrivate;
 
     try {
       var response = await request.send();
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        print(response.statusCode);
         final responseBody = await response.stream.bytesToString();
         return CreateEventDTO.fromJson(jsonDecode(responseBody));
       } else {

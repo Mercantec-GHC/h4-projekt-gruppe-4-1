@@ -45,13 +45,16 @@ class _DeleteEventPageState extends State<DeleteEventPage> {
       if (response.statusCode == 200) {
         // Show a success message
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Event deleted successfully')),
+        SnackBar(content: Text('Event deleted successfully')),
         );
         Navigator.pop(context); 
       } 
       else {    
-        final errorBody = jsonDecode(response.body);
-        throw Exception(errorBody['message'] ?? 'Failed to delete event');
+        //final errorBody = jsonDecode(response.body);
+        // throw Exception(errorBody['message'] ?? 'Failed to delete event');
+             Navigator.pop(context); 
+        throw Exception('Developer notice: Deletes event but throws exeption');
+        
       }
     } 
     catch (e) {      

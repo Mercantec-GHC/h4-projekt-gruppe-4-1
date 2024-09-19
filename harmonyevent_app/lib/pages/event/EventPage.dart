@@ -69,6 +69,8 @@ class _EventPageState extends State<EventPage> {
       physics: PageScrollPhysics(),
       itemBuilder: (context, index) {
         final event = events[index];
+        print(event);
+        print(event.eventPicture);
         final eventPictureUrl = event.eventPicture;
         events.sort((a, b) => a.date.compareTo(b.date));
 
@@ -129,28 +131,18 @@ class _EventPageState extends State<EventPage> {
                         color: Color.fromARGB(255, 234, 208, 225),
                       ),
                     ),
+                    
 
                     //EVENT LOCATION
                     Text(
-                      "Location: ${event.location}",
+                      "Location: ${event.place_id}",
                       style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
                         color: const Color.fromARGB(255, 234, 208, 225),
                       ),
                     ),
-
-                    //EVENT TITLE
-                    Text(
-                      "Title: ${event.title}",
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: const Color.fromARGB(255, 183, 211, 83),
-                      ),
-                    ),
-
-                    //EVENT CATEGORY
+                                        //EVENT CATEGORY
                     Text(
                       "Category: ${event.category}",
                       style: const TextStyle(
@@ -159,18 +151,7 @@ class _EventPageState extends State<EventPage> {
                         color: Color.fromARGB(255, 234, 208, 225),
                       ),
                     ),
-
-                    //EVENT DESCRIPTION
-                    Text(
-                      "Decription: ${event.description}",
-                      style: const TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                        color: Color.fromARGB(255, 234, 208, 225),
-                      ),
-                    ),
-
-                    //EVENTTYPE (PRIVATE/PUBLIC)
+                                        //EVENTTYPE (PRIVATE/PUBLIC)
                     Text(
                       "Type: ${event.isprivate}",
                       style: const TextStyle(
@@ -179,8 +160,34 @@ class _EventPageState extends State<EventPage> {
                         color: Color.fromARGB(255, 234, 208, 225),
                       ),
                     ),
-                    
                     const SizedBox(height: 20),
+                    //EVENT TITLE
+                    Text(
+                      "${event.title}",
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: const Color.fromARGB(255, 183, 211, 83),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+
+                    //EVENT DESCRIPTION
+                    Padding(
+                      padding: const EdgeInsets.only(left: 48.0, right: 48.0),
+                      child: Text(
+                        "Decription: ${event.description}",
+                        style: const TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                          color: Color.fromARGB(255, 234, 208, 225),
+                        ),
+                      ),
+                    ),
+   
+
+                    
+                    const SizedBox(height: 70),
                     //ORGANIZED BY
                     Container(
                       child: Column(
@@ -188,14 +195,14 @@ class _EventPageState extends State<EventPage> {
                           Text(
                             "Organized by: ${event.eventCreator_id}",
                             style: const TextStyle(
-                            fontSize: 12,
+                            fontSize: 10,
                             fontWeight: FontWeight.bold,
                             color: const Color.fromARGB(255, 183, 211, 83),
                             ),
                           ),
                           
                           Container(
-                            width: 50,
+                            width: 40,
                             child: CircleAvatar(
                               backgroundColor: const Color.fromARGB(255, 183, 211, 83),
                               radius: 40,
@@ -203,7 +210,7 @@ class _EventPageState extends State<EventPage> {
                                 padding: const EdgeInsets.all(3),
                                 child: ClipOval (
                                   child: Image.network(
-                                    event.eventPicture,                             
+                                    "https://eventharmoni.mercantec.tech/eventharmoni/PPc0c029f2f1fc462eadaf7178f6c6dd74.png",                             
                                     errorBuilder: (context, error, stackTrace) {
                                       return const Icon(Icons.broken_image, size: 300); // Handle broken images
                                     },
@@ -215,8 +222,8 @@ class _EventPageState extends State<EventPage> {
                         ],
                       ),
                     ),
-
-                    //CREATE EVENT BUTTON
+                    
+                    //ATTEND EVENT BUTTON
                     GradientButton(
                       colors: [const Color.fromARGB(255, 183, 211, 54), const Color.fromARGB(255, 109, 190, 66)],
                       height: 40,
@@ -224,10 +231,86 @@ class _EventPageState extends State<EventPage> {
                       radius: 20,
                       gradientDirection: GradientDirection.leftToRight,
                       textStyle: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
-                      text: "Attend Event (IN DEVELOPMENT)",
+                      text: "Attend Event",
                       onPressed: () {
                         print("In development - comming later");
                       },
+                    ),
+                    const SizedBox(height: 20),
+                     Padding(
+                      padding: EdgeInsets.only(left: 50, right: 50),
+                      child: Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              children: [
+                                Text("Add to Favorites",
+                                  style: const TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color.fromARGB(255, 234, 208, 225),
+                                  ),
+                                ),
+                                IconButton(
+                                  icon: Icon(
+                                    Icons.favorite_outline_sharp, 
+                                    color: const Color.fromARGB(255, 183, 211, 54),
+                                    size: 25,
+                                  ),
+                                  tooltip: "View Participants",
+                                  onPressed: (){
+                                  }
+                                ),
+                              ],
+                            ),         
+                            //const SizedBox(width: 30), 
+                            Column(
+                              children: [
+                                Text("View Participants",
+                                  style: const TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color.fromARGB(255, 234, 208, 225),
+                                  ),
+                                ),
+                                IconButton(
+                                  icon: Icon(
+                                    Icons.groups_3_sharp, 
+                                    color: const Color.fromARGB(255, 183, 211, 54),
+                                    size: 30,
+                                  ),
+                                  tooltip: "View Participants",
+                                  onPressed: (){
+                                  }
+                                ),
+                              ],
+                            ),
+                            //const SizedBox(width: 30),
+                            Column(
+                              children: [
+                                Text("Notify friend",
+                                  style: const TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color.fromARGB(255, 234, 208, 225),
+                                  ),
+                                ),
+                                IconButton(
+                                  icon: Icon(
+                                    Icons.mail_outline_sharp, 
+                                    color: const Color.fromARGB(255, 183, 211, 54),
+                                    size: 25,
+                                  ),
+                                  tooltip: "Notify friend",
+                                  onPressed: (){
+                                  }
+                                ),
+                              ],
+                            ),                                                  
+                          ],
+                        ),
+                      ),
                     ),
                   ], 
                 ),

@@ -26,7 +26,7 @@ class CreateEventState extends State<CreateEventPage> {
   final picker = ImagePicker(); // Image picker instance
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _timeController = TextEditingController(); 
-  final TextEditingController _locationController = TextEditingController();
+  final TextEditingController _placeIdController = TextEditingController();
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _categoryController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
@@ -41,7 +41,7 @@ class CreateEventState extends State<CreateEventPage> {
   void dispose() {
     _dateController.dispose();
     _timeController.dispose();
-    _locationController.dispose();
+    _placeIdController.dispose();
     _titleController.dispose();
     _categoryController.dispose();
     _descriptionController.dispose();
@@ -123,37 +123,37 @@ class CreateEventState extends State<CreateEventPage> {
       _isLoading = true;      
     });
 
-    File? eventPicture; // Declared as a nullable File
-    // Ensure that the user has picked an image
-    if (eventPicture != null) {
-      eventPicture = eventPicture; // Set the image from the file picker
-    } 
-    else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("Please select an event picture."),
-        ),
-      );
-      return;
-    }
+    // File? eventPicture; // Declared as a nullable File
+    // // Ensure that the user has picked an image
+    // if (eventPicture != null) {
+    //   eventPicture = eventPicture; // Set the image from the file picker
+    // } 
+    // else {
+    //   ScaffoldMessenger.of(context).showSnackBar(
+    //     SnackBar(
+    //       content: Text("Please select an event picture."),
+    //     ),
+    //   );
+    //   return;
+    // }
     final String date = _dateController.text;
     final String time = _timeController.text;
-    final String location = _locationController.text;
-    final String title = _titleController.text;
+    final String placeId = _placeIdController.text;
     final String category = _categoryController.text;
+    final String title = _titleController.text;
     final String description = _descriptionController.text;
     final String isPrivate = _isPrivateController.text;
     
     try {
       // Call EventService to create the event
       final CreateEventDTO newEventDTO = await _eventService.createEvent(
-        eventPicture, 
-        "$date $time", 
-        location,
-        category,
-        title,
-        description,
-        isPrivate,
+          eventPicture, 
+          "$date $time", 
+          placeId,
+          category,
+          title,
+          description,
+          isPrivate,
       );
       showSuccessAlertCreateEvent(context);
         Navigator.pushReplacement(
@@ -166,10 +166,10 @@ class CreateEventState extends State<CreateEventPage> {
         ),
       );
       // Reset the form after successful submission
-      _formKey.currentState?.reset();
-      setState(() {
-        eventPicture = null; // Clear the selected image
-      });
+      // _formKey.currentState?.reset();
+      // setState(() {
+      //   eventPicture = null; // Clear the selected image
+      // });
       } 
       catch (e) {
       showErrorAlertCreateEvent(context);
@@ -277,7 +277,7 @@ class CreateEventState extends State<CreateEventPage> {
               //SELECT LOCATION
               TextFormField(
                 style: TextStyle(color: Color.fromARGB(255, 234, 208, 225)),
-                controller: _locationController,
+                controller: _placeIdController,
                 decoration: InputDecoration(
                   labelText: 'Location',
                   labelStyle: TextStyle(color: const Color.fromARGB(255, 183, 211, 83), fontSize: 16.0),
@@ -336,6 +336,7 @@ class CreateEventState extends State<CreateEventPage> {
                   DropdownMenuItem(value: 'Convention', child: Text('Convention')),
                   DropdownMenuItem(value: 'Exhibition', child: Text('Exhibition')),
                   DropdownMenuItem(value: 'Festival', child: Text('Festival')),
+                   DropdownMenuItem(value: 'Gaming', child: Text('Gaming')),
                   DropdownMenuItem(value: 'Lecture', child: Text('Lecture')),
                   DropdownMenuItem(value: 'Networking', child: Text('Networking')),
                   DropdownMenuItem(value: 'Programming', child: Text('Programming')),
@@ -402,8 +403,9 @@ class CreateEventState extends State<CreateEventPage> {
                   ),
                 ),
                 items: [
-                  DropdownMenuItem(value: 'true', child: Text('Private')),
-                  DropdownMenuItem(value: 'false', child: Text('Public')),
+                  DropdownMenuItem(value: 'Private', child: Text('Private')),
+                  DropdownMenuItem(value: 'Public', child: Text('Public')),
+
                 ],
                 onChanged: (value) {
                   setState(() {
