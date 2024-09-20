@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/saa/Documents/Udd/harmonyevent_project/harmonyevent_api/API.csproj": {}
+    "/Users/saa/Documents/GitHub/h4-projekt-gruppe-4-1/harmonyevent_api/API.csproj": {}
   },
   "projects": {
-    "/Users/saa/Documents/Udd/harmonyevent_project/harmonyevent_api/API.csproj": {
+    "/Users/saa/Documents/GitHub/h4-projekt-gruppe-4-1/harmonyevent_api/API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/saa/Documents/Udd/harmonyevent_project/harmonyevent_api/API.csproj",
+        "projectUniqueName": "/Users/saa/Documents/GitHub/h4-projekt-gruppe-4-1/harmonyevent_api/API.csproj",
         "projectName": "API",
-        "projectPath": "/Users/saa/Documents/Udd/harmonyevent_project/harmonyevent_api/API.csproj",
+        "projectPath": "/Users/saa/Documents/GitHub/h4-projekt-gruppe-4-1/harmonyevent_api/API.csproj",
         "packagesPath": "/Users/saa/.nuget/packages/",
-        "outputPath": "/Users/saa/Documents/Udd/harmonyevent_project/harmonyevent_api/obj/",
+        "outputPath": "/Users/saa/Documents/GitHub/h4-projekt-gruppe-4-1/harmonyevent_api/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/saa/.nuget/NuGet/NuGet.Config"
