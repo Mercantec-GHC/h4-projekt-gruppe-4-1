@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "wOqGAh8ZhRI=",
+  "dgSpecHash": "aY0xzQFmgeQ=",
   "success": true,
-  "projectFilePath": "/Users/saa/Documents/GitHub/h4-projekt-gruppe-4-1/harmonyevent_api/API.csproj",
+  "projectFilePath": "/Users/saa/Documents/Udd/harmonyevent_project/harmonyevent_api/API.csproj",
   "expectedPackageFiles": [
     "/Users/saa/.nuget/packages/awssdk.core/3.7.400.21/awssdk.core.3.7.400.21.nupkg.sha512",
     "/Users/saa/.nuget/packages/awssdk.s3/3.7.402.12/awssdk.s3.3.7.402.12.nupkg.sha512",
